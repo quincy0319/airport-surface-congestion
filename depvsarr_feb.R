@@ -1,18 +1,21 @@
-x <- read.csv("dep_feb_per60.csv", header = F)
-x01 <- x[, 1]
-x18l <- x[, 2]
-x18r <- x[, 3]
-x19 <- x[, 4]
-x36l <- x[, 5]
-x36r <- x[, 6]
-y <- read.csv("arr_feb_per60.csv", header = F)
-y01 <- y[, 1]
-y18l <- y[, 2]
-y18r <- y[, 3]
-y19 <- y[, 4]
-y36l <- y[, 5]
-y36r <- y[, 6]
+# put data into dataframe
+dep_60 <- read.csv("dep_feb_per60.csv", header = F)
+arr_60 <- read.csv("arr_feb_per60.csv", header = F)
+dep_30 <- read.csv("dep_feb_per30.csv", header = F)
+arr_30 <- read.csv("arr_feb_per30.csv", header = F)
+dep_15 <- read.csv("dep_feb_per30.csv", header = F)
+arr_15 <- read.csv("arr_feb_per30.csv", header = F)
+names(dep_60) <- c("x01", "x18l", "x18r", "x19", "x36l", "x36r")
+names(arr_60) <- c("x01", "x18l", "x18r", "x19", "x36l", "x36r")
+names(dep_30) <- c("x01", "x18l", "x18r", "x19", "x36l", "x36r")
+names(arr_30) <- c("x01", "x18l", "x18r", "x19", "x36l", "x36r")
+names(dep_15) <- c("x01", "x18l", "x18r", "x19", "x36l", "x36r")
+names(arr_15) <- c("x01", "x18l", "x18r", "x19", "x36l", "x36r")
 
+# scatter plot colored by smoothed densities
+dev.new()
+attach(dep_60)
+attach(arr_60)
 opar <- par(no.readonly = TRUE)
 par(mfrow = c(2, 3))
 smoothScatter(x01, y01, xlab = "dep_01_per60", ylab = "arr_01_per60")
@@ -21,4 +24,33 @@ smoothScatter(x36r, y36r, xlab = "dep_36r_per60", ylab = "arr_36r_per60")
 smoothScatter(x19, y19, xlab = "dep_19_per60", ylab = "arr_19_per60")
 smoothScatter(x18r, y18r, xlab = "dep_18r_per60", ylab = "arr_18l_per60")
 smoothScatter(x18l, y18l, xlab = "dep_18l_per60", ylab = "arr_18l_per60")
+detach(dep_60)
+detach(arr_60)
 
+dev.new()
+attach(dep_30)
+attach(arr_30)
+opar <- par(no.readonly = TRUE)
+par(mfrow = c(2, 3))
+smoothScatter(x01, y01, xlab = "dep_01_per60", ylab = "arr_01_per60")
+smoothScatter(x36l, y36r, xlab = "dep_36l_per60", ylab = "arr_36l_per60")
+smoothScatter(x36r, y36r, xlab = "dep_36r_per60", ylab = "arr_36r_per60")
+smoothScatter(x19, y19, xlab = "dep_19_per60", ylab = "arr_19_per60")
+smoothScatter(x18r, y18r, xlab = "dep_18r_per60", ylab = "arr_18l_per60")
+smoothScatter(x18l, y18l, xlab = "dep_18l_per60", ylab = "arr_18l_per60")
+detach(dep_30)
+detach(arr_30)
+
+dev.new()
+attach(dep_15)
+attach(arr_15)
+opar <- par(no.readonly = TRUE)
+par(mfrow = c(2, 3))
+smoothScatter(x01, y01, xlab = "dep_01_per60", ylab = "arr_01_per60")
+smoothScatter(x36l, y36r, xlab = "dep_36l_per60", ylab = "arr_36l_per60")
+smoothScatter(x36r, y36r, xlab = "dep_36r_per60", ylab = "arr_36r_per60")
+smoothScatter(x19, y19, xlab = "dep_19_per60", ylab = "arr_19_per60")
+smoothScatter(x18r, y18r, xlab = "dep_18r_per60", ylab = "arr_18l_per60")
+smoothScatter(x18l, y18l, xlab = "dep_18l_per60", ylab = "arr_18l_per60")
+detach(dep_15)
+detach(arr_15)
