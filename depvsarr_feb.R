@@ -6,11 +6,11 @@ arr_30 <- read.csv("arr_feb_per30.csv", header = F)
 dep_15 <- read.csv("dep_feb_per30.csv", header = F)
 arr_15 <- read.csv("arr_feb_per30.csv", header = F)
 names(dep_60) <- c("x01", "x18l", "x18r", "x19", "x36l", "x36r")
-names(arr_60) <- c("x01", "x18l", "x18r", "x19", "x36l", "x36r")
+names(arr_60) <- c("y01", "y18l", "y18r", "y19", "y36l", "y36r")
 names(dep_30) <- c("x01", "x18l", "x18r", "x19", "x36l", "x36r")
-names(arr_30) <- c("x01", "x18l", "x18r", "x19", "x36l", "x36r")
+names(arr_30) <- c("y01", "y18l", "y18r", "y19", "y36l", "y36r")
 names(dep_15) <- c("x01", "x18l", "x18r", "x19", "x36l", "x36r")
-names(arr_15) <- c("x01", "x18l", "x18r", "x19", "x36l", "x36r")
+names(arr_15) <- c("y01", "y18l", "y18r", "y19", "y36l", "y36r")
 
 # scatter plot colored by smoothed densities
 dev.new()
@@ -53,4 +53,27 @@ smoothScatter(x19, y19, xlab = "dep_19_per60", ylab = "arr_19_per60")
 smoothScatter(x18r, y18r, xlab = "dep_18r_per60", ylab = "arr_18l_per60")
 smoothScatter(x18l, y18l, xlab = "dep_18l_per60", ylab = "arr_18l_per60")
 detach(dep_15)
-detach(arr_15)
+detach(arr_15)     
+
+dep_60_matrix <- as.matrix(dep_60)
+sum_dep <- rowSums(dep_60_matrix)
+arr_60_matrix <- as.matrix(arr_60)
+sum_arr <- rowSums(arr_60_matrix)
+sum_per60 <- sum_dep + sum_arr
+data_60 <- cbind(dep_60, sum_dep, arr_60, sum_arr, sum_per60)
+attach(dep_60)
+dep_prop_01 <- x01 / sum_per60
+dep_prop_36l <- x36l / sum_per60
+dep_prop_36r <- x36r / sum_per60
+dep_prop_19 <- x19 / sum_per60
+dep_prop_18r <- x18r / sum_per60
+dep_prop_18l <- x18l / sum_per60
+detach(dep_60)
+attach(arr_60)
+arr_prop_01 <- y01 / sum_per60
+arr_prop_36l <- y36l / sum_per60
+arr_prop_36r <- y36r / sum_per60
+arr_prop_19 <- y19 / sum_per60
+arr_prop_18r <- y18r / sum_per60
+arr_prop_18l <- y18l / sum_per60
+detach(arr_60)
