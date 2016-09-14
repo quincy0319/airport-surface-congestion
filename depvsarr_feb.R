@@ -78,5 +78,47 @@ smoothScatter(x18l, y18l, xlab = "dep_18l_per15", ylab = "arr_18l_per15")
 title(main = "rwy_18l", cex.main = 1.5)
 par(opar)
 detach(dep_15)
+<<<<<<< HEAD
 detach(arr_15)
+
+=======
+detach(arr_15)     
+
+# percentage of rwy usage
+dep_60_matrix <- as.matrix(dep_60)
+sum_dep <- rowSums(dep_60_matrix)
+arr_60_matrix <- as.matrix(arr_60)
+sum_arr <- rowSums(arr_60_matrix)
+dep_data_summary <- colSums(dep_60_matrix) / sum(colSums(dep_60_matrix))
+arr_data_summary <- colSums(arr_60_matrix) / sum(colSums(arr_60_matrix))
+dev.new()
+pie(dep_data_summary, radius = 1)
+title("dep rwy usage")
+dev.new()
+pie(arr_data_summary, radius = 1)
+title("arr rwy usage")
+
+# rwy configuration caculation
+sum_per60 <- sum_dep + sum_arr
+data_60 <- cbind(dep_60, sum_dep, arr_60, sum_arr, sum_per60)
+attach(dep_60)
+dep_prop_01 <- x01 / sum_per60
+dep_prop_36l <- x36l / sum_per60
+dep_prop_36r <- x36r / sum_per60
+dep_prop_19 <- x19 / sum_per60
+dep_prop_18r <- x18r / sum_per60
+dep_prop_18l <- x18l / sum_per60
+detach(dep_60)
+attach(arr_60)
+arr_prop_01 <- y01 / sum_per60
+arr_prop_36l <- y36l / sum_per60
+arr_prop_36r <- y36r / sum_per60
+arr_prop_19 <- y19 / sum_per60
+arr_prop_18r <- y18r / sum_per60
+arr_prop_18l <- y18l / sum_per60
+detach(arr_60)
+data_60 <- cbind(data_60, dep_prop_01, dep_prop_36l, dep_prop_36r, dep_prop_19, 
+                 dep_prop_18r, dep_prop_18l)
+data_60 <- cbind(data_60, arr_prop_01, arr_prop_36l, arr_prop_36r, arr_prop_19, 
+                 arr_prop_18r, arr_prop_18l)
 
