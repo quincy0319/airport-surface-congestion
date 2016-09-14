@@ -122,3 +122,6 @@ data_60 <- cbind(data_60, dep_prop_01, dep_prop_36l, dep_prop_36r, dep_prop_19,
 data_60 <- cbind(data_60, arr_prop_01, arr_prop_36l, arr_prop_36r, arr_prop_19, 
                  arr_prop_18r, arr_prop_18l)
 
+
+# Kmeans-clusters
+
