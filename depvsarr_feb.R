@@ -78,11 +78,7 @@ smoothScatter(x18l, y18l, xlab = "dep_18l_per15", ylab = "arr_18l_per15")
 title(main = "rwy_18l", cex.main = 1.5)
 par(opar)
 detach(dep_15)
-<<<<<<< HEAD
 detach(arr_15)
-
-=======
-detach(arr_15)     
 
 # percentage of rwy usage
 dep_60_matrix <- as.matrix(dep_60)
@@ -124,4 +120,4 @@ data_60 <- cbind(data_60, arr_prop_01, arr_prop_36l, arr_prop_36r, arr_prop_19,
 
 
 # Kmeans-clusters
-
+df <- data_60[]
