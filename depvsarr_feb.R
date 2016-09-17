@@ -120,4 +120,20 @@ data_60 <- cbind(data_60, arr_prop_01, arr_prop_36l, arr_prop_36r, arr_prop_19,
 
 
 # Kmeans-clusters
-df <- data_60[]
+df <- data_60[16:27]
+df <- scale(df[-1])
+wssplot(df)
+library(NbClust)
+set.seed(1234)
+devAskNewPage(ask = TRUE)
+nc <- NbClust(df, min.nc = 2, max.nc = 15, method = "kmeans")
+table(nc$Best.n[1, ])
+barplot(table(nc$Best.n[1, ]), 
+        xlab = "Number of Clusters", ylab = "Number of Criteria",
+        main = "Number of Clusters Chosen by 26 Criteria")
+
+set.seed(1234)
+fit.km <- kmeans(df, 3, nstart = 25)
+fit.km$size
+fit.km$centers
+aggregate(df[-1], by = list(cluster = fit.km$cluster), mean)
