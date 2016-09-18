@@ -137,3 +137,21 @@ fit.km <- kmeans(df, 3, nstart = 25)
 fit.km$size
 fit.km$centers
 aggregate(df[-1], by = list(cluster = fit.km$cluster), mean)
+
+
+# regression tree
+library(rpart)
+set.seed(1234)
+dtree <- rpart(class ~ ., data = df, method = "class",
+               parms = list(split = "information"))
+dtree$cptable
+plotcp(dtree)
+dtree.pruned <- prune(dtree, cp = .0125)
+library(rpart.plot)
+prp(dtree.pruned, type = 2, extra = 104, 
+    fallen.leaves = TRUE, main = "Decision Tree")
+dtree.pred <- predict(dtree.pruned, df.validate, type = "class")
+dtree.perf <- table(df.validate$class, dtree.pred,
+                    dnn = c("Actual", "Predicted"))
+dtree.perf
+
