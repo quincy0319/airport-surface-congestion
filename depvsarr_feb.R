@@ -57,7 +57,8 @@ rwy_01_upper10 <- subset(data_60, ((x01 + y01) > 10), select = c(1, 8))
 smoothScatter(rwy_01_upper10)
 title("rwy_01_upper10")
 grid()
-rwy_36l_cluster <- subset(data_60, ((x01 - 13) ^ 2 + (y01 - 13) ^ 2) <= 9, select = c(1,8))
+rwy_36l_cluster <- subset(data_60, ((x01 - 13) ^ 2 + (y01 - 13) ^ 2) <= 9,
+                          select = c(1,8))
 
 
 # scatter plot colored by smoothed densities
