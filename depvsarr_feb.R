@@ -12,6 +12,52 @@ names(arr_30) <- c("y01", "y18l", "y18r", "y19", "y36l", "y36r")
 names(dep_15) <- c("x01", "x18l", "x18r", "x19", "x36l", "x36r")
 names(arr_15) <- c("y01", "y18l", "y18r", "y19", "y36l", "y36r")
 
+# rwy configuration caculation
+dep_60_matrix <- as.matrix(dep_60)
+sum_dep <- rowSums(dep_60_matrix)
+arr_60_matrix <- as.matrix(arr_60)
+sum_arr <- rowSums(arr_60_matrix)
+dep_data_summary <- colSums(dep_60_matrix) / sum(colSums(dep_60_matrix))
+arr_data_summary <- colSums(arr_60_matrix) / sum(colSums(arr_60_matrix))
+sum_per60 <- sum_dep + sum_arr
+data_60 <- cbind(dep_60, sum_dep, arr_60, sum_arr, sum_per60)
+attach(dep_60)
+dep_prop_01 <- x01 / sum_per60
+dep_prop_36l <- x36l / sum_per60
+dep_prop_36r <- x36r / sum_per60
+dep_prop_19 <- x19 / sum_per60
+dep_prop_18r <- x18r / sum_per60
+dep_prop_18l <- x18l / sum_per60
+detach(dep_60)
+attach(arr_60)
+arr_prop_01 <- y01 / sum_per60
+arr_prop_36l <- y36l / sum_per60
+arr_prop_36r <- y36r / sum_per60
+arr_prop_19 <- y19 / sum_per60
+arr_prop_18r <- y18r / sum_per60
+arr_prop_18l <- y18l / sum_per60
+detach(arr_60)
+data_60 <- cbind(data_60, dep_prop_01, dep_prop_36l, dep_prop_36r, dep_prop_19, 
+                 dep_prop_18r, dep_prop_18l)
+data_60 <- cbind(data_60, arr_prop_01, arr_prop_36l, arr_prop_36r, arr_prop_19, 
+                 arr_prop_18r, arr_prop_18l)
+
+dev.new()
+rwy_36l_upper10 <- subset(data_60, ((x36l + y36l) > 10), select = c(5, 12))
+smoothScatter(rwy_36l_upper10)
+title("rwy_36l_upper10")
+grid()
+dev.new()
+rwy_36r_upper10 <- subset(data_60, ((x36r + y36r) > 10), select = c(6, 13))
+smoothScatter(rwy_36r_upper10)
+title("rwy_36r_upper10")
+grid()
+dev.new()
+rwy_01_upper10 <- subset(data_60, ((x01 + y01) > 10), select = c(1, 8))
+smoothScatter(rwy_01_upper10)
+title("rwy_01_upper10")
+grid()
+
 # scatter plot colored by smoothed densities
 dev.new()
 attach(dep_60)
@@ -81,12 +127,6 @@ detach(dep_15)
 detach(arr_15)
 
 # percentage of rwy usage
-dep_60_matrix <- as.matrix(dep_60)
-sum_dep <- rowSums(dep_60_matrix)
-arr_60_matrix <- as.matrix(arr_60)
-sum_arr <- rowSums(arr_60_matrix)
-dep_data_summary <- colSums(dep_60_matrix) / sum(colSums(dep_60_matrix))
-arr_data_summary <- colSums(arr_60_matrix) / sum(colSums(arr_60_matrix))
 dev.new()
 pie(dep_data_summary, radius = 1)
 title("dep rwy usage")
@@ -94,39 +134,25 @@ dev.new()
 pie(arr_data_summary, radius = 1)
 title("arr rwy usage")
 
-# rwy configuration caculation
-sum_per60 <- sum_dep + sum_arr
-data_60 <- cbind(dep_60, sum_dep, arr_60, sum_arr, sum_per60)
-attach(dep_60)
-dep_prop_01 <- x01 / sum_per60
-dep_prop_36l <- x36l / sum_per60
-dep_prop_36r <- x36r / sum_per60
-dep_prop_19 <- x19 / sum_per60
-dep_prop_18r <- x18r / sum_per60
-dep_prop_18l <- x18l / sum_per60
-detach(dep_60)
-attach(arr_60)
-arr_prop_01 <- y01 / sum_per60
-arr_prop_36l <- y36l / sum_per60
-arr_prop_36r <- y36r / sum_per60
-arr_prop_19 <- y19 / sum_per60
-arr_prop_18r <- y18r / sum_per60
-arr_prop_18l <- y18l / sum_per60
-detach(arr_60)
-data_60 <- cbind(data_60, dep_prop_01, dep_prop_36l, dep_prop_36r, dep_prop_19, 
-                 dep_prop_18r, dep_prop_18l)
-data_60 <- cbind(data_60, arr_prop_01, arr_prop_36l, arr_prop_36r, arr_prop_19, 
-                 arr_prop_18r, arr_prop_18l)
-
+#wssplot function
+wssplot <- function(data, nc = 10, seed = 1234){
+  wss <- (nrow(data) - 1) * sum(apply(data, 2, var))
+  for (i in 2:nc){
+    set.seed(seed)
+    wss[i] <- sum(kmeans(data, centers = i)$withiness)
+  }
+  plot(1:nc, wss, type = "b", xlab = "number of clusters",
+       ylab = "within groups sum of squares")
+}
 
 # Kmeans-clusters
-df <- data_60[16:27]
+df <- rwy_36l_upper10
 df <- scale(df[-1])
 wssplot(df)
 library(NbClust)
 set.seed(1234)
 devAskNewPage(ask = TRUE)
-nc <- NbClust(df, min.nc = 2, max.nc = 15, method = "kmeans")
+nc <- NbClust(df, min.nc = 2, max.nc = 10, method = "kmeans")
 table(nc$Best.n[1, ])
 barplot(table(nc$Best.n[1, ]), 
         xlab = "Number of Clusters", ylab = "Number of Criteria",
