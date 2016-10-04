@@ -47,16 +47,33 @@ rwy_36l_upper10 <- subset(data_60, ((x36l + y36l) > 10), select = c(5, 12))
 smoothScatter(rwy_36l_upper10)
 title("rwy_36l_upper10")
 grid()
+
+
 dev.new()
 rwy_36r_upper10 <- subset(data_60, ((x36r + y36r) > 10), select = c(6, 13))
 smoothScatter(rwy_36r_upper10)
 title("rwy_36r_upper10")
 grid()
+
+
 dev.new()
 rwy_01_upper10 <- subset(data_60, ((x01 + y01) > 10), select = c(1, 8))
 smoothScatter(rwy_01_upper10)
 title("rwy_01_upper10")
 grid()
+a1 <- 5
+a2 <- 22
+b1 <- 17.25
+b2 <- 13
+c1 <- 6.4
+c2 <- 27.4
+d1 <- 18.75
+d2 <- 18.8
+lines(c(a1, b1), c(a2, b2), "l")
+lines(c(a1, c1), c(a2, c2), "l")
+lines(c(b1, d1), c(b2, d2), "l")
+lines(c(c1, d1), c(c2, d2), "l")
+
 rwy_36l_cluster <- subset(data_60, ((x01 - 13) ^ 2 + (y01 - 13) ^ 2) <= 9,
                           select = c(1,8))
 
