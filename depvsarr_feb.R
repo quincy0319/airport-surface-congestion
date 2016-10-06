@@ -7,14 +7,48 @@ rwy_36l_upper10 <- subset(data_60, ((x36l + y36l) > 10), select = c(5, 12))
 smoothScatter(rwy_36l_upper10)
 title("rwy_36l_upper10")
 grid()
+a1 <- 4
+a2 <- 18
+b1 <- 15
+b2 <- 11
+c1 <- 6.3
+c2 <- 27.4
+d1 <- 17.3
+d2 <- 20.4
+lines(c(a1, b1), c(a2, b2), "l", lwd = 2)
+lines(c(a1, c1), c(a2, c2), "l", lwd = 2)
+lines(c(b1, d1), c(b2, d2), "l", lwd = 2)
+lines(c(c1, d1), c(c2, d2), "l", lwd = 2)
 
+rwy_36l_main <- subset(data_60, (y01 >= 226 / 11 - (7 * x01) / 11)
+                         & (y01 <= 691 / 22 -(7 * x01) / 11
+                         & (y01 <= (94 * x01) / 23 + 38/23)
+                         & (y01 >= (94 * x01) / 23 - 1157/23)),
+                         select = c(5, 12))
 
 dev.new()
 rwy_36r_upper10 <- subset(data_60, ((x36r + y36r) > 10), select = c(6, 13))
 smoothScatter(rwy_36r_upper10)
 title("rwy_36r_upper10")
 grid()
+a1 <- 28
+a2 <- 0
+b1 <- 37
+b2 <- 0
+c1 <- 11
+c2 <- 15
+d1 <- 20
+d2 <- 15
+lines(c(a1, b1), c(a2, b2), "l", lwd = 2)
+lines(c(a1, c1), c(a2, c2), "l", lwd = 2)
+lines(c(b1, d1), c(b2, d2), "l", lwd = 2)
+lines(c(c1, d1), c(c2, d2), "l", lwd = 2)
 
+rwy_36r_main <- subset(data_60, (y01 >= 0)
+                         & (y01 <= 555 / 17 -(15 * x01) / 17)
+                         & (y01 <= 15)
+                         & (y01 >= 420 / 17 - (15 * x) / 17),
+                         select = c(6, 13))
 
 dev.new()
 rwy_01_upper10 <- subset(data_60, ((x01 + y01) > 10), select = c(1, 8))
@@ -23,22 +57,22 @@ title("rwy_01_upper10")
 grid()
 a1 <- 5
 a2 <- 22
-b1 <- 17.25
+b1 <- 17
 b2 <- 13
-c1 <- 6.4
-c2 <- 27.4
-d1 <- 18.75
-d2 <- 18.8
+c1 <- 7
+c2 <- 27.6
+d1 <- 19
+d2 <- 18.6
 lines(c(a1, b1), c(a2, b2), "l")
 lines(c(a1, c1), c(a2, c2), "l")
 lines(c(b1, d1), c(b2, d2), "l")
 lines(c(c1, d1), c(c2, d2), "l")
 
-rwy_36l_cluster <- subset(data_60, (y01 >= 103 / 4 - (3 * x01) / 4)
+rwy_01_main <- subset(data_60, (y01 >= 103 / 4 - (3 * x01) / 4)
                           & (y01 <= 657 / 20 -(3 * x01) / 4
                           & (y01 <= (14 * x01) / 5 + 8)
                           & (y01 >= (14 * x01) / 5 - 173/5)),
-                          select = c(1,8))
+                          select = c(1, 8))
 
 
 # scatter plot colored by smoothed densities
