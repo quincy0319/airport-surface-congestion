@@ -2,6 +2,7 @@
 source("data_source.R")
 
 # smooth scatter pic per 60 minutes
+# rwy 36l
 dev.new()
 rwy_36l_upper10 <- subset(data_60, ((x36l + y36l) > 10), select = c(5, 12))
 smoothScatter(rwy_36l_upper10)
@@ -19,13 +20,14 @@ lines(c(a1, b1), c(a2, b2), "l", lwd = 2)
 lines(c(a1, c1), c(a2, c2), "l", lwd = 2)
 lines(c(b1, d1), c(b2, d2), "l", lwd = 2)
 lines(c(c1, d1), c(c2, d2), "l", lwd = 2)
-
-rwy_36l_main <- subset(data_60, (y01 >= 226 / 11 - (7 * x01) / 11)
-                         & (y01 <= 691 / 22 -(7 * x01) / 11
-                         & (y01 <= (94 * x01) / 23 + 38/23)
-                         & (y01 >= (94 * x01) / 23 - 1157/23)),
+# rwy 36l main configuration
+rwy_36l_main <- subset(data_60, (y36l >= 226 / 11 - (7 * x36l) / 11)
+                         & (y36l <= 691 / 22 -(7 * x36l) / 11
+                         & (y36l <= (94 * x36l) / 23 + 38/23)
+                         & (y36l >= (94 * x36l) / 23 - 1157/23)),
                          select = c(5, 12))
 
+# rwy 36r
 dev.new()
 rwy_36r_upper10 <- subset(data_60, ((x36r + y36r) > 10), select = c(6, 13))
 smoothScatter(rwy_36r_upper10)
@@ -43,13 +45,15 @@ lines(c(a1, b1), c(a2, b2), "l", lwd = 2)
 lines(c(a1, c1), c(a2, c2), "l", lwd = 2)
 lines(c(b1, d1), c(b2, d2), "l", lwd = 2)
 lines(c(c1, d1), c(c2, d2), "l", lwd = 2)
-
-rwy_36r_main <- subset(data_60, (y01 >= 0)
-                         & (y01 <= 555 / 17 -(15 * x01) / 17)
-                         & (y01 <= 15)
-                         & (y01 >= 420 / 17 - (15 * x) / 17),
+# rwy 36r main configuration
+rwy_36r_main <- subset(data_60, (y36r >= 0)
+                         & (y36r <= 555 / 17 -(15 * x36r) / 17)
+                         & (y36r <= 15)
+                         & (y36r >= 420 / 17 - (15 * x36r) / 17),
                          select = c(6, 13))
 
+
+# rwy 01
 dev.new()
 rwy_01_upper10 <- subset(data_60, ((x01 + y01) > 10), select = c(1, 8))
 smoothScatter(rwy_01_upper10)
@@ -63,17 +67,21 @@ c1 <- 7
 c2 <- 27.6
 d1 <- 19
 d2 <- 18.6
-lines(c(a1, b1), c(a2, b2), "l")
-lines(c(a1, c1), c(a2, c2), "l")
-lines(c(b1, d1), c(b2, d2), "l")
-lines(c(c1, d1), c(c2, d2), "l")
-
+lines(c(a1, b1), c(a2, b2), "l", lwd = 2)
+lines(c(a1, c1), c(a2, c2), "l", lwd = 2)
+lines(c(b1, d1), c(b2, d2), "l", lwd = 2)
+lines(c(c1, d1), c(c2, d2), "l", lwd = 2)
+# rwy 01 main configuration
 rwy_01_main <- subset(data_60, (y01 >= 103 / 4 - (3 * x01) / 4)
                           & (y01 <= 657 / 20 -(3 * x01) / 4
                           & (y01 <= (14 * x01) / 5 + 8)
                           & (y01 >= (14 * x01) / 5 - 173/5)),
                           select = c(1, 8))
 
+# summary
+summary(rwy_36l_main)
+summary(rwy_36r_main)
+summary(rwy_01_main)
 
 # scatter plot colored by smoothed densities
 dev.new()
