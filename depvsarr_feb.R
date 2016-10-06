@@ -34,7 +34,10 @@ lines(c(a1, c1), c(a2, c2), "l")
 lines(c(b1, d1), c(b2, d2), "l")
 lines(c(c1, d1), c(c2, d2), "l")
 
-rwy_36l_cluster <- subset(data_60, ((x01 - 13) ^ 2 + (y01 - 13) ^ 2) <= 9,
+rwy_36l_cluster <- subset(data_60, (y01 >= 103 / 4 - (3 * x01) / 4)
+                          & (y01 <= 657 / 20 -(3 * x01) / 4
+                          & (y01 <= (14 * x01) / 5 + 8)
+                          & (y01 >= (14 * x01) / 5 - 173/5)),
                           select = c(1,8))
 
 
