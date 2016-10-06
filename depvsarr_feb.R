@@ -78,10 +78,13 @@ rwy_01_main <- subset(data_60, (y01 >= 103 / 4 - (3 * x01) / 4)
                           & (y01 >= (14 * x01) / 5 - 173/5)),
                           select = c(1, 8))
 
-# summary
-summary(rwy_36l_main)
-summary(rwy_36r_main)
-summary(rwy_01_main)
+# main configuration summary
+prob_36l_main <- nrow(rwy_36l_main) / nrow(rwy_36l_upper10)
+prob_36r_main <- nrow(rwy_36r_main) / nrow(rwy_36r_upper10)
+prob_01_main <- nrow(rwy_01_main) / nrow(rwy_01_upper10)
+prob_36l_main
+prob_36r_main
+prob_01_main
 
 # scatter plot colored by smoothed densities
 dev.new()
