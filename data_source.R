@@ -1,4 +1,6 @@
 # data source 
+dep_origin <- read.csv("dep_average_taxi.csv")
+arr_origin <- read.csv("arr_average_taxi.csv")
 
 # put data into dataframe
 dep_60 <- read.csv("dep_feb_per60.csv", header = F)

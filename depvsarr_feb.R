@@ -22,10 +22,10 @@ lines(c(b1, d1), c(b2, d2), "l", lwd = 2)
 lines(c(c1, d1), c(c2, d2), "l", lwd = 2)
 # rwy 36l main configuration
 rwy_36l_main <- subset(data_60, (y36l >= 226 / 11 - (7 * x36l) / 11)
-                         & (y36l <= 691 / 22 -(7 * x36l) / 11
-                         & (y36l <= (94 * x36l) / 23 + 38/23)
-                         & (y36l >= (94 * x36l) / 23 - 1157/23)),
-                         select = c(5, 12))
+                & (y36l <= 691 / 22 -(7 * x36l) / 11
+                & (y36l <= (94 * x36l) / 23 + 38/23)
+                & (y36l >= (94 * x36l) / 23 - 1157/23)),
+                select = c(5, 12))
 
 # rwy 36r
 dev.new()
@@ -47,11 +47,15 @@ lines(c(b1, d1), c(b2, d2), "l", lwd = 2)
 lines(c(c1, d1), c(c2, d2), "l", lwd = 2)
 # rwy 36r main configuration
 rwy_36r_main <- subset(data_60, (y36r >= 0)
-                         & (y36r <= 555 / 17 -(15 * x36r) / 17)
-                         & (y36r <= 15)
-                         & (y36r >= 420 / 17 - (15 * x36r) / 17),
-                         select = c(6, 13))
-
+                & (y36r <= 555 / 17 -(15 * x36r) / 17)
+                & (y36r <= 15)
+                & (y36r >= 420 / 17 - (15 * x36r) / 17),
+                select = c(6, 13))
+# mark in origin data
+rwy_36r_main <- subset(data_60, (y36r >= 0)
+                & (y36r <= 555 / 17 -(15 * x36r) / 17)
+                & (y36r <= 15)
+                & (y36r >= 420 / 17 - (15 * x36r) / 17))
 
 # rwy 01
 dev.new()
@@ -73,10 +77,10 @@ lines(c(b1, d1), c(b2, d2), "l", lwd = 2)
 lines(c(c1, d1), c(c2, d2), "l", lwd = 2)
 # rwy 01 main configuration
 rwy_01_main <- subset(data_60, (y01 >= 103 / 4 - (3 * x01) / 4)
-                          & (y01 <= 657 / 20 -(3 * x01) / 4
-                          & (y01 <= (14 * x01) / 5 + 8)
-                          & (y01 >= (14 * x01) / 5 - 173/5)),
-                          select = c(1, 8))
+                & (y01 <= 657 / 20 -(3 * x01) / 4
+                & (y01 <= (14 * x01) / 5 + 8)
+                & (y01 >= (14 * x01) / 5 - 173/5)),
+                select = c(1, 8))
 
 # main configuration summary
 prob_36l_main <- nrow(rwy_36l_main) / nrow(rwy_36l_upper10)
@@ -85,6 +89,33 @@ prob_01_main <- nrow(rwy_01_main) / nrow(rwy_01_upper10)
 prob_36l_main
 prob_36r_main
 prob_01_main
+
+################################################################################
+
+# put data back into origin data
+attach(data_60)
+for (i in 1:672){ 
+        rwy_36l_chosen_hour <- ifelse((y36l >= 226 / 11 - (7 * x36l) / 11)
+                        & (y36l <= 691 / 22 -(7 * x36l) / 11
+                        & (y36l <= (94 * x36l) / 23 + 38/23)
+                        & (y36l >= (94 * x36l) / 23 - 1157/23)), 1, 0)
+}
+for (i in 1:672){ 
+        rwy_36r_chosen_hour <- ifelse((y36r >= 0)
+                        & (y36r <= 555 / 17 -(15 * x36r) / 17)
+                        & (y36r <= 15)
+                        & (y36r >= 420 / 17 - (15 * x36r) / 17), 1, 0)
+}
+for (i in 1:672){ 
+        rwy_01_chosen_hour <- ifelse((y01 >= 103 / 4 - (3 * x01) / 4)
+                        & (y01 <= 657 / 20 -(3 * x01) / 4
+                        & (y01 <= (14 * x01) / 5 + 8)
+                        & (y01 >= (14 * x01) / 5 - 173/5)), 1, 0)
+}
+detach(data_60)
+data_60 <- cbind(data_60, rwy_36l_chosen_hour, rwy_36r_chosen_hour, rwy_01_chosen_hour)
+
+################################################################################
 
 # scatter plot colored by smoothed densities
 dev.new()
