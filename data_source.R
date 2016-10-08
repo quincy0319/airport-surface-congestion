@@ -1,6 +1,24 @@
 # data source 
-dep_origin <- read.csv("dep_average_taxi.csv")
-arr_origin <- read.csv("arr_average_taxi.csv")
+dep_origin <- na.omit(read.csv("dep_average_taxi.csv"))
+arr_origin <- na.omit(read.csv("arr_average_taxi.csv"))
+
+################################################################################
+
+# single rwy data
+dep_36l_origin <- subset(dep_origin, rwy == "36L")
+dep_36l_origin_feb <- subset(dep_36l_origin, as.numeric(mission_date) <= 20140230)
+dep_36r_origin <- subset(dep_origin, rwy == "36R")
+dep_36r_origin_feb <- subset(dep_36r_origin, as.numeric(mission_date) <= 20140230)
+dep_01_origin <- subset(dep_origin, rwy == "1")
+dep_01_origin_feb <- subset(dep_01_origin, as.numeric(mission_date) <= 20140230)
+
+
+arr_36l_origin <- subset(arr_origin, rwy == "36L")
+arr_36l_origin_feb <- subset(arr_36l_origin, as.numeric(mission_date) <= 20140230)
+arr_36r_originb <- subset(arr_origin, rwy == "36R")
+arr_36r_origin_feb <- subset(arr_36r_origin, as.numeric(mission_date) <= 20140230)
+arr_01_origin <- subset(arr_origin, rwy == "1")
+arr_01_origin_feb <- subset(arr_01_origin, as.numeric(mission_date) <= 20140230)
 
 # put data into dataframe
 dep_60 <- read.csv("dep_feb_per60.csv", header = F)
