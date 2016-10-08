@@ -1,6 +1,11 @@
-# data source 
+# data source 60min
 dep_origin <- na.omit(read.csv("dep_average_taxi.csv"))
 arr_origin <- na.omit(read.csv("arr_average_taxi.csv"))
+dep_window <- read.csv("dep_window.csv")
+arr_window <- read.csv("arr_window.csv")
+
+dep_origin <- cbind(dep_origin, dep_window)
+arr_origin <- cbind(arr_origin, arr_window)
 
 ################################################################################
 
@@ -15,7 +20,7 @@ dep_01_origin_feb <- subset(dep_01_origin, as.numeric(mission_date) <= 20140230)
 
 arr_36l_origin <- subset(arr_origin, rwy == "36L")
 arr_36l_origin_feb <- subset(arr_36l_origin, as.numeric(mission_date) <= 20140230)
-arr_36r_originb <- subset(arr_origin, rwy == "36R")
+arr_36r_origin <- subset(arr_origin, rwy == "36R")
 arr_36r_origin_feb <- subset(arr_36r_origin, as.numeric(mission_date) <= 20140230)
 arr_01_origin <- subset(arr_origin, rwy == "1")
 arr_01_origin_feb <- subset(arr_01_origin, as.numeric(mission_date) <= 20140230)
@@ -63,3 +68,91 @@ data_60 <- cbind(data_60, dep_prop_01, dep_prop_36l, dep_prop_36r, dep_prop_19,
                  dep_prop_18r, dep_prop_18l)
 data_60 <- cbind(data_60, arr_prop_01, arr_prop_36l, arr_prop_36r, arr_prop_19, 
                  arr_prop_18r, arr_prop_18l)
+
+
+################################################################################
+
+# put data back into origin data
+attach(data_60)
+for (i in 1:672){ 
+        rwy_36l_chosen_hour <- ifelse((y36l >= 226 / 11 - (7 * x36l) / 11)
+                                & (y36l <= 691 / 22 -(7 * x36l) / 11
+                                & (y36l <= (94 * x36l) / 23 + 38/23)
+                                & (y36l >= (94 * x36l) / 23 - 1157/23)), 1, 0)
+}
+for (i in 1:672){ 
+        rwy_36r_chosen_hour <- ifelse((y36r >= 0)
+                                & (y36r <= 555 / 17 -(15 * x36r) / 17)
+                                & (y36r <= 15)
+                                & (y36r >= 420 / 17 - (15 * x36r) / 17), 1, 0)
+}
+for (i in 1:672){ 
+        rwy_01_chosen_hour <- ifelse((y01 >= 103 / 4 - (3 * x01) / 4)
+                                & (y01 <= 657 / 20 -(3 * x01) / 4
+                                & (y01 <= (14 * x01) / 5 + 8)
+                                & (y01 >= (14 * x01) / 5 - 173/5)), 1, 0)
+}
+detach(data_60)
+data_main_configuration <- cbind(rwy_36l_chosen_hour, rwy_36r_chosen_hour, rwy_01_chosen_hour)
+
+################################################################################
+
+# dep 36l
+dep_36l_in_cluster <- vector(mode = "numeric", length = 0)
+for (i in 1:nrow(dep_36l_origin_feb)){
+        a <- dep_window[i, 2]
+        dep_36l_in_cluster[i] <- rwy_36l_chosen_hour[a]
+}
+dep_36l_feb_finished <- cbind(dep_36l_origin_feb, dep_36l_in_cluster)
+
+# dep 36r
+dep_36r_in_cluster <- vector(mode = "numeric", length = 0)
+for (i in 1:nrow(dep_36r_origin_feb)){
+        a <- dep_window[i, 2]
+        dep_36r_in_cluster[i] <- rwy_36r_chosen_hour[a]
+}
+dep_36r_feb_finished <- cbind(dep_36r_origin_feb, dep_36r_in_cluster)
+
+# dep 01
+dep_01_in_cluster <- vector(mode = "numeric", length = 0)
+for (i in 1:nrow(dep_01_origin_feb)){
+        a <- dep_window[i, 2]
+        dep_01_in_cluster[i] <- rwy_01_chosen_hour[a]
+}
+dep_01_feb_finished <- cbind(dep_01_origin_feb, dep_01_in_cluster)
+
+################################################################################
+
+# arr 36l
+arr_36l_in_cluster <- vector(mode = "numeric", length = 0)
+for (i in 1:nrow(arr_36l_origin_feb)){
+        a <- arr_window[i, 2]
+        arr_36l_in_cluster[i] <- rwy_36l_chosen_hour[a]
+}
+arr_36l_feb_finished <- cbind(arr_36l_origin_feb, arr_36l_in_cluster)
+
+# arr 36r
+arr_36r_in_cluster <- vector(mode = "numeric", length = 0)
+for (i in 1:nrow(arr_36r_origin_feb)){
+        a <- arr_window[i, 2]
+        arr_36r_in_cluster[i] <- rwy_36r_chosen_hour[a]
+}
+arr_36r_feb_finished <- cbind(arr_36r_origin_feb, arr_36r_in_cluster)
+
+# arr 01
+arr_01_in_cluster <- vector(mode = "numeric", length = 0)
+for (i in 1:nrow(arr_01_origin_feb)){
+        a <- arr_window[i, 2]
+        arr_01_in_cluster[i] <- rwy_01_chosen_hour[a]
+}
+arr_01_feb_finished <- cbind(arr_01_origin_feb, arr_01_in_cluster)
+
+################################################################################
+# output
+write.csv(dep_36l_feb_finished, "dep_36l_feb_finished.csv")
+write.csv(dep_36r_feb_finished, "dep_36r_feb_finished.csv")
+write.csv(dep_01_feb_finished, "dep_01_feb_finished.csv")
+
+write.csv(arr_36l_feb_finished, "arr_36l_feb_finished.csv")
+write.csv(arr_36r_feb_finished, "arr_36r_feb_finished.csv")
+write.csv(arr_01_feb_finished, "arr_01_feb_finished.csv")

@@ -113,10 +113,20 @@ for (i in 1:672){
                         & (y01 >= (14 * x01) / 5 - 173/5)), 1, 0)
 }
 detach(data_60)
-data_60 <- cbind(data_60, rwy_36l_chosen_hour, rwy_36r_chosen_hour, rwy_01_chosen_hour)
+data_main_configuration <- cbind(rwy_36l_chosen_hour, rwy_36r_chosen_hour, rwy_01_chosen_hour)
 
 ################################################################################
 
+
+
+
+
+
+
+
+
+
+################################################################################
 # scatter plot colored by smoothed densities
 dev.new()
 attach(dep_60)
