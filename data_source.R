@@ -7,6 +7,8 @@ arr_window <- read.csv("arr_window.csv")
 dep_origin <- cbind(dep_origin, dep_window)
 arr_origin <- cbind(arr_origin, arr_window)
 
+dep_count_per15 <- read.csv("dep_count_per15.csv", header = F)
+arr_count_per15 <- read.csv("arr_count_per15.csv", header = F)
 ################################################################################
 
 # single rwy data
@@ -26,6 +28,7 @@ arr_01_origin <- subset(arr_origin, rwy == "1")
 arr_01_origin_feb <- subset(arr_01_origin, as.numeric(mission_date) <= 20140230)
 
 # put data into dataframe
+# each rwy usage data
 dep_60 <- read.csv("dep_feb_per60.csv", header = F)
 arr_60 <- read.csv("arr_feb_per60.csv", header = F)
 dep_30 <- read.csv("dep_feb_per30.csv", header = F)
@@ -93,10 +96,11 @@ for (i in 1:672){
                                 & (y01 >= (14 * x01) / 5 - 173/5)), 1, 0)
 }
 detach(data_60)
-data_main_configuration <- cbind(rwy_36l_chosen_hour, rwy_36r_chosen_hour, rwy_01_chosen_hour)
+data_main_configuration <- cbind(rwy_36l_chosen_hour, rwy_36r_chosen_hour,
+                                 rwy_01_chosen_hour)
 
 ################################################################################
-
+# 60 minutes interval
 # dep 36l
 attach(data_60)
 dep_count_36l <- x36l
@@ -150,7 +154,7 @@ dep_01_feb_finished <- cbind(dep_01_origin_feb, dep_01_in_cluster,
                              dep_01_per_dep, arr_01_per_dep)
 
 ################################################################################
-
+# 60 minutes interval
 # arr 36l
 attach(data_60)
 dep_count_36l <- x36l
@@ -203,11 +207,137 @@ arr_01_feb_finished <- cbind(arr_01_origin_feb, arr_01_in_cluster,
                              dep_01_per_arr, arr_01_per_arr)
 
 ################################################################################
-# output
-write.csv(dep_36l_feb_finished, "dep_36l_feb_finished.csv")
-write.csv(dep_36r_feb_finished, "dep_36r_feb_finished.csv")
-write.csv(dep_01_feb_finished, "dep_01_feb_finished.csv")
 
-write.csv(arr_36l_feb_finished, "arr_36l_feb_finished.csv")
-write.csv(arr_36r_feb_finished, "arr_36r_feb_finished.csv")
-write.csv(arr_01_feb_finished, "arr_01_feb_finished.csv")
+# output
+write.csv(dep_36l_feb_finished, "dep_36l_feb_finished_per60.csv")
+write.csv(dep_36r_feb_finished, "dep_36r_feb_finished_per60.csv")
+write.csv(dep_01_feb_finished, "dep_01_feb_finished_per60.csv")
+
+write.csv(arr_36l_feb_finished, "arr_36l_feb_finished_per60.csv")
+write.csv(arr_36r_feb_finished, "arr_36r_feb_finished_per60.csv")
+write.csv(arr_01_feb_finished, "arr_01_feb_finished_per60.csv")
+
+################################################################################
+################################################################################
+
+# 15 minutes interval
+dep_window_per15 <- read.csv("dep_window_per15.csv")
+arr_window_per15 <- read.csv("arr_window_per15.csv")
+
+# dep 36l
+attach(data_60)
+dep_count_36l <- x36l
+arr_count_36l <- y36l
+detach(data_60)
+dep_36l_in_cluster <- vector(mode = "numeric", length = 0)
+dep_36l_per_dep <- vector(mode = "numeric", length = 0)
+arr_36l_per_dep <- vector(mode = "numeric", length = 0)
+for (i in 1:nrow(dep_36l_origin_feb)){
+  a <- dep_window_per15[i, 2]
+  dep_36l_in_cluster[i] <- rwy_36l_chosen_hour[a]
+  dep_36l_per_dep[i] <- dep_count_36l[a]
+  arr_36l_per_dep[i] <- arr_count_36l[a]
+}
+dep_36l_feb_per15_finished <- cbind(dep_36l_origin_feb, dep_36l_in_cluster,
+                              dep_36l_per_dep, arr_36l_per_dep)
+
+
+# dep 36r
+attach(data_60)
+dep_count_36r <- x36r
+arr_count_36r <- y36r
+detach(data_60)
+dep_36r_in_cluster <- vector(mode = "numeric", length = 0)
+dep_36r_per_dep <- vector(mode = "numeric", length = 0)
+arr_36r_per_dep <- vector(mode = "numeric", length = 0)
+for (i in 1:nrow(dep_36r_origin_feb)){
+  a <- dep_window_per15[i, 2]
+  dep_36r_in_cluster[i] <- rwy_36r_chosen_hour[a]
+  dep_36r_per_dep[i] <- dep_count_36r[a]
+  arr_36r_per_dep[i] <- arr_count_36r[a]
+}
+dep_36r_feb_per15_finished <- cbind(dep_36r_origin_feb, dep_36r_in_cluster,
+                              dep_36r_per_dep, arr_36r_per_dep)
+
+# dep 01
+attach(data_60)
+dep_count_01 <- x01
+arr_count_01 <- y01
+detach(data_60)
+dep_01_in_cluster <- vector(mode = "numeric", length = 0)
+dep_01_per_dep <- vector(mode = "numeric", length = 0)
+arr_01_per_dep <- vector(mode = "numeric", length = 0)
+for (i in 1:nrow(dep_01_origin_feb)){
+  a <- dep_window_per15[i, 2]
+  dep_01_in_cluster[i] <- rwy_01_chosen_hour[a]
+  dep_01_per_dep[i] <- dep_count_01[a]
+  arr_01_per_dep[i] <- arr_count_01[a]
+}
+dep_01_feb_per15_finished <- cbind(dep_01_origin_feb, dep_01_in_cluster,
+                             dep_01_per_dep, arr_01_per_dep)
+
+################################################################################
+# 15 minutes interval
+# arr 36l
+attach(data_60)
+dep_count_36l <- x36l
+arr_count_36l <- y36l
+detach(data_60)
+arr_36l_in_cluster <- vector(mode = "numeric", length = 0)
+dep_36l_per_arr <- vector(mode = "numeric", length = 0)
+arr_36l_per_arr <- vector(mode = "numeric", length = 0)
+for (i in 1:nrow(arr_36l_origin_feb)){
+  a <- arr_window_per15[i, 2]
+  arr_36l_in_cluster[i] <- rwy_36l_chosen_hour[a]
+  arr_36l_per_arr[i] <- arr_count_36l[a]
+  dep_36l_per_arr[i] <- dep_count_36l[a]
+}
+arr_36l_feb_per15_finished <- cbind(arr_36l_origin_feb, arr_36l_in_cluster,
+                              dep_36l_per_arr, arr_36l_per_arr)
+
+# arr 36r
+attach(data_60)
+dep_count_36l <- x36l
+arr_count_36r <- y36r
+detach(data_60)
+arr_36r_in_cluster <- vector(mode = "numeric", length = 0)
+dep_36r_per_arr <- vector(mode = "numeric", length = 0)
+arr_36r_per_arr <- vector(mode = "numeric", length = 0)
+for (i in 1:nrow(arr_36r_origin_feb)){
+  a <- arr_window_per15[i, 2]
+  arr_36r_in_cluster[i] <- rwy_36r_chosen_hour[a]
+  arr_36r_per_arr[i] <- arr_count_36r[a]
+  dep_36r_per_arr[i] <- dep_count_36r[a]
+}
+arr_36r_feb_per15_finished <- cbind(arr_36r_origin_feb, arr_36r_in_cluster,
+                              dep_36r_per_arr, arr_36r_per_arr)
+
+# arr 01
+attach(data_60)
+dep_count_01 <- x01
+arr_count_01 <- y01
+detach(data_60)
+arr_01_in_cluster <- vector(mode = "numeric", length = 0)
+dep_01_per_arr <- vector(mode = "numeric", length = 0)
+arr_01_per_arr <- vector(mode = "numeric", length = 0)
+for (i in 1:nrow(arr_01_origin_feb)){
+  a <- arr_window_per15[i, 2]
+  arr_01_in_cluster[i] <- rwy_01_chosen_hour[a]
+  arr_01_per_arr[i] <- arr_count_01[a]
+  dep_01_per_arr[i] <- dep_count_01[a]
+}
+arr_01_feb_per15_finished <- cbind(arr_01_origin_feb, arr_01_in_cluster,
+                             dep_01_per_arr, arr_01_per_arr)
+
+################################################################################
+
+# output
+write.csv(dep_36l_feb_per15_finished, "dep_36l_feb_finished_per15.csv")
+write.csv(dep_36r_feb_per15_finished, "dep_36r_feb_finished_per15.csv")
+write.csv(dep_01_feb_per15_finished, "dep_01_feb_finished_per15.csv")
+
+write.csv(arr_36l_feb_per15_finished, "arr_36l_feb_finished_per15.csv")
+write.csv(arr_36r_feb_per15_finished, "arr_36r_feb_finished_per15.csv")
+write.csv(arr_01_feb_per15_finished, "arr_01_feb_finished_per15.csv")
+
+
