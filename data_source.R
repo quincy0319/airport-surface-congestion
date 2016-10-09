@@ -98,54 +98,109 @@ data_main_configuration <- cbind(rwy_36l_chosen_hour, rwy_36r_chosen_hour, rwy_0
 ################################################################################
 
 # dep 36l
+attach(data_60)
+dep_count_36l <- x36l
+arr_count_36l <- y36l
+detach(data_60)
 dep_36l_in_cluster <- vector(mode = "numeric", length = 0)
+dep_36l_per_dep <- vector(mode = "numeric", length = 0)
+arr_36l_per_dep <- vector(mode = "numeric", length = 0)
 for (i in 1:nrow(dep_36l_origin_feb)){
         a <- dep_window[i, 2]
         dep_36l_in_cluster[i] <- rwy_36l_chosen_hour[a]
+        dep_36l_per_dep[i] <- dep_count_36l[a]
+        arr_36l_per_dep[i] <- arr_count_36l[a]
 }
-dep_36l_feb_finished <- cbind(dep_36l_origin_feb, dep_36l_in_cluster)
+dep_36l_feb_finished <- cbind(dep_36l_origin_feb, dep_36l_in_cluster,
+                              dep_36l_per_dep, arr_36l_per_dep)
+
 
 # dep 36r
+attach(data_60)
+dep_count_36r <- x36r
+arr_count_36r <- y36r
+detach(data_60)
 dep_36r_in_cluster <- vector(mode = "numeric", length = 0)
+dep_36r_per_dep <- vector(mode = "numeric", length = 0)
+arr_36r_per_dep <- vector(mode = "numeric", length = 0)
 for (i in 1:nrow(dep_36r_origin_feb)){
         a <- dep_window[i, 2]
         dep_36r_in_cluster[i] <- rwy_36r_chosen_hour[a]
+        dep_36r_per_dep[i] <- dep_count_36r[a]
+        arr_36r_per_dep[i] <- arr_count_36r[a]
 }
-dep_36r_feb_finished <- cbind(dep_36r_origin_feb, dep_36r_in_cluster)
+dep_36r_feb_finished <- cbind(dep_36r_origin_feb, dep_36r_in_cluster,
+                              dep_36r_per_dep, arr_36r_per_dep)
 
 # dep 01
+attach(data_60)
+dep_count_01 <- x01
+arr_count_01 <- y01
+detach(data_60)
 dep_01_in_cluster <- vector(mode = "numeric", length = 0)
+dep_01_per_dep <- vector(mode = "numeric", length = 0)
+arr_01_per_dep <- vector(mode = "numeric", length = 0)
 for (i in 1:nrow(dep_01_origin_feb)){
         a <- dep_window[i, 2]
         dep_01_in_cluster[i] <- rwy_01_chosen_hour[a]
+        dep_01_per_dep[i] <- dep_count_01[a]
+        arr_01_per_dep[i] <- arr_count_01[a]
 }
-dep_01_feb_finished <- cbind(dep_01_origin_feb, dep_01_in_cluster)
+dep_01_feb_finished <- cbind(dep_01_origin_feb, dep_01_in_cluster,
+                             dep_01_per_dep, arr_01_per_dep)
 
 ################################################################################
 
 # arr 36l
+attach(data_60)
+dep_count_36l <- x36l
+arr_count_36l <- y36l
+detach(data_60)
 arr_36l_in_cluster <- vector(mode = "numeric", length = 0)
+dep_36l_per_arr <- vector(mode = "numeric", length = 0)
+arr_36l_per_arr <- vector(mode = "numeric", length = 0)
 for (i in 1:nrow(arr_36l_origin_feb)){
         a <- arr_window[i, 2]
         arr_36l_in_cluster[i] <- rwy_36l_chosen_hour[a]
+        arr_36l_per_arr[i] <- arr_count_36l[a]
+        dep_36l_per_arr[i] <- dep_count_36l[a]
 }
-arr_36l_feb_finished <- cbind(arr_36l_origin_feb, arr_36l_in_cluster)
+arr_36l_feb_finished <- cbind(arr_36l_origin_feb, arr_36l_in_cluster,
+                              dep_36l_per_arr, arr_36l_per_arr)
 
 # arr 36r
+attach(data_60)
+dep_count_36l <- x36l
+arr_count_36r <- y36r
+detach(data_60)
 arr_36r_in_cluster <- vector(mode = "numeric", length = 0)
+dep_36r_per_arr <- vector(mode = "numeric", length = 0)
+arr_36r_per_arr <- vector(mode = "numeric", length = 0)
 for (i in 1:nrow(arr_36r_origin_feb)){
         a <- arr_window[i, 2]
         arr_36r_in_cluster[i] <- rwy_36r_chosen_hour[a]
+        arr_36r_per_arr[i] <- arr_count_36r[a]
+        dep_36r_per_arr[i] <- dep_count_36r[a]
 }
-arr_36r_feb_finished <- cbind(arr_36r_origin_feb, arr_36r_in_cluster)
+arr_36r_feb_finished <- cbind(arr_36r_origin_feb, arr_36r_in_cluster,
+                              dep_36r_per_arr, arr_36r_per_arr)
 
 # arr 01
+attach(data_60)
+dep_count_01 <- x01
+arr_count_01 <- y01
+detach(data_60)
 arr_01_in_cluster <- vector(mode = "numeric", length = 0)
+dep_01_per_arr <- vector(mode = "numeric", length = 0)
+arr_01_per_arr <- vector(mode = "numeric", length = 0)
 for (i in 1:nrow(arr_01_origin_feb)){
         a <- arr_window[i, 2]
         arr_01_in_cluster[i] <- rwy_01_chosen_hour[a]
+        arr_01_per_arr[i] <- arr_count_01[a]
+        dep_01_per_arr[i] <- dep_count_01[a]
 }
-arr_01_feb_finished <- cbind(arr_01_origin_feb, arr_01_in_cluster)
+arr_01_feb_finished <- cbind(arr_01_origin_feb, arr_01_in_cluster,
+                             dep_01_per_arr, arr_01_per_arr)
 
 ################################################################################
 # output
