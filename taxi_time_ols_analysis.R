@@ -31,10 +31,9 @@ summary(fit_01_dep)
 
 
 dep_36l_feb_finished <- read.csv("dep_36l_feb_finished_per15.csv")
-dep_36l_ols <- subset(dep_36l_feb_finished, dep_36l_feb_finished$dep_36l_in_cluster == 1,
-                      select = c(15, 21, 22))
-y <- as.numeric(dep_36l_ols$dep_taxi)
-x1 <- dep_36l_ols$dep_36l_per_dep
-x2 <- dep_36l_ols$arr_36l_per_dep
-fit_36l_dep <- lm (y ~ x1 + x2)
+y <- as.numeric(dep_36l_feb_finished$dep_taxi)
+x1 <- as.numeric(dep_36l_feb_finished$dep_36l_per_dep)
+x2 <- as.numeric(dep_36l_feb_finished$arr_36l_per_dep)
+fit_36l_dep <- lm (y ~ x1 )
 summary(fit_36l_dep)
+
