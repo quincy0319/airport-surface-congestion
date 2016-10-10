@@ -30,7 +30,7 @@ summary(fit_01_dep)
 
 
 
-dep_36l_feb_finished <- read.csv("dep_36l_feb_finished_per15.csv")
+dep_36l_feb_finished <- read.csv("dep_36l_feb_finished_per60.csv")
 y <- as.numeric(dep_36l_feb_finished$dep_taxi)
 x1 <- as.numeric(dep_36l_feb_finished$dep_36l_per_dep)
 x2 <- as.numeric(dep_36l_feb_finished$arr_36l_per_dep)
