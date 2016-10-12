@@ -287,4 +287,4 @@ write.csv(arr_36l_feb_per15_finished, "arr_36l_feb_finished_per15.csv")
 write.csv(arr_36r_feb_per15_finished, "arr_36r_feb_finished_per15.csv")
 write.csv(arr_01_feb_per15_finished, "arr_01_feb_finished_per15.csv")
 
-# just for test
+
