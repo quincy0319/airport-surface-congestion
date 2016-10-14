@@ -182,13 +182,13 @@ arr_01_feb_per60_finished <- cbind(arr_01_origin_feb, arr_01_in_cluster,
 ################################################################################
 
 # output
-write.csv(dep_36l_feb_per60_finished, "dep_36l_feb_finished_per60.csv")
-write.csv(dep_36r_feb_per60_finished, "dep_36r_feb_finished_per60.csv")
-write.csv(dep_01_feb_per60_finished, "dep_01_feb_finished_per60.csv")
+write.csv(dep_36l_feb_per60_finished, "dep_36l_feb_finished_per60.csv", row.names = F)
+write.csv(dep_36r_feb_per60_finished, "dep_36r_feb_finished_per60.csv", row.names = F)
+write.csv(dep_01_feb_per60_finished, "dep_01_feb_finished_per60.csv", row.names = F)
 
-write.csv(arr_36l_feb_per60_finished, "arr_36l_feb_finished_per60.csv")
-write.csv(arr_36r_feb_per60_finished, "arr_36r_feb_finished_per60.csv")
-write.csv(arr_01_feb_per60_finished, "arr_01_feb_finished_per60.csv")
+write.csv(arr_36l_feb_per60_finished, "arr_36l_feb_finished_per60.csv", row.names = F)
+write.csv(arr_36r_feb_per60_finished, "arr_36r_feb_finished_per60.csv", row.names = F)
+write.csv(arr_01_feb_per60_finished, "arr_01_feb_finished_per60.csv", row.names = F)
 
 ################################################################################
 ################################################################################
@@ -279,12 +279,12 @@ arr_01_feb_per15_finished <- cbind(arr_01_origin_feb,
 ################################################################################
 
 # output
-write.csv(dep_36l_feb_per15_finished, "dep_36l_feb_finished_per15.csv")
-write.csv(dep_36r_feb_per15_finished, "dep_36r_feb_finished_per15.csv")
-write.csv(dep_01_feb_per15_finished, "dep_01_feb_finished_per15.csv")
+write.csv(dep_36l_feb_per15_finished, "dep_36l_feb_finished_per15.csv", row.names = F)
+write.csv(dep_36r_feb_per15_finished, "dep_36r_feb_finished_per15.csv", row.names = F)
+write.csv(dep_01_feb_per15_finished, "dep_01_feb_finished_per15.csv", row.names = F)
 
-write.csv(arr_36l_feb_per15_finished, "arr_36l_feb_finished_per15.csv")
-write.csv(arr_36r_feb_per15_finished, "arr_36r_feb_finished_per15.csv")
-write.csv(arr_01_feb_per15_finished, "arr_01_feb_finished_per15.csv")
+write.csv(arr_36l_feb_per15_finished, "arr_36l_feb_finished_per15.csv", row.names = F)
+write.csv(arr_36r_feb_per15_finished, "arr_36r_feb_finished_per15.csv", row.names = F)
+write.csv(arr_01_feb_per15_finished, "arr_01_feb_finished_per15.csv", row.names = F)
 
 
