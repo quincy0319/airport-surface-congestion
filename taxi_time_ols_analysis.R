@@ -34,3 +34,6 @@ x2 <- dep_36l_test$arr_36l_per_dep
 fit_36l_dep <- lm (y ~ x1 + x2 )
 summary(fit_36l_dep)
 
+y <- as.numeric(dep_feb$dep_taxi)
+x1 <- as.numeric(dep_feb$dep_15_per_dep)
+x2 <- as.numeric(dep_feb$arr_15_per_dep)
