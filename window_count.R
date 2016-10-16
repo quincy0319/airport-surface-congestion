@@ -5,7 +5,7 @@ arr_origin <- read.csv("arr_origin.csv")
 
 ################################################################################
 
-# 计算每个航班属于哪个window
+# 计算每个航班所属的window
 # 15 minutes
 dep_origin_feb <- subset(dep_origin, mission_month == 2)
 arr_origin_feb <- subset(arr_origin, mission_month == 2)
@@ -26,7 +26,7 @@ attach(arr_origin_feb)
 	arr_window_per60 <- (mission_date - 1) * 24 + floor(time_wheelon_real / 60) + 1
 detach(arr_origin_feb)
 
-# 计算每个window有多少架航班（15分钟）
+# 计算每个window有多少架航班
 # 15 minutes
 dep_count_per15 <- matrix(0, nrow = 28 * 96, ncol = 1)
 for (i in 1:length(dep_window_per15)) {
@@ -55,7 +55,7 @@ for (i in 1:length(arr_window_per60)) {
 
 ################################################################################
 
-# 每架航班所在window的起降数
+# 每架航班所在window的起降数（此处为全部起降航班计算得出的数字）
 # 15 minutes
 # 为起飞航班添加
 dep_15_per_dep <- vector(mode = "numeric", length = 0)
@@ -103,5 +103,11 @@ arr_feb <- cbind(arr_origin_feb,
 		 data.frame(arr_15_per_arr),
 		 data.frame(dep_60_per_arr),
 		 data.frame(arr_60_per_arr))
+
+################################################################################
+# 输出数据
+write.csv(dep_feb, "dep_feb_processed.csv", row.names = F)
+write.csv(arr_feb, "arr_feb_processed.csv", row.names = F)
+
 
 ################################################################################

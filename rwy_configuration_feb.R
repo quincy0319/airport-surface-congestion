@@ -1,10 +1,10 @@
 # open origin data source
-source("data_source.R")
-
+rwy_flow_per15 <- read.csv("rwy_flow_per15.csv")
+rwy_flow_per60 <- read.csv("rwy_flow_per60.csv")
 # smooth scatter pic per 60 minutes
 # rwy 36l
 dev.new()
-rwy_36l_upper10 <- subset(data_60, ((x36l + y36l) > 10), select = c(5, 12))
+rwy_36l_upper10 <- subset(rwy_flow_per60, ((dep36l + arr36l) > 10), select = c(1,4))
 smoothScatter(rwy_36l_upper10)
 title("rwy_36l_upper10")
 grid()
@@ -21,15 +21,15 @@ lines(c(a1, c1), c(a2, c2), "l", lwd = 2)
 lines(c(b1, d1), c(b2, d2), "l", lwd = 2)
 lines(c(c1, d1), c(c2, d2), "l", lwd = 2)
 # rwy 36l main configuration
-rwy_36l_main <- subset(data_60, (y36l >= 226 / 11 - (7 * x36l) / 11)
-                & (y36l <= 691 / 22 -(7 * x36l) / 11
-                & (y36l <= (94 * x36l) / 23 + 38/23)
-                & (y36l >= (94 * x36l) / 23 - 1157/23)),
-                select = c(5, 12))
+rwy_36l_main <- subset(rwy_flow_per60, (arr36l >= 226 / 11 - (7 * dep36l) / 11)
+                & (arr36l <= 691 / 22 -(7 * dep36l) / 11
+                & (arr36l <= (94 * dep36l) / 23 + 38/23)
+                & (arr36l >= (94 * dep36l) / 23 - 1157/23)),
+                select = c(1, 4))
 
 # rwy 36r
 dev.new()
-rwy_36r_upper10 <- subset(data_60, ((x36r + y36r) > 10), select = c(6, 13))
+rwy_36r_upper10 <- subset(rwy_flow_per60, ((dep36r + arr36r) > 10), select = c(2, 5))
 smoothScatter(rwy_36r_upper10)
 title("rwy_36r_upper10")
 grid()
@@ -46,20 +46,15 @@ lines(c(a1, c1), c(a2, c2), "l", lwd = 2)
 lines(c(b1, d1), c(b2, d2), "l", lwd = 2)
 lines(c(c1, d1), c(c2, d2), "l", lwd = 2)
 # rwy 36r main configuration
-rwy_36r_main <- subset(data_60, (y36r >= 0)
-                & (y36r <= 555 / 17 -(15 * x36r) / 17)
-                & (y36r <= 15)
-                & (y36r >= 420 / 17 - (15 * x36r) / 17),
-                select = c(6, 13))
-# mark in origin data
-rwy_36r_main <- subset(data_60, (y36r >= 0)
-                & (y36r <= 555 / 17 -(15 * x36r) / 17)
-                & (y36r <= 15)
-                & (y36r >= 420 / 17 - (15 * x36r) / 17))
+rwy_36r_main <- subset(rwy_flow_per60, (arr36r >= 0)
+                & (arr36r <= 555 / 17 -(15 * dep36r) / 17)
+                & (arr36r <= 15)
+                & (arr36r >= 420 / 17 - (15 * dep36r) / 17),
+                select = c(2, 5))
 
 # rwy 01
 dev.new()
-rwy_01_upper10 <- subset(data_60, ((x01 + y01) > 10), select = c(1, 8))
+rwy_01_upper10 <- subset(rwy_flow_per60, ((dep01 + arr01) > 10), select = c(3, 6))
 smoothScatter(rwy_01_upper10)
 title("rwy_01_upper10")
 grid()
@@ -76,10 +71,10 @@ lines(c(a1, c1), c(a2, c2), "l", lwd = 2)
 lines(c(b1, d1), c(b2, d2), "l", lwd = 2)
 lines(c(c1, d1), c(c2, d2), "l", lwd = 2)
 # rwy 01 main configuration
-rwy_01_main <- subset(data_60, (y01 >= 103 / 4 - (3 * x01) / 4)
-                & (y01 <= 657 / 20 -(3 * x01) / 4
-                & (y01 <= (14 * x01) / 5 + 8)
-                & (y01 >= (14 * x01) / 5 - 173/5)),
+rwy_01_main <- subset(rwy_flow_per60, (arr01 >= 103 / 4 - (3 * dep01) / 4)
+                & (arr01 <= 657 / 20 -(3 * dep01) / 4
+                & (arr01 <= (14 * dep01) / 5 + 8)
+                & (arr01 >= (14 * dep01) / 5 - 173/5)),
                 select = c(1, 8))
 
 # main configuration summary
@@ -93,26 +88,26 @@ prob_01_main
 ################################################################################
 
 # put data back into origin data
-attach(data_60)
+attach(rwy_flow_per60)
 for (i in 1:672){ 
-        rwy_36l_chosen_hour <- ifelse((y36l >= 226 / 11 - (7 * x36l) / 11)
-                        & (y36l <= 691 / 22 -(7 * x36l) / 11
-                        & (y36l <= (94 * x36l) / 23 + 38/23)
-                        & (y36l >= (94 * x36l) / 23 - 1157/23)), 1, 0)
+        rwy_36l_chosen_hour <- ifelse((arr36l >= 226 / 11 - (7 * dep36l) / 11)
+                        & (arr36l <= 691 / 22 -(7 * dep36l) / 11
+                        & (arr36l <= (94 * dep36l) / 23 + 38/23)
+                        & (arr36l >= (94 * dep36l) / 23 - 1157/23)), 1, 0)
 }
 for (i in 1:672){ 
-        rwy_36r_chosen_hour <- ifelse((y36r >= 0)
-                        & (y36r <= 555 / 17 -(15 * x36r) / 17)
-                        & (y36r <= 15)
-                        & (y36r >= 420 / 17 - (15 * x36r) / 17), 1, 0)
+        rwy_36r_chosen_hour <- ifelse((arr36r >= 0)
+                        & (arr36r <= 555 / 17 -(15 * dep36r) / 17)
+                        & (arr36r <= 15)
+                        & (arr36r >= 420 / 17 - (15 * dep36r) / 17), 1, 0)
 }
 for (i in 1:672){ 
-        rwy_01_chosen_hour <- ifelse((y01 >= 103 / 4 - (3 * x01) / 4)
-                        & (y01 <= 657 / 20 -(3 * x01) / 4
-                        & (y01 <= (14 * x01) / 5 + 8)
-                        & (y01 >= (14 * x01) / 5 - 173/5)), 1, 0)
+        rwy_01_chosen_hour <- ifelse((arr01 >= 103 / 4 - (3 * dep01) / 4)
+                        & (arr01 <= 657 / 20 -(3 * dep01) / 4
+                        & (arr01 <= (14 * dep01) / 5 + 8)
+                        & (arr01 >= (14 * dep01) / 5 - 173/5)), 1, 0)
 }
-detach(data_60)
+detach(rwy_flow_per60)
 data_main_configuration <- cbind(rwy_36l_chosen_hour, rwy_36r_chosen_hour, rwy_01_chosen_hour)
 
 ################################################################################
