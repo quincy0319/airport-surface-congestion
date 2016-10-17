@@ -1,6 +1,8 @@
 # open origin data source
 rwy_flow_per15 <- read.csv("rwy_flow_per15.csv")
 rwy_flow_per60 <- read.csv("rwy_flow_per60.csv")
+
+# 各跑道的60分钟高密度散点图
 # smooth scatter pic per 60 minutes
 # rwy 36l
 dev.new()
@@ -75,9 +77,10 @@ rwy_01_main <- subset(rwy_flow_per60, (arr01 >= 103 / 4 - (3 * dep01) / 4)
                 & (arr01 <= 657 / 20 -(3 * dep01) / 4
                 & (arr01 <= (14 * dep01) / 5 + 8)
                 & (arr01 >= (14 * dep01) / 5 - 173/5)),
-                select = c(1, 8))
+                select = c(3, 6))
 
 # main configuration summary
+# 计算主运行模式的占比
 prob_36l_main <- nrow(rwy_36l_main) / nrow(rwy_36l_upper10)
 prob_36r_main <- nrow(rwy_36r_main) / nrow(rwy_36r_upper10)
 prob_01_main <- nrow(rwy_01_main) / nrow(rwy_01_upper10)
@@ -88,7 +91,8 @@ prob_01_main
 ################################################################################
 
 # put data back into origin data
-attach(rwy_flow_per60)
+# 各个60分钟window是否属于主运行模式（属于为1不属于为0）
+attach(rwy_flow_per60) 
 for (i in 1:672){ 
         rwy_36l_chosen_hour <- ifelse((arr36l >= 226 / 11 - (7 * dep36l) / 11)
                         & (arr36l <= 691 / 22 -(7 * dep36l) / 11
@@ -110,12 +114,107 @@ for (i in 1:672){
 detach(rwy_flow_per60)
 data_main_configuration <- cbind(rwy_36l_chosen_hour, rwy_36r_chosen_hour, rwy_01_chosen_hour)
 
+# 读取起降源数据
+dep_feb <- subset(read.csv("dep_origin.csv"), mission_month == 2)
+arr_feb <- subset(read.csv("arr_origin.csv"), mission_month == 2)
+# 读取包含所在60 15分钟window的航班数据
+# 起飞
+dep_feb_36l <- subset(dep_feb, rwy == '36L')
+dep_feb_36r <- subset(dep_feb, rwy == '36R')
+dep_feb_01 <- subset(dep_feb, rwy == "1")
+# 降落
+arr_feb_36l <- subset(arr_feb, rwy == '36L')
+arr_feb_36r <- subset(arr_feb, rwy == '36R')
+arr_feb_01 <- subset(arr_feb, rwy == '1')
+
+# origin_data 是源数据，用上边的6个量
+# data_window 是通过origin_data中日期、时刻算出的window（60分）
+# chosen_ornot 是上一个部分算出的，每个window是否为主运行模式
+
+#flight_chosen_ornot <- function(origin_data, chosen_ornot, flight_chosen) {
+	#attach(origin_data)
+		#data_window <- (mission_date - 1) * 24 + floor(time_takeoff_real / 60) + 1
+	#detach(origin_data)
+	#lth <- nrow(origin_data)
+	#flight_chosen <- vector(mode = "numeric", length = lth)
+	#for (i in 1:lth) {
+		#a <- data_window[i]
+		#flight_chosen[i] <- chosen_ornot[a]
+	#}
+#}
+#flight_chosen_ornot(dep_feb_36l, rwy_36l_chosen_hour, chosen_dep_36l)
+
+# Function 功能有问题！！！！
 ################################################################################
 
+# 数据准备（36l、36r、01三条跑道）
+# 36l
+attach(dep_feb_36l)
+dep_window_per60_36l <- (mission_date - 1) * 24 + floor(time_takeoff_real / 60) + 1
+detach(dep_feb_36l)
+attach(arr_feb_36l)
+arr_window_per60_36l <- (mission_date - 1) * 24 + floor(time_wheelon_real / 60) + 1
+detach(arr_feb_36l)
+# 36r
+attach(dep_feb_36r)
+dep_window_per60_36r <- (mission_date - 1) * 24 + floor(time_takeoff_real / 60) + 1
+detach(dep_feb_36r)
+attach(arr_feb_36r)
+arr_window_per60_36r <- (mission_date - 1) * 24 + floor(time_wheelon_real / 60) + 1
+detach(arr_feb_36r)
+# 01
+attach(dep_feb_01)
+dep_window_per60_01 <- (mission_date - 1) * 24 + floor(time_takeoff_real / 60) + 1
+detach(dep_feb_01)
+attach(arr_feb_01)
+arr_window_per60_01 <- (mission_date - 1) * 24 + floor(time_wheelon_real / 60) + 1
+detach(arr_feb_01)
 
+# 分别计算每个航班是否在选出的时刻中
+# 36l
+lth <- nrow(dep_feb_36l)
+flight_chosen_dep_36l <- vector(mode = "numeric", length = lth)
+for (i in 1:lth) {
+	a <- dep_window_per60_36l[i]
+	flight_chosen_dep_36l[i] <- rwy_36l_chosen_hour[a]
+}
 
+lth <- nrow(arr_feb_36l)
+flight_chosen_arr_36l <- vector(mode = "numeric", length = lth)
+for (i in 1:lth) {
+	a <- arr_window_per60_36l[i]
+	flight_chosen_arr_36l[i] <- rwy_36l_chosen_hour[a]
+}
 
+# 36r
+lth <- nrow(dep_feb_36r)
+flight_chosen_dep_36r <- vector(mode = "numeric", length = lth)
+for (i in 1:lth) {
+	a <- dep_window_per60_36r[i]
+	flight_chosen_dep_36r[i] <- rwy_36r_chosen_hour[a]
+}
 
+lth <- nrow(arr_feb_36r)
+flight_chosen_arr_36r <- vector(mode = "numeric", length = lth)
+for (i in 1:lth) {
+	a <- arr_window_per60_36r[i]
+	flight_chosen_arr_36r[i] <- rwy_36r_chosen_hour[a]
+}
+
+# 01
+lth <- nrow(dep_feb_01)
+flight_chosen_dep_01 <- vector(mode = "numeric", length = lth)
+for (i in 1:lth) {
+	a <- dep_window_per60_01[i]
+	flight_chosen_dep_01[i] <- rwy_01_chosen_hour[a]
+}
+
+lth <- nrow(arr_feb_01)
+flight_chosen_arr_01 <- vector(mode = "numeric", length = lth)
+for (i in 1:lth) {
+	a <- arr_window_per60_01[i]
+	flight_chosen_arr_01[i] <- rwy_01_chosen_hour[a]
+}
 
 
 
@@ -198,50 +297,6 @@ dev.new()
 pie(arr_data_summary, radius = 1)
 title("arr rwy usage")
 
-#wssplot function
-wssplot <- function(data, nc = 10, seed = 1234){
-  wss <- (nrow(data) - 1) * sum(apply(data, 2, var))
-  for (i in 2:nc){
-    set.seed(seed)
-    wss[i] <- sum(kmeans(data, centers = i)$withiness)
-  }
-  plot(1:nc, wss, type = "b", xlab = "number of clusters",
-       ylab = "within groups sum of squares")
-}
-
-# Kmeans-clusters
-df <- rwy_36l_upper10
-df <- scale(df[-1])
-wssplot(df)
-library(NbClust)
-set.seed(1234)
-devAskNewPage(ask = TRUE)
-nc <- NbClust(df, min.nc = 2, max.nc = 10, method = "kmeans")
-table(nc$Best.n[1, ])
-barplot(table(nc$Best.n[1, ]), 
-        xlab = "Number of Clusters", ylab = "Number of Criteria",
-        main = "Number of Clusters Chosen by 26 Criteria")
-
-set.seed(1234)
-fit.km <- kmeans(df, 3, nstart = 25)
-fit.km$size
-fit.km$centers
-aggregate(df[-1], by = list(cluster = fit.km$cluster), mean)
 
 
-# regression tree
-library(rpart)
-set.seed(1234)
-dtree <- rpart(class ~ ., data = df, method = "class",
-               parms = list(split = "information"))
-dtree$cptable
-plotcp(dtree)
-dtree.pruned <- prune(dtree, cp = .0125)
-library(rpart.plot)
-prp(dtree.pruned, type = 2, extra = 104, 
-    fallen.leaves = TRUE, main = "Decision Tree")
-dtree.pred <- predict(dtree.pruned, df.validate, type = "class")
-dtree.perf <- table(df.validate$class, dtree.pred,
-                    dnn = c("Actual", "Predicted"))
-dtree.perf
 
