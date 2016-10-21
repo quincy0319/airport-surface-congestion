@@ -61,6 +61,11 @@ for (i in 1:length(arr_window_per60)) {
 	arr_count_per60[a] <- arr_count_per60[a] + 1
 }
 
+window_count_per15 <- data.frame(dep_count_per15, arr_count_per15, pb_count_per15)
+window_count_per60 <- data.frame(dep_count_per60, arr_count_per60, pb_count_per60)
+write.csv(window_count_per15, "window_count_per15.csv", row.names = F)
+write.csv(window_count_per60, "window_count_per60.csv", row.names = F)
+
 ################################################################################
 
 # 每架航班所在window的起降数（此处为全部起降航班计算得出的数字）

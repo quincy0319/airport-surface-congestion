@@ -15,6 +15,7 @@
 ## 各R文件功能
 * window_count.R 
 计算各时间段起降率（15分钟和30分钟）并将起降率添加到每一个航班数据上
+将15/60分钟的起飞、降落、推出数据放在同一个表中
 * main_rwy_flow.R 
 各跑道的在各时间段的起降率
 * rwy_configuration_feb.R
@@ -35,3 +36,5 @@
 * dep_feb_36l_processed.csv 和 arr_feb_36l_processed.csv
 	类似名称的6个文件，在rwy_configuration_feb.R中得到，是按跑道划分的航班数据，
 	包括了所属window及是否为主运行模式的航班
+* window_count_per60.csv window_count_per15.csv
+	包含起降、推出数据，用来求极值
