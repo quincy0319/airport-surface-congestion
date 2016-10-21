@@ -1,4 +1,17 @@
 
+## 1017
+1. 完成单一跑道运行模式的划分
+2. 在源数据中已添加各航班所在window、是否为主运行模式航班等信息
+3. function编写错误，仍使用原始方法
+
+## 1018
+1. 完成分跑道航班数据处理
+2. 对各条跑道属于主运行模式的航班滑行时间进行分析，做直方图、概率分布
+3. 
+
+## 1021
+1. 向window_count中添加推出率的计算
+
 ## 各R文件功能
 * window_count.R 
 计算各时间段起降率（15分钟和30分钟）并将起降率添加到每一个航班数据上
@@ -7,6 +20,8 @@
 * rwy_configuration_feb.R
 各跑道的起降高密度散点图，及划分出来的运行模式
 计算每个航班是否属于主运行模式（0 1 表示）
+* taxi_time_distribution.R
+绘制主运行模式下各跑道的滑行时间直方图、概率密度分布图
 
 ****
 
@@ -14,6 +29,9 @@
 * dep_origin.csv arr_origin.csv 
 	分别是起降航班的原始数据
 * dep_feb_processed.csv arr_feb_processed.csv 
-	分别是添加起降率数据的航班数据
+	分别是添加起降率数据的航班数据，在window_count.R中求出
 * rwy_flow_per15.csv rwy_flow_per60.csv
 	由main_rwy_flow.R得到，分别是15分钟和60分钟各跑道的起降数
+* dep_feb_36l_processed.csv 和 arr_feb_36l_processed.csv
+	类似名称的6个文件，在rwy_configuration_feb.R中得到，是按跑道划分的航班数据，
+	包括了所属window及是否为主运行模式的航班

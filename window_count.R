@@ -11,6 +11,7 @@ dep_origin_feb <- subset(dep_origin, mission_month == 2)
 arr_origin_feb <- subset(arr_origin, mission_month == 2)
 attach(dep_origin_feb)
 	dep_window_per15 <- (mission_date - 1) * 96 + floor(time_takeoff_real / 15) + 1
+	pb_window_per15 <- (mission_date - 1) * 96 + floor(time_pushback / 15) + 1
 detach(dep_origin_feb)
 
 attach(arr_origin_feb)
@@ -20,6 +21,7 @@ detach(arr_origin_feb)
 # 60 minutes
 attach(dep_origin_feb)
 	dep_window_per60 <- (mission_date - 1) * 24 + floor(time_takeoff_real / 60) + 1
+	pb_window_per60 <- (mission_date - 1) * 24 + floor(time_pushback / 60) + 1
 detach(dep_origin_feb)
 
 attach(arr_origin_feb)
@@ -29,9 +31,12 @@ detach(arr_origin_feb)
 # 计算每个window有多少架航班
 # 15 minutes
 dep_count_per15 <- matrix(0, nrow = 28 * 96, ncol = 1)
+pb_count_per15 <- matrix(0, nrow = 28 * 96, ncol = 1)
 for (i in 1:length(dep_window_per15)) {
 	a <- dep_window_per15[i]
+	b <- pb_window_per15[i]
 	dep_count_per15[a] <- dep_count_per15[a] + 1
+	pb_count_per15[b] <- pb_count_per15[b] + 1
 }
 
 arr_count_per15 <- matrix(0, nrow = 28 * 96, ncol = 1)
@@ -42,9 +47,12 @@ for (i in 1:length(arr_window_per15)) {
 
 # 60 minutes
 dep_count_per60 <- matrix(0, nrow = 28 * 24, ncol = 1)
+pb_count_per60 <- matrix(0, nrow = 28 * 24, ncol = 1)
 for (i in 1:length(dep_window_per60)) {
 	a <- dep_window_per60[i]
+	b <- pb_window_per60[i]
 	dep_count_per60[a] <- dep_count_per60[a] + 1
+	pb_count_per60[b] <- pb_count_per60[b] + 1
 }
 
 arr_count_per60 <- matrix(0, nrow = 28 * 24, ncol = 1)
@@ -60,36 +68,44 @@ for (i in 1:length(arr_window_per60)) {
 # 为起飞航班添加
 dep_15_per_dep <- vector(mode = "numeric", length = 0)
 arr_15_per_dep <- vector(mode = "numeric", length = 0)
+pb_15_per_dep <- vector(mode = "numeric", length = 0)
 for (i in 1:length(dep_window_per15)) {
 	a <- dep_window_per15[i]
 	dep_15_per_dep[i] <- dep_count_per15[a]
 	arr_15_per_dep[i] <- arr_count_per15[a]
+	pb_15_per_dep[i] <- pb_count_per15[a]
 }
 # 为降落航班添加
 dep_15_per_arr <- vector(mode = "numeric", length = 0)
 arr_15_per_arr <- vector(mode = "numeric", length = 0)
+pb_15_per_arr <- vector(mode = "numeric", length = 0)
 for (i in 1:length(arr_window_per15)) {
 	b <- arr_window_per15[i]
-	dep_15_per_arr[i] <- dep_count_per15[a]
-	arr_15_per_arr[i] <- arr_count_per15[a]
+	dep_15_per_arr[i] <- dep_count_per15[b]
+	arr_15_per_arr[i] <- arr_count_per15[b]
+	pb_15_per_arr[i] <- pb_count_per15[b]
 }
 
 # 60 minutes
 # 为起飞航班添加
 dep_60_per_dep <- vector(mode = "numeric", length = 0)
 arr_60_per_dep <- vector(mode = "numeric", length = 0)
+pb_60_per_dep <- vector(mode = "numeric", length = 0)
 for (i in 1:length(dep_window_per60)) {
 	a <- dep_window_per60[i]
 	dep_60_per_dep[i] <- dep_count_per60[a]
 	arr_60_per_dep[i] <- arr_count_per60[a]
+	pb_60_per_dep[i] <- pb_count_per60[a]
 }
 # 为降落航班添加
 dep_60_per_arr <- vector(mode = "numeric", length = 0)
 arr_60_per_arr <- vector(mode = "numeric", length = 0)
+pb_60_per_arr <- vector(mode = "numeric", length = 0)
 for (i in 1:length(arr_window_per60)) {
 	b <- arr_window_per60[i]
-	dep_60_per_arr[i] <- dep_count_per60[a]
-	arr_60_per_arr[i] <- arr_count_per60[a]
+	dep_60_per_arr[i] <- dep_count_per60[b]
+	arr_60_per_arr[i] <- arr_count_per60[b]
+	pb_60_per_arr[i] <- pb_count_per60[a]
 }
 
 # 将每架航班所在window的起降数bind到源数据上
@@ -97,12 +113,17 @@ dep_feb <- cbind(dep_origin_feb,
 		 data.frame(dep_15_per_dep),
 		 data.frame(arr_15_per_dep),
 		 data.frame(dep_60_per_dep),
-		 data.frame(arr_60_per_dep))
+		 data.frame(arr_60_per_dep),
+		 data.frame(pb_15_per_dep),
+		 data.frame(pb_60_per_dep))
 arr_feb <- cbind(arr_origin_feb,
 		 data.frame(dep_15_per_arr),
 		 data.frame(arr_15_per_arr),
 		 data.frame(dep_60_per_arr),
-		 data.frame(arr_60_per_arr))
+		 data.frame(arr_60_per_arr),
+		 data.frame(pb_15_per_arr),
+		 data.frame(pb_60_per_arr))
+
 
 ################################################################################
 # 输出数据

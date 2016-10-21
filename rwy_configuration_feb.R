@@ -24,10 +24,10 @@ lines(c(b1, d1), c(b2, d2), "l", lwd = 2)
 lines(c(c1, d1), c(c2, d2), "l", lwd = 2)
 # rwy 36l main configuration
 rwy_36l_main <- subset(rwy_flow_per60, (arr36l >= 226 / 11 - (7 * dep36l) / 11)
-                & (arr36l <= 691 / 22 -(7 * dep36l) / 11
-                & (arr36l <= (94 * dep36l) / 23 + 38/23)
-                & (arr36l >= (94 * dep36l) / 23 - 1157/23)),
-                select = c(1, 4))
+		& (arr36l <= 691 / 22 -(7 * dep36l) / 11
+		& (arr36l <= (94 * dep36l) / 23 + 38/23)
+		& (arr36l >= (94 * dep36l) / 23 - 1157/23)),
+		select = c(1, 4))
 
 # rwy 36r
 dev.new()
@@ -49,10 +49,10 @@ lines(c(b1, d1), c(b2, d2), "l", lwd = 2)
 lines(c(c1, d1), c(c2, d2), "l", lwd = 2)
 # rwy 36r main configuration
 rwy_36r_main <- subset(rwy_flow_per60, (arr36r >= 0)
-                & (arr36r <= 555 / 17 -(15 * dep36r) / 17)
-                & (arr36r <= 15)
-                & (arr36r >= 420 / 17 - (15 * dep36r) / 17),
-                select = c(2, 5))
+		& (arr36r <= 555 / 17 -(15 * dep36r) / 17)
+		& (arr36r <= 15)
+		& (arr36r >= 420 / 17 - (15 * dep36r) / 17),
+		select = c(2, 5))
 
 # rwy 01
 dev.new()
@@ -74,10 +74,10 @@ lines(c(b1, d1), c(b2, d2), "l", lwd = 2)
 lines(c(c1, d1), c(c2, d2), "l", lwd = 2)
 # rwy 01 main configuration
 rwy_01_main <- subset(rwy_flow_per60, (arr01 >= 103 / 4 - (3 * dep01) / 4)
-                & (arr01 <= 657 / 20 -(3 * dep01) / 4
-                & (arr01 <= (14 * dep01) / 5 + 8)
-                & (arr01 >= (14 * dep01) / 5 - 173/5)),
-                select = c(3, 6))
+		& (arr01 <= 657 / 20 -(3 * dep01) / 4
+		& (arr01 <= (14 * dep01) / 5 + 8)
+		& (arr01 >= (14 * dep01) / 5 - 173/5)),
+		select = c(3, 6))
 
 # main configuration summary
 # 计算主运行模式的占比
@@ -94,22 +94,22 @@ prob_01_main
 # 各个60分钟window是否属于主运行模式（属于为1不属于为0）
 attach(rwy_flow_per60) 
 for (i in 1:672){ 
-        rwy_36l_chosen_hour <- ifelse((arr36l >= 226 / 11 - (7 * dep36l) / 11)
-                        & (arr36l <= 691 / 22 -(7 * dep36l) / 11
-                        & (arr36l <= (94 * dep36l) / 23 + 38/23)
-                        & (arr36l >= (94 * dep36l) / 23 - 1157/23)), 1, 0)
+	rwy_36l_chosen_hour <- ifelse((arr36l >= 226 / 11 - (7 * dep36l) / 11)
+			& (arr36l <= 691 / 22 -(7 * dep36l) / 11
+			& (arr36l <= (94 * dep36l) / 23 + 38/23)
+			& (arr36l >= (94 * dep36l) / 23 - 1157/23)), 1, 0)
 }
 for (i in 1:672){ 
-        rwy_36r_chosen_hour <- ifelse((arr36r >= 0)
-                        & (arr36r <= 555 / 17 -(15 * dep36r) / 17)
-                        & (arr36r <= 15)
-                        & (arr36r >= 420 / 17 - (15 * dep36r) / 17), 1, 0)
+	rwy_36r_chosen_hour <- ifelse((arr36r >= 0)
+			& (arr36r <= 555 / 17 -(15 * dep36r) / 17)
+			& (arr36r <= 15)
+			& (arr36r >= 420 / 17 - (15 * dep36r) / 17), 1, 0)
 }
 for (i in 1:672){ 
-        rwy_01_chosen_hour <- ifelse((arr01 >= 103 / 4 - (3 * dep01) / 4)
-                        & (arr01 <= 657 / 20 -(3 * dep01) / 4
-                        & (arr01 <= (14 * dep01) / 5 + 8)
-                        & (arr01 >= (14 * dep01) / 5 - 173/5)), 1, 0)
+	rwy_01_chosen_hour <- ifelse((arr01 >= 103 / 4 - (3 * dep01) / 4)
+			& (arr01 <= 657 / 20 -(3 * dep01) / 4
+			& (arr01 <= (14 * dep01) / 5 + 8)
+			& (arr01 >= (14 * dep01) / 5 - 173/5)), 1, 0)
 }
 detach(rwy_flow_per60)
 data_main_configuration <- cbind(rwy_36l_chosen_hour, rwy_36r_chosen_hour, rwy_01_chosen_hour)
@@ -216,12 +216,24 @@ for (i in 1:lth) {
 	flight_chosen_arr_01[i] <- rwy_01_chosen_hour[a]
 }
 
+dep_feb_36l_processed <- data.frame(dep_feb_36l, flight_chosen_dep_36l)
+dep_feb_36r_processed <- data.frame(dep_feb_36r, flight_chosen_dep_36r)
+dep_feb_01_processed <- data.frame(dep_feb_01, flight_chosen_dep_01)
+arr_feb_36l_processed <- data.frame(arr_feb_36l, flight_chosen_arr_36l)
+arr_feb_36r_processed <- data.frame(arr_feb_36r, flight_chosen_arr_36r)
+arr_feb_01_processed <- data.frame(arr_feb_01, flight_chosen_arr_01)
 
-
-
+write.csv(dep_feb_36l_processed, "dep_feb_36l_processed.csv", row.names = F)
+write.csv(dep_feb_36r_processed, "dep_feb_36r_processed.csv", row.names = F)
+write.csv(dep_feb_01_processed, "dep_feb_01_processed.csv", row.names = F)
+write.csv(arr_feb_36l_processed, "arr_feb_36l_processed.csv", row.names = F)
+write.csv(arr_feb_36r_processed, "arr_feb_36r_processed.csv", row.names = F)
+write.csv(arr_feb_01_processed, "arr_feb_01_processed.csv", row.names = F)
 
 ################################################################################
 # scatter plot colored by smoothed densities
+# 高密度散点图
+# 本段代码不使用，前边已经有这段的功能
 dev.new()
 attach(dep_60)
 attach(arr_60)
