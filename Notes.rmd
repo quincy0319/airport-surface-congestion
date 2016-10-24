@@ -12,6 +12,9 @@
 ## 1021
 1. 向window_count中添加推出率的计算
 
+## 1024
+1. 将所有文件，原先为2月份的数据，修改为2-4月的数据并输出
+
 ## 各R文件功能
 * window_count.R 
 计算各时间段起降率（15分钟和30分钟）并将起降率添加到每一个航班数据上
@@ -23,15 +26,18 @@
 计算每个航班是否属于主运行模式（0 1 表示）
 * taxi_time_distribution.R
 绘制主运行模式下各跑道的滑行时间直方图、概率密度分布图
+* operational_throughput_envelope.R
+推出率-起飞率图，包括平均数和中位数的散点图、误差线以及回归拟合
+
 
 ****
 
 ### 各数据内容
-* dep_origin.csv arr_origin.csv 
+* dep_tower.csv arr_tower.csv 
 	分别是起降航班的原始数据
-* dep_feb_processed.csv arr_feb_processed.csv 
+* dep_(feb)_processed.csv arr_(feb)_processed.csv 
 	分别是添加起降率数据的航班数据，在window_count.R中求出
-* rwy_flow_per15.csv rwy_flow_per60.csv
+* rwy_flow_(feb)_per15.csv rwy_flow_(feb)_per60.csv
 	由main_rwy_flow.R得到，分别是15分钟和60分钟各跑道的起降数
 * dep_feb_36l_processed.csv 和 arr_feb_36l_processed.csv
 	类似名称的6个文件，在rwy_configuration_feb.R中得到，是按跑道划分的航班数据，

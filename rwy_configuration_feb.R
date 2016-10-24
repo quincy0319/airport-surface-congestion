@@ -1,14 +1,15 @@
 # open origin data source
-rwy_flow_per15 <- read.csv("rwy_flow_per15.csv")
-rwy_flow_per60 <- read.csv("rwy_flow_per60.csv")
+# feb
+rwy_flow_feb_per15 <- read.csv("rwy_flow_feb_per15.csv")
+rwy_flow_feb_per60 <- read.csv("rwy_flow_feb_per60.csv")
 
 # 各跑道的60分钟高密度散点图
 # smooth scatter pic per 60 minutes
 # rwy 36l
 dev.new()
-rwy_36l_upper10 <- subset(rwy_flow_per60, ((dep36l + arr36l) > 10), select = c(1,4))
-smoothScatter(rwy_36l_upper10)
-title("rwy_36l_upper10")
+rwy_36l_feb_upper10 <- subset(rwy_flow_feb_per60, ((dep36l + arr36l) > 10), select = c(1,4))
+smoothScatter(rwy_36l_feb_upper10)
+title("rwy_36l_feb_upper10")
 grid()
 a1 <- 4
 a2 <- 18
@@ -22,8 +23,8 @@ lines(c(a1, b1), c(a2, b2), "l", lwd = 2)
 lines(c(a1, c1), c(a2, c2), "l", lwd = 2)
 lines(c(b1, d1), c(b2, d2), "l", lwd = 2)
 lines(c(c1, d1), c(c2, d2), "l", lwd = 2)
-# rwy 36l main configuration
-rwy_36l_main <- subset(rwy_flow_per60, (arr36l >= 226 / 11 - (7 * dep36l) / 11)
+# rwy 36l main configuration in feb
+rwy_36l_feb_main <- subset(rwy_flow_feb_per60, (arr36l >= 226 / 11 - (7 * dep36l) / 11)
 		& (arr36l <= 691 / 22 -(7 * dep36l) / 11
 		& (arr36l <= (94 * dep36l) / 23 + 38/23)
 		& (arr36l >= (94 * dep36l) / 23 - 1157/23)),
@@ -31,9 +32,9 @@ rwy_36l_main <- subset(rwy_flow_per60, (arr36l >= 226 / 11 - (7 * dep36l) / 11)
 
 # rwy 36r
 dev.new()
-rwy_36r_upper10 <- subset(rwy_flow_per60, ((dep36r + arr36r) > 10), select = c(2, 5))
-smoothScatter(rwy_36r_upper10)
-title("rwy_36r_upper10")
+rwy_36r_feb_upper10 <- subset(rwy_flow_feb_per60, ((dep36r + arr36r) > 10), select = c(2, 5))
+smoothScatter(rwy_36r_feb_upper10)
+title("rwy_36r_feb_upper10")
 grid()
 a1 <- 28
 a2 <- 0
@@ -47,8 +48,8 @@ lines(c(a1, b1), c(a2, b2), "l", lwd = 2)
 lines(c(a1, c1), c(a2, c2), "l", lwd = 2)
 lines(c(b1, d1), c(b2, d2), "l", lwd = 2)
 lines(c(c1, d1), c(c2, d2), "l", lwd = 2)
-# rwy 36r main configuration
-rwy_36r_main <- subset(rwy_flow_per60, (arr36r >= 0)
+# rwy 36r main configuration in feb
+rwy_36r_feb_main <- subset(rwy_flow_feb_per60, (arr36r >= 0)
 		& (arr36r <= 555 / 17 -(15 * dep36r) / 17)
 		& (arr36r <= 15)
 		& (arr36r >= 420 / 17 - (15 * dep36r) / 17),
@@ -56,9 +57,9 @@ rwy_36r_main <- subset(rwy_flow_per60, (arr36r >= 0)
 
 # rwy 01
 dev.new()
-rwy_01_upper10 <- subset(rwy_flow_per60, ((dep01 + arr01) > 10), select = c(3, 6))
-smoothScatter(rwy_01_upper10)
-title("rwy_01_upper10")
+rwy_01_feb_upper10 <- subset(rwy_flow_feb_per60, ((dep01 + arr01) > 10), select = c(3, 6))
+smoothScatter(rwy_01_feb_upper10)
+title("rwy_01_feb_upper10")
 grid()
 a1 <- 5
 a2 <- 22
@@ -72,47 +73,47 @@ lines(c(a1, b1), c(a2, b2), "l", lwd = 2)
 lines(c(a1, c1), c(a2, c2), "l", lwd = 2)
 lines(c(b1, d1), c(b2, d2), "l", lwd = 2)
 lines(c(c1, d1), c(c2, d2), "l", lwd = 2)
-# rwy 01 main configuration
-rwy_01_main <- subset(rwy_flow_per60, (arr01 >= 103 / 4 - (3 * dep01) / 4)
+# rwy 01 main configuration in feb
+rwy_01_feb_main <- subset(rwy_flow_feb_per60, (arr01 >= 103 / 4 - (3 * dep01) / 4)
 		& (arr01 <= 657 / 20 -(3 * dep01) / 4
 		& (arr01 <= (14 * dep01) / 5 + 8)
 		& (arr01 >= (14 * dep01) / 5 - 173/5)),
 		select = c(3, 6))
 
-# main configuration summary
+# feb main configuration summary
 # 计算主运行模式的占比
-prob_36l_main <- nrow(rwy_36l_main) / nrow(rwy_36l_upper10)
-prob_36r_main <- nrow(rwy_36r_main) / nrow(rwy_36r_upper10)
-prob_01_main <- nrow(rwy_01_main) / nrow(rwy_01_upper10)
-prob_36l_main
-prob_36r_main
-prob_01_main
+prob_36l_feb_main <- nrow(rwy_36l_feb_main) / nrow(rwy_36l_feb_upper10)
+prob_36r_feb_main <- nrow(rwy_36r_feb_main) / nrow(rwy_36r_feb_upper10)
+prob_01_feb_main <- nrow(rwy_01_feb_main) / nrow(rwy_01_feb_upper10)
+prob_36l_feb_main
+prob_36r_feb_main
+prob_01_feb_main
 
 ################################################################################
 
 # put data back into origin data
 # 各个60分钟window是否属于主运行模式（属于为1不属于为0）
-attach(rwy_flow_per60) 
+attach(rwy_flow_feb_per60) 
 for (i in 1:672){ 
-	rwy_36l_chosen_hour <- ifelse((arr36l >= 226 / 11 - (7 * dep36l) / 11)
+	rwy_36l_chosen_hour_feb <- ifelse((arr36l >= 226 / 11 - (7 * dep36l) / 11)
 			& (arr36l <= 691 / 22 -(7 * dep36l) / 11
 			& (arr36l <= (94 * dep36l) / 23 + 38/23)
 			& (arr36l >= (94 * dep36l) / 23 - 1157/23)), 1, 0)
 }
 for (i in 1:672){ 
-	rwy_36r_chosen_hour <- ifelse((arr36r >= 0)
+	rwy_36r_chosen_hour_feb <- ifelse((arr36r >= 0)
 			& (arr36r <= 555 / 17 -(15 * dep36r) / 17)
 			& (arr36r <= 15)
 			& (arr36r >= 420 / 17 - (15 * dep36r) / 17), 1, 0)
 }
 for (i in 1:672){ 
-	rwy_01_chosen_hour <- ifelse((arr01 >= 103 / 4 - (3 * dep01) / 4)
+	rwy_01_chosen_hour_feb <- ifelse((arr01 >= 103 / 4 - (3 * dep01) / 4)
 			& (arr01 <= 657 / 20 -(3 * dep01) / 4
 			& (arr01 <= (14 * dep01) / 5 + 8)
 			& (arr01 >= (14 * dep01) / 5 - 173/5)), 1, 0)
 }
-detach(rwy_flow_per60)
-data_main_configuration <- cbind(rwy_36l_chosen_hour, rwy_36r_chosen_hour, rwy_01_chosen_hour)
+detach(rwy_flow_feb_per60)
+data_main_configuration <- cbind(rwy_36l_chosen_hour_feb, rwy_36r_chosen_hour_feb, rwy_01_chosen_hour_feb)
 
 # 读取起降源数据
 dep_feb <- subset(read.csv("dep_origin.csv"), mission_month == 2)
