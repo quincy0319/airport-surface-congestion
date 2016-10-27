@@ -67,8 +67,8 @@ y1 <- floor(dep_mean[c(1:27)])
 y2 <- floor(dep_median[c(1:27)])
 err_sd <- floor(dep_sd[c(1:27)])
 # 调用errorbar函数
-# 平均数（实心三角）
-library(pracma)
+# 平均数（）
+library(pracm实心三角a)
 errorbar(x, y1, yerr = err_sd, grid = TRUE, pch = 17, lty = 1)
 # 将中位数（实心方形）绘制到图上
 points(x, y2, pch = 15, lty = 1)
