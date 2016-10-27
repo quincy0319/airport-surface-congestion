@@ -20,7 +20,7 @@ names(dep_apr)[17:22] <- c("dep_15_per_dep", "arr_15_per_dep", "dep_60_per_dep",
 names(dep_may)[17:22] <- c("dep_15_per_dep", "arr_15_per_dep", "dep_60_per_dep",
 	"arr_60_per_dep", "pb_15_per_dep", "pb_60_per_dep")
 dep_full <- rbind(dep_feb, dep_mar, dep_apr, dep_may)
-
+write.csv(dep_full, "dep_processed.csv", row.names = F)
 
 # 15分钟推出率、起飞率、接收率最大值
 window_count_feb_per15 <- read.csv("window_count_feb_per15.csv")
@@ -34,6 +34,7 @@ names(window_count_apr_per15) <- c("dep_count_per15", "arr_count_per15", "pb_cou
 names(window_count_may_per15) <- c("dep_count_per15", "arr_count_per15", "pb_count_per15")
 window_count_per15 <- rbind(window_count_feb_per15, window_count_mar_per15,
 	window_count_apr_per15, window_count_may_per15)
+write.csv(window_count_per15, "window_count_feb2may.csv", row.names = F)
 
 pb_max_per15 <- max(window_count_per15$pb_count_per15)
 dep_max_per15 <- max(window_count_per15$dep_count_per15)
@@ -86,3 +87,7 @@ summary(fit_mean_1)
 summary(fit_mean_2)
 summary(fit_median_1)
 summary(fit_median_2)
+# 绘制拟合曲线
+lines(x, fitted(fit_mean_2), type = )
+lines(x, fitted(fit_median_2))
+

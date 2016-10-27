@@ -15,6 +15,9 @@
 ## 1024
 1. 将所有文件，原先为2月份的数据，修改为2-4月的数据并输出
 
+## 1025
+1. 以离场流量为因变量，推出率和到场流量作为自变量，分析相关性
+
 ## 各R文件功能
 * window_count.R 
 计算各时间段起降率（15分钟和30分钟）并将起降率添加到每一个航班数据上
@@ -44,3 +47,7 @@
 	包括了所属window及是否为主运行模式的航班
 * window_count_per60.csv window_count_per15.csv
 	包含起降、推出数据，用来求极值
+* dep_processed.csv
+	四个月起飞数据的总表
+* window_count_feb2may.csv
+	四个月各window的15分钟dep arr pb值
