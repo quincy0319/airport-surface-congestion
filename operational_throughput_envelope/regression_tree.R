@@ -9,7 +9,7 @@ window_count_per15 <- read.csv("window_count_feb2may.csv")
 library(rpart)
 set.seed(1234)
 rt_fit <- rpart(dep_count_per15 ~ arr_count_per15 + pb_count_per15, 
-	data = window_count_per15, method = "anova")
+		data = window_count_per15, method = "anova")
 rt_fit$cptable
 
 # 可读性更强的画树包
