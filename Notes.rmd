@@ -18,36 +18,79 @@
 ## 1025
 1. 以离场流量为因变量，推出率和到场流量作为自变量，分析相关性
 
+## 1029
+1. 做出regression tree
+2. 完成operational throughput envelope
+3. 添加对重型机的研究，修改window_count.R文件，加入heavy_count，重新输出数据
+4. 使用pairs函数，做散点图矩阵（起、降、推出、重型）
+
 ## 各R文件功能
 * window_count.R 
+
 计算各时间段起降率（15分钟和30分钟）并将起降率添加到每一个航班数据上
 将15/60分钟的起飞、降落、推出数据放在同一个表中
+
 * main_rwy_flow.R 
+
 各跑道的在各时间段的起降率
+
 * rwy_configuration_feb.R
+
 各跑道的起降高密度散点图，及划分出来的运行模式
+
 计算每个航班是否属于主运行模式（0 1 表示）
+
 * taxi_time_distribution.R
+
 绘制主运行模式下各跑道的滑行时间直方图、概率密度分布图
-* operational_throughput_envelope.R
+
+* average_throughput.R
+
 推出率-起飞率图，包括平均数和中位数的散点图、误差线以及回归拟合
 
+* dep_vs_pb_and_arr.R
+
+不同pb下的arr、dep关系；不同arr下的pb、dep关系‘’
+
+* operational_throughput_envelope.R
+
+运行容量包线
+
+* dep_heavy_count.R
+
+重型机数据
 
 ****
 
 ### 各数据内容
 * dep_tower.csv arr_tower.csv 
+
 	分别是起降航班的原始数据
+
 * dep_(feb)_processed.csv arr_(feb)_processed.csv 
+
 	分别是添加起降率数据的航班数据，在window_count.R中求出
+
 * rwy_flow_(feb)_per15.csv rwy_flow_(feb)_per60.csv
+
 	由main_rwy_flow.R得到，分别是15分钟和60分钟各跑道的起降数
+
 * dep_feb_36l_processed.csv 和 arr_feb_36l_processed.csv
+
 	类似名称的6个文件，在rwy_configuration_feb.R中得到，是按跑道划分的航班数据，
 	包括了所属window及是否为主运行模式的航班
+
 * window_count_per60.csv window_count_per15.csv
+
 	包含起降、推出数据，用来求极值
+
 * dep_processed.csv
+
 	四个月起飞数据的总表
+
 * window_count_feb2may.csv
+
 	四个月各window的15分钟dep arr pb值
+* heavy_ac.csv
+
+	四个月所有重型机的源数据

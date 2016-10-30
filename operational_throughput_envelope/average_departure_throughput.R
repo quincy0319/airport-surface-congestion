@@ -1,5 +1,6 @@
 # 推出率-起飞率曲线
 # 读取2-5月数据
+setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
 dep_feb <- read.csv("dep_feb_processed.csv")
 arr_feb <- read.csv("arr_feb_processed.csv")
 dep_mar <- read.csv("dep_mar_processed.csv")
@@ -11,27 +12,31 @@ arr_may <- read.csv("dep_may_processed.csv")
 
 # 将五个月输入放入一张表中
 # dep
-names(dep_feb)[17:22] <- c("dep_15_per_dep", "arr_15_per_dep", "dep_60_per_dep",
-	"arr_60_per_dep", "pb_15_per_dep", "pb_60_per_dep")
-names(dep_mar)[17:22] <- c("dep_15_per_dep", "arr_15_per_dep", "dep_60_per_dep",
-	"arr_60_per_dep", "pb_15_per_dep", "pb_60_per_dep")
-names(dep_apr)[17:22] <- c("dep_15_per_dep", "arr_15_per_dep", "dep_60_per_dep",
-	"arr_60_per_dep", "pb_15_per_dep", "pb_60_per_dep")
-names(dep_may)[17:22] <- c("dep_15_per_dep", "arr_15_per_dep", "dep_60_per_dep",
-	"arr_60_per_dep", "pb_15_per_dep", "pb_60_per_dep")
+names(dep_feb)[17:23] <- c("dep_15_per_dep", "arr_15_per_dep", "dep_60_per_dep",
+	"arr_60_per_dep", "pb_15_per_dep", "pb_60_per_dep", "heavy_15_per_dep")
+names(dep_mar)[17:23] <- c("dep_15_per_dep", "arr_15_per_dep", "dep_60_per_dep",
+	"arr_60_per_dep", "pb_15_per_dep", "pb_60_per_dep", "heavy_15_per_dep")
+names(dep_apr)[17:23] <- c("dep_15_per_dep", "arr_15_per_dep", "dep_60_per_dep",
+	"arr_60_per_dep", "pb_15_per_dep", "pb_60_per_dep", "heavy_15_per_dep")
+names(dep_may)[17:23] <- c("dep_15_per_dep", "arr_15_per_dep", "dep_60_per_dep",
+	"arr_60_per_dep", "pb_15_per_dep", "pb_60_per_dep", "heavy_15_per_dep")
 dep_full <- rbind(dep_feb, dep_mar, dep_apr, dep_may)
 write.csv(dep_full, "dep_processed.csv", row.names = F)
 
-# 15分钟推出率、起飞率、接收率最大值
+# 15分钟推出率、起飞率、接收率、重型机
 window_count_feb_per15 <- read.csv("window_count_feb_per15.csv")
 window_count_mar_per15 <- read.csv("window_count_mar_per15.csv")
 window_count_apr_per15 <- read.csv("window_count_apr_per15.csv")
 window_count_may_per15 <- read.csv("window_count_may_per15.csv")
 # 将window_count结合成一个表
-names(window_count_feb_per15) <- c("dep_count_per15", "arr_count_per15", "pb_count_per15")
-names(window_count_mar_per15) <- c("dep_count_per15", "arr_count_per15", "pb_count_per15")
-names(window_count_apr_per15) <- c("dep_count_per15", "arr_count_per15", "pb_count_per15")
-names(window_count_may_per15) <- c("dep_count_per15", "arr_count_per15", "pb_count_per15")
+names(window_count_feb_per15) <- c("dep_count_per15", "arr_count_per15", 
+	"pb_count_per15", "heavy_count_per15")
+names(window_count_mar_per15) <- c("dep_count_per15", "arr_count_per15", 
+	"pb_count_per15", "heavy_count_per15")
+names(window_count_apr_per15) <- c("dep_count_per15", "arr_count_per15", 
+	"pb_count_per15", "heavy_count_per15")
+names(window_count_may_per15) <- c("dep_count_per15", "arr_count_per15", 
+	"pb_count_per15", "heavy_count_per15")
 window_count_per15 <- rbind(window_count_feb_per15, window_count_mar_per15,
 	window_count_apr_per15, window_count_may_per15)
 write.csv(window_count_per15, "window_count_feb2may.csv", row.names = F)

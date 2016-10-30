@@ -141,12 +141,17 @@ for (i in 1:length(arr_window_feb_per60)) {
 	arr_count_feb_per60[a] <- arr_count_feb_per60[a] + 1
 }
 
-window_count_feb_per15 <- data.frame(dep_count_feb_per15, arr_count_feb_per15, pb_count_feb_per15)
-window_count_feb_per60 <- data.frame(dep_count_feb_per60, arr_count_feb_per60, pb_count_feb_per60)
+window_count_feb_per15 <- data.frame(dep_count_feb_per15, arr_count_feb_per15, 
+	pb_count_feb_per15, heavy_count_feb_per15)
+window_count_feb_per60 <- data.frame(dep_count_feb_per60, arr_count_feb_per60, 
+	pb_count_feb_per60)
 write.csv(window_count_feb_per15, "window_count_feb_per15.csv", row.names = F)
 write.csv(window_count_feb_per60, "window_count_feb_per60.csv", row.names = F)
 
 ################################################################################
+################################################################################
+# 读取重型机数据
+source("dep_heavy_count.R")
 
 # 每架航班所在window的起降数（此处为全部起降航班计算得出的数字）
 # 15 minutes
@@ -154,21 +159,26 @@ write.csv(window_count_feb_per60, "window_count_feb_per60.csv", row.names = F)
 dep_feb_15_per_dep <- vector(mode = "numeric", length = 0)
 arr_feb_15_per_dep <- vector(mode = "numeric", length = 0)
 pb_feb_15_per_dep <- vector(mode = "numeric", length = 0)
+heavy_feb_per_dep <- vector(mode = "numeric", length = 0)
 for (i in 1:length(dep_window_feb_per15)) {
 	a <- dep_window_feb_per15[i]
 	dep_feb_15_per_dep[i] <- dep_count_feb_per15[a]
 	arr_feb_15_per_dep[i] <- arr_count_feb_per15[a]
 	pb_feb_15_per_dep[i] <- pb_count_feb_per15[a]
+	heavy_feb_per_dep[i] <- heavy_count_feb_per15[a]
 }
 # 为降落航班添加
 dep_feb_15_per_arr <- vector(mode = "numeric", length = 0)
 arr_feb_15_per_arr <- vector(mode = "numeric", length = 0)
 pb_feb_15_per_arr <- vector(mode = "numeric", length = 0)
+heavy_feb_per_arr <- vector(mode = "numeric", length = 0)
 for (i in 1:length(arr_window_feb_per15)) {
 	b <- arr_window_feb_per15[i]
 	dep_feb_15_per_arr[i] <- dep_count_feb_per15[b]
 	arr_feb_15_per_arr[i] <- arr_count_feb_per15[b]
 	pb_feb_15_per_arr[i] <- pb_count_feb_per15[b]
+	heavy_feb_per_arr[i] <- heavy_count_feb_per15[a]
+
 }
 
 # 60 minutes
@@ -200,14 +210,16 @@ dep_feb <- cbind(dep_origin_feb,
 		 data.frame(dep_feb_60_per_dep),
 		 data.frame(arr_feb_60_per_dep),
 		 data.frame(pb_feb_15_per_dep),
-		 data.frame(pb_feb_60_per_dep))
+		 data.frame(pb_feb_60_per_dep),
+		 data.frame(heavy_feb_per_dep))
 arr_feb <- cbind(arr_origin_feb,
 		 data.frame(dep_feb_15_per_arr),
 		 data.frame(arr_feb_15_per_arr),
 		 data.frame(dep_feb_60_per_arr),
 		 data.frame(arr_feb_60_per_arr),
 		 data.frame(pb_feb_15_per_arr),
-		 data.frame(pb_feb_60_per_arr))
+		 data.frame(pb_feb_60_per_arr),
+		 data.frame(heavy_feb_per_arr))
 
 
 ################################################################################
@@ -254,8 +266,10 @@ for (i in 1:length(arr_window_mar_per60)) {
 	arr_count_mar_per60[a] <- arr_count_mar_per60[a] + 1
 }
 
-window_count_mar_per15 <- data.frame(dep_count_mar_per15, arr_count_mar_per15, pb_count_mar_per15)
-window_count_mar_per60 <- data.frame(dep_count_mar_per60, arr_count_mar_per60, pb_count_mar_per60)
+window_count_mar_per15 <- data.frame(dep_count_mar_per15, arr_count_mar_per15, 
+	pb_count_mar_per15, heavy_count_mar_per15)
+window_count_mar_per60 <- data.frame(dep_count_mar_per60, arr_count_mar_per60, 
+	pb_count_mar_per60)
 write.csv(window_count_mar_per15, "window_count_mar_per15.csv", row.names = F)
 write.csv(window_count_mar_per60, "window_count_mar_per60.csv", row.names = F)
 
@@ -267,21 +281,25 @@ write.csv(window_count_mar_per60, "window_count_mar_per60.csv", row.names = F)
 dep_mar_15_per_dep <- vector(mode = "numeric", length = 0)
 arr_mar_15_per_dep <- vector(mode = "numeric", length = 0)
 pb_mar_15_per_dep <- vector(mode = "numeric", length = 0)
+heavy_mar_per_dep <- vector(mode = "numeric", length = 0)
 for (i in 1:length(dep_window_mar_per15)) {
 	a <- dep_window_mar_per15[i]
 	dep_mar_15_per_dep[i] <- dep_count_mar_per15[a]
 	arr_mar_15_per_dep[i] <- arr_count_mar_per15[a]
 	pb_mar_15_per_dep[i] <- pb_count_mar_per15[a]
+	heavy_mar_per_dep[i] <- heavy_count_mar_per15[a]
 }
 # 为降落航班添加
 dep_mar_15_per_arr <- vector(mode = "numeric", length = 0)
 arr_mar_15_per_arr <- vector(mode = "numeric", length = 0)
 pb_mar_15_per_arr <- vector(mode = "numeric", length = 0)
+heavy_mar_per_arr <- vector(mode = "numeric", length = 0)
 for (i in 1:length(arr_window_mar_per15)) {
 	b <- arr_window_mar_per15[i]
 	dep_mar_15_per_arr[i] <- dep_count_mar_per15[b]
 	arr_mar_15_per_arr[i] <- arr_count_mar_per15[b]
 	pb_mar_15_per_arr[i] <- pb_count_mar_per15[b]
+	heavy_mar_per_arr[i] <- heavy_count_mar_per15[a]
 }
 
 # 60 minutes
@@ -313,14 +331,16 @@ dep_mar <- cbind(dep_origin_mar,
 		 data.frame(dep_mar_60_per_dep),
 		 data.frame(arr_mar_60_per_dep),
 		 data.frame(pb_mar_15_per_dep),
-		 data.frame(pb_mar_60_per_dep))
+		 data.frame(pb_mar_60_per_dep),
+		 data.frame(heavy_mar_per_dep))
 arr_mar <- cbind(arr_origin_mar,
 		 data.frame(dep_mar_15_per_arr),
 		 data.frame(arr_mar_15_per_arr),
 		 data.frame(dep_mar_60_per_arr),
 		 data.frame(arr_mar_60_per_arr),
 		 data.frame(pb_mar_15_per_arr),
-		 data.frame(pb_mar_60_per_arr))
+		 data.frame(pb_mar_60_per_arr),
+		 data.frame(heavy_mar_per_arr))
 
 
 ################################################################################
@@ -367,8 +387,10 @@ for (i in 1:length(arr_window_apr_per60)) {
 	arr_count_apr_per60[a] <- arr_count_apr_per60[a] + 1
 }
 
-window_count_apr_per15 <- data.frame(dep_count_apr_per15, arr_count_apr_per15, pb_count_apr_per15)
-window_count_apr_per60 <- data.frame(dep_count_apr_per60, arr_count_apr_per60, pb_count_apr_per60)
+window_count_apr_per15 <- data.frame(dep_count_apr_per15, arr_count_apr_per15, 
+	pb_count_apr_per15, heavy_count_apr_per15)
+window_count_apr_per60 <- data.frame(dep_count_apr_per60, arr_count_apr_per60, 
+	pb_count_apr_per60)
 write.csv(window_count_apr_per15, "window_count_apr_per15.csv", row.names = F)
 write.csv(window_count_apr_per60, "window_count_apr_per60.csv", row.names = F)
 
@@ -380,21 +402,25 @@ write.csv(window_count_apr_per60, "window_count_apr_per60.csv", row.names = F)
 dep_apr_15_per_dep <- vector(mode = "numeric", length = 0)
 arr_apr_15_per_dep <- vector(mode = "numeric", length = 0)
 pb_apr_15_per_dep <- vector(mode = "numeric", length = 0)
+heavy_apr_per_dep <- vector(mode = "numeric", length = 0)
 for (i in 1:length(dep_window_apr_per15)) {
 	a <- dep_window_apr_per15[i]
 	dep_apr_15_per_dep[i] <- dep_count_apr_per15[a]
 	arr_apr_15_per_dep[i] <- arr_count_apr_per15[a]
 	pb_apr_15_per_dep[i] <- pb_count_apr_per15[a]
+	heavy_apr_per_dep[i] <- heavy_count_apr_per15[a]
 }
 # 为降落航班添加
 dep_apr_15_per_arr <- vector(mode = "numeric", length = 0)
 arr_apr_15_per_arr <- vector(mode = "numeric", length = 0)
 pb_apr_15_per_arr <- vector(mode = "numeric", length = 0)
+heavy_apr_per_arr <- vector(mode = "numeric", length = 0)
 for (i in 1:length(arr_window_apr_per15)) {
 	b <- arr_window_apr_per15[i]
 	dep_apr_15_per_arr[i] <- dep_count_apr_per15[b]
 	arr_apr_15_per_arr[i] <- arr_count_apr_per15[b]
 	pb_apr_15_per_arr[i] <- pb_count_apr_per15[b]
+	heavy_apr_per_arr[i] <- heavy_count_apr_per15[a]
 }
 
 # 60 minutes
@@ -426,14 +452,16 @@ dep_apr <- cbind(dep_origin_apr,
 		 data.frame(dep_apr_60_per_dep),
 		 data.frame(arr_apr_60_per_dep),
 		 data.frame(pb_apr_15_per_dep),
-		 data.frame(pb_apr_60_per_dep))
+		 data.frame(pb_apr_60_per_dep),
+		 data.frame(heavy_apr_per_dep))
 arr_apr <- cbind(arr_origin_apr,
 		 data.frame(dep_apr_15_per_arr),
 		 data.frame(arr_apr_15_per_arr),
 		 data.frame(dep_apr_60_per_arr),
 		 data.frame(arr_apr_60_per_arr),
 		 data.frame(pb_apr_15_per_arr),
-		 data.frame(pb_apr_60_per_arr))
+		 data.frame(pb_apr_60_per_arr),
+		 data.frame(heavy_apr_per_arr))
 
 
 ################################################################################
@@ -480,8 +508,10 @@ for (i in 1:length(arr_window_may_per60)) {
 	arr_count_may_per60[a] <- arr_count_may_per60[a] + 1
 }
 
-window_count_may_per15 <- data.frame(dep_count_may_per15, arr_count_may_per15, pb_count_may_per15)
-window_count_may_per60 <- data.frame(dep_count_may_per60, arr_count_may_per60, pb_count_may_per60)
+window_count_may_per15 <- data.frame(dep_count_may_per15, arr_count_may_per15, 
+	pb_count_may_per15, heavy_count_may_per15)
+window_count_may_per60 <- data.frame(dep_count_may_per60, arr_count_may_per60, 
+	pb_count_may_per60)
 write.csv(window_count_may_per15, "window_count_may_per15.csv", row.names = F)
 write.csv(window_count_may_per60, "window_count_may_per60.csv", row.names = F)
 
@@ -493,21 +523,25 @@ write.csv(window_count_may_per60, "window_count_may_per60.csv", row.names = F)
 dep_may_15_per_dep <- vector(mode = "numeric", length = 0)
 arr_may_15_per_dep <- vector(mode = "numeric", length = 0)
 pb_may_15_per_dep <- vector(mode = "numeric", length = 0)
+heavy_may_per_dep <- vector(mode = "numeric", length = 0)
 for (i in 1:length(dep_window_may_per15)) {
 	a <- dep_window_may_per15[i]
 	dep_may_15_per_dep[i] <- dep_count_may_per15[a]
 	arr_may_15_per_dep[i] <- arr_count_may_per15[a]
 	pb_may_15_per_dep[i] <- pb_count_may_per15[a]
+	heavy_may_per_dep[i] <- heavy_count_may_per15[a]
 }
 # 为降落航班添加
 dep_may_15_per_arr <- vector(mode = "numeric", length = 0)
 arr_may_15_per_arr <- vector(mode = "numeric", length = 0)
 pb_may_15_per_arr <- vector(mode = "numeric", length = 0)
+heavy_may_per_arr <- vector(mode = "numeric", length = 0)
 for (i in 1:length(arr_window_may_per15)) {
 	b <- arr_window_may_per15[i]
 	dep_may_15_per_arr[i] <- dep_count_may_per15[b]
 	arr_may_15_per_arr[i] <- arr_count_may_per15[b]
 	pb_may_15_per_arr[i] <- pb_count_may_per15[b]
+	heavy_may_per_arr[i] <- heavy_count_may_per15[a]
 }
 
 # 60 minutes
@@ -539,14 +573,16 @@ dep_may <- cbind(dep_origin_may,
 		 data.frame(dep_may_60_per_dep),
 		 data.frame(arr_may_60_per_dep),
 		 data.frame(pb_may_15_per_dep),
-		 data.frame(pb_may_60_per_dep))
+		 data.frame(pb_may_60_per_dep),
+		 data.frame(heavy_may_per_dep))
 arr_may <- cbind(arr_origin_may,
 		 data.frame(dep_may_15_per_arr),
 		 data.frame(arr_may_15_per_arr),
 		 data.frame(dep_may_60_per_arr),
 		 data.frame(arr_may_60_per_arr),
 		 data.frame(pb_may_15_per_arr),
-		 data.frame(pb_may_60_per_arr))
+		 data.frame(pb_may_60_per_arr),
+		 data.frame(heavy_may_per_arr))
 
 
 ################################################################################
