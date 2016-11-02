@@ -53,15 +53,20 @@ for (k in 1:arr_max) {
 ################################################################################
 # 做图
 # 使用ggplot2包进行画图，点的大小表示出现频率的高低
-library(ggplot2)
-ggplot(window_count_upper10, aes(x = window_count_upper10$arr_count_per15, 
-	y = window_count_upper10$dep_count_per15, 
-	size = window_count_upper10$node_prob)) +
-geom_point()
+#library(ggplot2)
+#ggplot(window_count_upper10, aes(x = window_count_upper10$arr_count_per15, 
+	#y = window_count_upper10$dep_count_per15, 
+	#size = window_count_upper10$node_prob)) +
+#geom_point() +
+#geom_line()
 
 # 图1
 # 使用高密度散点图
-smoothScatter(window_count_upper10$arr_count_per15, window_count_upper10$dep_count_per15)
+smoothScatter(window_count_upper10$arr_count_per15, 
+		window_count_upper10$dep_count_per15)
+
+plot(dep_count_per15 ~ arr_count_per15, data = window_count_upper10, 
+	cex = node_prob * 2, xlim = c(0, 20), ylim = c(0, 20))
 # 叠加mean、median、errorbar
 xl <- c(1:18)
 library(pracma)
@@ -71,7 +76,13 @@ lines(xl, dep_mean[1:18])
 
 # 图2
 dev.new()
-smoothScatter(window_count_upper10$arr_count_per15, window_count_upper10$dep_count_per15)
+smoothScatter(window_count_upper10$arr_count_per15, 
+		window_count_upper10$dep_count_per15)
 y_fit <- dep_mean[1:18]
 x_fit <- c(1:18)
 lines(x_fit, fitted(lm(y_fit ~ x_fit)))
+
+# 使用ggplot2
+library(ggplot2)
+ggplot(window_count_upper10, aes(x = arr_count_per15, y = dep_count_per15)) +
+	geom_point(alpha = .3)

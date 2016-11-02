@@ -21,7 +21,7 @@
 ## 1029
 1. 做出regression tree
 2. 完成operational throughput envelope
-3. 添加对重型机的研究，修改window_count.R文件，加入heavy_count，重新输出数据
+3. 添加对重型机的研究，修改window_count.R文件，加入heavy_count（包含起降），重新输出数据
 4. 使用pairs函数，做散点图矩阵（起、降、推出、重型）
 
 ## 各R文件功能
