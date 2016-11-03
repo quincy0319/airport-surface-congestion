@@ -1,28 +1,37 @@
 
 ## 1017
+
 1. 完成单一跑道运行模式的划分
 2. 在源数据中已添加各航班所在window、是否为主运行模式航班等信息
 3. function编写错误，仍使用原始方法
 
 ## 1018
+
 1. 完成分跑道航班数据处理
 2. 对各条跑道属于主运行模式的航班滑行时间进行分析，做直方图、概率分布
-3. 
 
 ## 1021
+
 1. 向window_count中添加推出率的计算
 
 ## 1024
+
 1. 将所有文件，原先为2月份的数据，修改为2-4月的数据并输出
 
 ## 1025
+
 1. 以离场流量为因变量，推出率和到场流量作为自变量，分析相关性
 
 ## 1029
+
 1. 做出regression tree
 2. 完成operational throughput envelope
 3. 添加对重型机的研究，修改window_count.R文件，加入heavy_count（包含起降），重新输出数据
 4. 使用pairs函数，做散点图矩阵（起、降、推出、重型）
+
+## 1102
+
+1. 重型机数据改成起降都有
 
 ## 各R文件功能
 * window_count.R 
@@ -50,15 +59,23 @@
 
 * dep_vs_pb_and_arr.R
 
-不同pb下的arr、dep关系；不同arr下的pb、dep关系‘’
+不同pb下的arr、dep关系；不同arr下的pb、dep关系
 
 * operational_throughput_envelope.R
 
 运行容量包线
 
+* regression_tree.R
+
+退化树模型
+
 * dep_heavy_count.R
 
 重型机数据
+
+* boxplot_arrival.R
+
+不同到场航班数情况下，起飞率的箱线图
 
 ****
 
@@ -91,6 +108,6 @@
 * window_count_feb2may.csv
 
 	四个月各window的15分钟dep arr pb值
-* heavy_ac.csv
+* heavy_dep_ac.csv heavy_arr_ac.csv
 
-	四个月所有重型机的源数据
+	四个月所有重型机的源数据（包括起降）

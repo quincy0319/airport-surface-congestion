@@ -7,9 +7,13 @@ rwy_flow_feb_per60 <- read.csv("rwy_flow_feb_per60.csv")
 # 各跑道的60分钟高密度散点图
 # smooth scatter pic per 60 minutes
 # rwy 36l
-dev.new()
+
+# 调出新绘图设备
+dev.new() 
+# 改变画布尺寸的代码
+win.graph(width = 15, height = 15, pointsize = 8)
 rwy_36l_feb_upper10 <- subset(rwy_flow_feb_per60, ((dep36l + arr36l) > 10), select = c(1,4))
-smoothScatter(rwy_36l_feb_upper10)
+smoothScatter(rwy_36l_feb_upper10, xlim = c(0, 30), ylim = c(0, 30))
 title("rwy_36l_feb_upper10")
 grid()
 a1 <- 4
