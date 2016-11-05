@@ -12,9 +12,13 @@ rwy_flow_feb_per60 <- read.csv("rwy_flow_feb_per60.csv")
 dev.new() 
 # 改变画布尺寸的代码
 win.graph(width = 15, height = 15, pointsize = 8)
-rwy_36l_feb_upper10 <- subset(rwy_flow_feb_per60, ((dep36l + arr36l) > 10), select = c(1,4))
-smoothScatter(rwy_36l_feb_upper10, xlim = c(0, 30), ylim = c(0, 30))
-title("rwy_36l_feb_upper10")
+rwy_36l_feb_upper10 <- subset(rwy_flow_feb_per60, 
+		((dep36l + arr36l) > 10), select = c(4, 1))
+smoothScatter(rwy_36l_feb_upper10, xlim = c(0, 30), ylim = c(0, 30),
+		xlab = "降落航班数（架次/15分钟）", 
+		ylab = "起飞航班数（架次/15分钟）")
+title("跑道36L起降航班高密度散点图")
+
 grid()
 a1 <- 4
 a2 <- 18
@@ -37,9 +41,14 @@ rwy_36l_feb_main <- subset(rwy_flow_feb_per60, (arr36l >= 226 / 11 - (7 * dep36l
 
 # rwy 36r
 dev.new()
-rwy_36r_feb_upper10 <- subset(rwy_flow_feb_per60, ((dep36r + arr36r) > 10), select = c(2, 5))
-smoothScatter(rwy_36r_feb_upper10)
-title("rwy_36r_feb_upper10")
+# 改变画布尺寸的代码
+win.graph(width = 15, height = 15, pointsize = 8)
+rwy_36r_feb_upper10 <- subset(rwy_flow_feb_per60, 
+	((dep36r + arr36r) > 10), select = c(5, 2))
+smoothScatter(rwy_36r_feb_upper10, xlim = c(0, 30), ylim = c(0, 30),
+		xlab = "降落航班数（架次/15分钟）",
+		ylab = "起飞航班数（架次/15分钟）")
+title("跑道36R起降航班高密度散点图")
 grid()
 a1 <- 28
 a2 <- 0
@@ -62,9 +71,14 @@ rwy_36r_feb_main <- subset(rwy_flow_feb_per60, (arr36r >= 0)
 
 # rwy 01
 dev.new()
-rwy_01_feb_upper10 <- subset(rwy_flow_feb_per60, ((dep01 + arr01) > 10), select = c(3, 6))
-smoothScatter(rwy_01_feb_upper10)
-title("rwy_01_feb_upper10")
+# 改变画布尺寸的代码
+win.graph(width = 15, height = 15, pointsize = 8)
+rwy_01_feb_upper10 <- subset(rwy_flow_feb_per60, 
+		((dep01 + arr01) > 10), select = c(6, 3))
+smoothScatter(rwy_01_feb_upper10, xlim = c(0, 30), ylim = c(0, 30),
+		xlab = "降落航班数（架次/15分钟）",
+		ylab = "起飞航班数（架次/15分钟）")
+title("跑道01起降航班高密度散点图")
 grid()
 a1 <- 5
 a2 <- 22
@@ -105,18 +119,21 @@ for (i in 1:672){
 			& (arr36l <= (94 * dep36l) / 23 + 38/23)
 			& (arr36l >= (94 * dep36l) / 23 - 1157/23)), 1, 0)
 }
+
 for (i in 1:672){ 
 	rwy_36r_chosen_hour_feb <- ifelse((arr36r >= 0)
 			& (arr36r <= 555 / 17 -(15 * dep36r) / 17)
 			& (arr36r <= 15)
 			& (arr36r >= 420 / 17 - (15 * dep36r) / 17), 1, 0)
 }
+
 for (i in 1:672){ 
 	rwy_01_chosen_hour_feb <- ifelse((arr01 >= 103 / 4 - (3 * dep01) / 4)
 			& (arr01 <= 657 / 20 -(3 * dep01) / 4
 			& (arr01 <= (14 * dep01) / 5 + 8)
 			& (arr01 >= (14 * dep01) / 5 - 173/5)), 1, 0)
 }
+
 detach(rwy_flow_feb_per60)
 data_main_configuration <- cbind(rwy_36l_chosen_hour_feb, rwy_36r_chosen_hour_feb, rwy_01_chosen_hour_feb)
 
