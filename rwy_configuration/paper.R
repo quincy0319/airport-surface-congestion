@@ -37,9 +37,9 @@ grid()
 points(c(18, 4), c(9, 8), pch = 3, cex = 3)
 # 主运行模式
 rwy_36l_main_config <- subset(rwy_36l_feb, 
-		(((dep36l - 9) ^ 2) + ((arr36l - 18) ^ 2) <= 16))
+		(((dep36l - 9) ^ 2) + ((arr36l - 18) ^ 2) <= 25))
 library(plotrix)
-draw.circle(x = 18, y = 10, radius = 4, lwd = 2)
+draw.circle(x = 18, y = 10, radius = 5, lwd = 2)
 
 ################################################################################
 # 图3-2
@@ -53,12 +53,13 @@ smoothScatter(rwy_36r_feb, xlim = c(0, 30), ylim = c(0, 30),
 		font.lab = 2)
 title("跑道36R起降航班高密度散点图")
 grid()
+points(c(11, 6), c(6, 24), pch = 3, cex = 3)
 
 # 主运行模式
 rwy_36r_main_config <- subset(rwy_36r_feb,
-		(((dep36r - 23) ^ 2) + ((arr36r - 9) ^ 2) <= 16))
+		(((dep36r - 24) ^ 2) + ((arr36r - 6) ^ 2) <= 25))
 library(plotrix)
-draw.circle(x = 9, y = 23, radius = 4, lwd = 2)
+draw.circle(x = 6, y = 24, radius = 5, lwd = 2)
 
 ################################################################################
 # 图3-3
@@ -72,12 +73,13 @@ smoothScatter(rwy_01_feb, xlim = c(0, 30), ylim = c(0, 30),
 		font.lab = 2)
 title("跑道01起降航班高密度散点图")
 grid()
+points(c(5, 19), c(10, 11), pch = 3, cex = 3)
 
 # 主运行模式
 rwy_01_main_config <- subset(rwy_01_feb,
-		(((dep01 - 13) ^ 2) + ((arr01 - 19) ^ 2) <= 16))
+		(((dep01 - 11) ^ 2) + ((arr01 - 19) ^ 2) <= 25))
 library(plotrix)
-draw.circle(x = 19, y = 13, radius = 4, lwd = 2)
+draw.circle(x = 19, y = 11, radius = 5, lwd = 2)
 
 ################################################################################
 # 属于主运行模式的航班
@@ -90,9 +92,9 @@ arr_feb_36r <- subset(arr_feb, rwy == "36R")
 dep_feb_01 <- subset(dep_feb, rwy == "1")
 arr_feb_01 <- subset(arr_feb, rwy == "1")
 attach(rwy_flow_feb_per60)
-rwy_36l_chosen <- ifelse(((dep36l - 9) ^ 2) + ((arr36l - 18) ^ 2) <= 16, 1, 0)
-rwy_36r_chosen <- ifelse(((dep36r - 23) ^ 2) + ((arr36r - 9) ^ 2) <= 16, 1, 0)
-rwy_01_chosen <- ifelse(((dep01 - 13) ^ 2) + ((arr01 - 19) ^ 2) <= 16, 1, 0)
+rwy_36l_chosen <- ifelse(((dep36l - 9) ^ 2) + ((arr36l - 18) ^ 2) <= 25, 1, 0)
+rwy_36r_chosen <- ifelse(((dep36r - 24) ^ 2) + ((arr36r - 6) ^ 2) <= 25, 1, 0)
+rwy_01_chosen <- ifelse(((dep01 - 11) ^ 2) + ((arr01 - 19) ^ 2) <= 25, 1, 0)
 detach(rwy_flow_feb_per60)
 
 # 36l analysis 
@@ -119,27 +121,12 @@ arr_feb_36l <- cbind(arr_feb_36l, flight_chosen_arr_36l)
 dep_feb_36l_main <- subset(dep_feb_36l, flight_chosen_dep_36l == 1)
 arr_feb_36l_main <- subset(arr_feb_36l, flight_chosen_arr_36l == 1)
 
-mean(dep_feb_36l_main$dep_taxi)
-sd(dep_feb_36l_main$dep_taxi)
-mean(arr_feb_36l_main$arr_taxi)
-sd(arr_feb_36l_main$arr_taxi)
-
-mean(dep_feb_36l$dep_taxi)
-sd(dep_feb_36l$dep_taxi)
-mean(arr_feb_36l$arr_taxi)
-sd(arr_feb_36l$arr_taxi)
-
 pairs( ~ dep_feb_60_per_dep + arr_feb_60_per_dep + pb_feb_60_per_dep + dep_taxi,
 	data = dep_feb_36l_main)
 pairs( ~ dep_feb_60_per_arr + arr_feb_60_per_arr + pb_feb_60_per_arr + arr_taxi,
 	data = arr_feb_36l_main)
 
-# kmeans
-library(fpc)
-set.seed(1403018)
-fit_kmeans <- kmeans(na.omit(rwy_36l_feb), centers = 2)
-plotcluster(na.omit(rwy_36l_feb), fit_kmeans$cluster)
-fit_kmeans
+
 
 # 36r analysis 
 attach(dep_feb_36r)
@@ -164,16 +151,6 @@ dep_feb_36r <- cbind(dep_feb_36r, flight_chosen_dep_36r)
 arr_feb_36r <- cbind(arr_feb_36r, flight_chosen_arr_36r)
 dep_feb_36r_main <- subset(dep_feb_36r, flight_chosen_dep_36r == 1)
 arr_feb_36r_main <- subset(arr_feb_36r, flight_chosen_arr_36r == 1)
-
-mean(dep_feb_36r_main$dep_taxi)
-sd(dep_feb_36r_main$dep_taxi)
-mean(arr_feb_36r_main$arr_taxi)
-sd(arr_feb_36r_main$arr_taxi)
-
-mean(dep_feb_36r$dep_taxi)
-sd(dep_feb_36r$dep_taxi)
-mean(arr_feb_36r$arr_taxi)
-sd(arr_feb_36r$arr_taxi)
 
 pairs( ~ dep_feb_60_per_dep + arr_feb_60_per_dep + pb_feb_60_per_dep + dep_taxi,
 	data = dep_feb_36r_main)
@@ -204,16 +181,6 @@ arr_feb_01 <- cbind(arr_feb_01, flight_chosen_arr_01)
 dep_feb_01_main <- subset(dep_feb_01, flight_chosen_dep_01 == 1)
 arr_feb_01_main <- subset(arr_feb_01, flight_chosen_arr_01 == 1)
 
-mean(dep_feb_01_main$dep_taxi)
-sd(dep_feb_01_main$dep_taxi)
-mean(arr_feb_01_main$arr_taxi)
-sd(arr_feb_01_main$arr_taxi)
-
-mean(dep_feb_01$dep_taxi)
-sd(dep_feb_01$dep_taxi)
-mean(arr_feb_01$arr_taxi)
-sd(arr_feb_01$arr_taxi)
-
 dev.new()
 dep_lab = c("离场架次/60分钟", "到场架次/60分钟", "推出架次/60分钟", "离场滑行时间")
 pairs( ~ dep_feb_60_per_dep + arr_feb_60_per_dep + pb_feb_60_per_dep + dep_taxi,
@@ -224,18 +191,83 @@ pairs( ~ dep_feb_60_per_arr + arr_feb_60_per_arr + pb_feb_60_per_arr + arr_taxi,
 	data = arr_feb_01_main,
 	labels = arr_lab)
 
-# 对比分析图
-dep_num <- c(4982, 10484, 5318)
-dep_num_main <- c(1824, 3062, 2202)
-dep_num <- rbind(dep_num, dep_num_main)
-names(dep_num) <- c("36L", "36R", "01")
-library(ggplot2)
-ggplot(dep_num, aes(x = dep_num)) +
-geom_bar()
-
 # kmeans
+# 36l
 library(fpc)
 set.seed(1403018)
-fit_kmeans <- kmeans(na.omit(rwy_36l_feb), centers = 2)
-plotcluster(na.omit(rwy_36l_feb), fit_kmeans$cluster)
-fit_kmeans
+fit_kmeans_36l <- kmeans(na.omit(rwy_36l_feb), centers = 2)
+plotcluster(na.omit(rwy_36l_feb), fit_kmeans_36l$cluster)
+fit_kmeans_36l$centers
+# 36r
+fit_kmeans_36r <- kmeans(na.omit(rwy_36r_feb), centers = 2)
+fit_kmeans_36r$centers
+# 01
+fit_kmeans_01 <- kmeans(na.omit(rwy_01_feb), centers = 2)
+fit_kmeans_01$centers
+
+# 柱状图
+dep_feb_flight <- c(4982, 10484, 5318)
+dep_feb_main <- c(2289, 4655, 2617)
+dep_feb_not_main <- dep_feb_flight - dep_feb_main
+dep_barplot <- rbind(dep_feb_main, dep_feb_not_main)
+colnames(dep_barplot) <- c("36L", "36R", "01")
+win.graph(width = 30, height = 18, pointsize = 8)
+par(mfrow = c(1, 2))
+barplot(dep_barplot,
+	ylim = c(0, 12000),
+	main = "离场航班运行模式",
+	cex.main = 2, 
+	xlab = "跑道", ylab = "航班架次",
+	col = c("blue", "yellow"),
+	cex.axis = 2, cex.names = 2, cex.lab = 1.1)
+legend("topleft", c("单一运行模式", "其他模式"), cex = 1.5, 
+	fill = c("blue", "yellow"))
+
+arr_feb_flight <- c(8365, 4799, 7793)
+arr_feb_main <- c(4624, 1269, 4369)
+arr_feb_not_main <- arr_feb_flight - arr_feb_main
+arr_barplot <- rbind(arr_feb_main, arr_feb_not_main)
+colnames(arr_barplot) <- c("36L", "36R", "01")
+barplot(arr_barplot,
+	ylim = c(0, 12000),
+	main = "进场航班运行模式",
+	cex.main = 2,
+	xlab = "跑道", ylab = "航班架次", 
+	col = c("blue", "yellow"),
+	cex.axis = 2, cex.names = 2, cex.lab = 1.1)
+legend("topleft", c("单一运行模式", "其他模式"), cex = 1.5,
+	fill = c("blue", "yellow"))
+
+# 选定模式下航班滑行时间分析
+# 36l
+mean(dep_feb_36l_main$dep_taxi)
+sd(dep_feb_36l_main$dep_taxi)
+mean(arr_feb_36l_main$arr_taxi)
+sd(arr_feb_36l_main$arr_taxi)
+
+mean(dep_feb_36l$dep_taxi)
+sd(dep_feb_36l$dep_taxi)
+mean(arr_feb_36l$arr_taxi)
+sd(arr_feb_36l$arr_taxi)
+
+# 36r
+mean(dep_feb_36r_main$dep_taxi)
+sd(dep_feb_36r_main$dep_taxi)
+mean(arr_feb_36r_main$arr_taxi)
+sd(arr_feb_36r_main$arr_taxi)
+
+mean(dep_feb_36r$dep_taxi)
+sd(dep_feb_36r$dep_taxi)
+mean(arr_feb_36r$arr_taxi)
+sd(arr_feb_36r$arr_taxi)
+
+# 01
+mean(dep_feb_01_main$dep_taxi)
+sd(dep_feb_01_main$dep_taxi)
+mean(arr_feb_01_main$arr_taxi)
+sd(arr_feb_01_main$arr_taxi)
+
+mean(dep_feb_01$dep_taxi)
+sd(dep_feb_01$dep_taxi)
+mean(arr_feb_01$arr_taxi)
+sd(arr_feb_01$arr_taxi)
