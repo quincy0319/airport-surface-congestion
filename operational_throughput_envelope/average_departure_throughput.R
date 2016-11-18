@@ -24,7 +24,8 @@ for (i in 1:pb_max_per15) {
 	dep_sd[i] <- sd(as.matrix(subset(window_count_per15, 
 		pb_count_per15 == i, select = 1)))
 }
-
+dep_pb <- c(1:max(pb_max_per15))
+dep_statistical_data <- data.frame(dep_mean, dep_median, dep_pb)
 # 做点图及误差线
 x <- c(1:27)
 # 同一推出率下起飞率的平均数、中位数、标准差
