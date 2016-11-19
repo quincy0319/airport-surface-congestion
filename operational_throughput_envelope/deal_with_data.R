@@ -61,3 +61,28 @@ names(window_count_may_per15) <- c("dep_count_per15", "arr_count_per15",
 window_count_per15 <- rbind(window_count_feb_per15, window_count_mar_per15,
 	window_count_apr_per15, window_count_may_per15)
 write.csv(window_count_per15, "window_count_feb2may.csv", row.names = F)
+
+pb_max_per15 <- max(window_count_per15$pb_count_per15)
+dep_max_per15 <- max(window_count_per15$dep_count_per15)
+arr_max_per15 <- max(window_count_per15$arr_count_per15)
+
+# 做曲线前准备的数据
+dep_mean <- vector(mode = "numeric", length = pb_max_per15)
+dep_median <- vector(mode = "numeric", length = pb_max_per15)
+dep_max <- vector(mode = "numeric", length = pb_max_per15)
+dep_min <- vector(mode = "numeric", length = pb_max_per15)
+dep_sd <- vector(mode = "numeric", length = pb_max_per15)
+for (i in 1:pb_max_per15) {
+	dep_mean[i] <- mean(as.matrix(subset(window_count_per15,
+		pb_count_per15 == i, select = 1)))
+	dep_median[i] <- median(as.matrix(subset(window_count_per15,
+		pb_count_per15 == i, select = 1)))
+	dep_max[i] <- max(as.matrix(subset(window_count_per15,
+		pb_count_per15 == i, select = 1)))
+	dep_min[i] <- min(as.matrix(subset(window_count_per15,
+		pb_count_per15 == i, select = 1)))
+	dep_sd[i] <- sd(as.matrix(subset(window_count_per15,
+		pb_count_per15 == i, select = 1)))
+}
+dep_pb <- c(1:max(pb_max_per15))
+dep_statistical_data <- data.frame(dep_mean, dep_median, dep_pb)
