@@ -20,7 +20,7 @@ plot1 <- dep_mean_plot +
 		aes(ymin = value + dep_min - value,
 			ymax = value + dep_max - value),
 			size = 1.1, width = .7, alpha = .5) +
-	geom_point(size = 3.5, alpha = .8) +
+	geom_point(size = 3.5, alpha = .8) + 
 	labs(x = "15分钟推出率", y = "15分钟起飞率", title = "推出率-起飞率分布") +
 	scale_x_discrete(limits = c(0, 30)) +
 	scale_x_continuous(limits = c(0, 30), breaks = c(0, 5, 10, 15, 20, 25, 30),
@@ -46,7 +46,7 @@ plot2 <- dep_regression_plot +
 	scale_x_continuous(limits = c(0, 30), breaks = c(0, 5, 10, 15, 20, 25, 30),
 		labels = c(0, 5, 10, 15, 20, 25, 30)) +
 # 由于颜色、点形状、线性均改变了，所以改变图例时也要将他们同时修改
-	scale_colour_discrete(name = "统计量", labels = c("平均数", "中位数")) +
+scale_colour_discrete(name = "统计量", labels = c("平均数", "中位数")) +
 	scale_shape_discrete(name = "统计量", labels = c("平均数", "中位数")) +
 	scale_linetype_discrete(name = "统计量", labels = c("平均数", "中位数"))
 
