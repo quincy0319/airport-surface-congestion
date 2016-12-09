@@ -17,11 +17,12 @@ dep_mean_plot <- ggplot(dep_statistical_data_long,
 # 绘制errorbar、二次拟合曲线
 plot1 <- dep_mean_plot +
 	geom_errorbar(data = dep_statistical_data_long,
-		aes(ymin = value + dep_min - value,
-			ymax = value + dep_max - value),
+		aes(ymin = value - dep_sd,
+			ymax = value + dep_sd),
 			size = 1.1, width = .7, alpha = .5) +
 	geom_point(size = 3.5, alpha = .8) + 
-	labs(x = "15分钟推出率", y = "15分钟起飞率", title = "推出率-起飞率分布") +
+	labs(x = "15分钟推出率", y = "15分钟起飞率", 
+		title = "(a)推出率-起飞率变化图", size = 2) +
 	scale_x_discrete(limits = c(0, 30)) +
 	scale_x_continuous(limits = c(0, 30), breaks = c(0, 5, 10, 15, 20, 25, 30),
 		labels = c(0, 5, 10, 15, 20, 25, 30)) +
@@ -41,14 +42,17 @@ plot2 <- dep_regression_plot +
 	geom_point(size = 2) +
 	geom_smooth(method = 'lm', formula = y ~ poly(x, 2),
 			size = 1.2, alpha = .1) +
-	labs(x = "15分钟推出率", y = "15分钟起飞率", title = "推出率-起飞率拟合曲线",
-		shape = "11", colour = "11") +
+	labs(x = "15分钟推出率", y = "15分钟起飞率", title = "(b)拟合曲线",
+		shape = "11", colour = "11", size = 2) +
 	scale_x_continuous(limits = c(0, 30), breaks = c(0, 5, 10, 15, 20, 25, 30),
 		labels = c(0, 5, 10, 15, 20, 25, 30)) +
 # 由于颜色、点形状、线性均改变了，所以改变图例时也要将他们同时修改
-scale_colour_discrete(name = "统计量", labels = c("平均数", "中位数")) +
-	scale_shape_discrete(name = "统计量", labels = c("平均数", "中位数")) +
-	scale_linetype_discrete(name = "统计量", labels = c("平均数", "中位数"))
+	scale_colour_discrete(name = "统计量", 
+		labels = c("平均数拟合线", "中位数拟合线")) +
+	scale_shape_discrete(name = "统计量", 
+		labels = c("平均数拟合线", "中位数拟合线")) +
+	scale_linetype_discrete(name = "统计量", 
+		labels = c("平均数拟合线", "中位数拟合线"))
 
 # 一页多图设置
 grid.newpage()

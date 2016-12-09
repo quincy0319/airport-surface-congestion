@@ -2,7 +2,7 @@
 setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
 # 四个月所有15分钟窗口的数据
 # 选取起飞大于6架次的时刻用来做average throughput envelope
-window_count <- read.csv("window_count_feb2may.csv")
+window_count <- read.csv("window_count_feb2may_per15.csv")
 window_count_6dep <- subset(window_count, dep_count_per15 > 6)
 
 dep_mean <- vector(mode = "numeric", length = 0)
