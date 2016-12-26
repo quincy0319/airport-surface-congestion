@@ -22,7 +22,7 @@ plot1 <- dep_mean_plot +
 			size = 1.1, width = .7, alpha = .5) +
 	geom_point(size = 3.5, alpha = .8) + 
 	labs(x = "15分钟推出率", y = "15分钟起飞率", 
-		title = "(a)推出率-起飞率变化图", size = 2) +
+		title = "推出率-起飞率变化图(a)", size = 2) +
 	scale_x_discrete(limits = c(0, 30)) +
 	scale_x_continuous(limits = c(0, 30), breaks = c(0, 5, 10, 15, 20, 25, 30),
 		labels = c(0, 5, 10, 15, 20, 25, 30)) +
