@@ -39,32 +39,28 @@ scale_x_continuous(limits = c(0, 96), breaks = c(0, 24, 48, 72, 96),
 # max surface count
 setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/surface_count")
 surface_count_max <- data.matrix(read.csv("surface_count_max.csv", header = FALSE))
-serial_num <- seq(from = 1, to = 127, by = 1)
-std_norm <- rnorm(127, mean = 51, sd = 9.48)
-surface_count_serial <- data.frame(serial_num, surface_count_max)
-std_norm_serial <- data.frame(serial_num, std_norm)
-surface_count_serial <- surface_count_serial[-60, ]
-std_norm_serial <- std_norm_analysis[-60, ]
-names(surface_count_serial) <- c("serial_num", "surface_count_maxx")
-names(std_norm_serial) <- c("serial_num", "surface_count_maxx")
-surface_count_analysis <- rbind(surface_count_serial, std_norm_serial)
-a <- rep("field study", times = 126)
-b <- rep("standard normal", times = 126)
-value <- c(a, b)
-
-surface_count_analysis <- data.frame(surface_count_analysis, value)
+serial_num <- seq(from = 1, to = 120, by = 1)
+surface_count_analysis <- data.frame(serial_num, surface_count_max)
 # exclude empty data from 1st apr 
+surface_count_analysis <- surface_count_analysis[-60,]
+names(surface_count_analysis) <- c("serial_num", "surface_count_maxx")
+a <- rep("field operation", times = 126)
+b <- rep("standard normal", times = 126)
 library(ggplot2)
 plot2 <- ggplot(surface_count_analysis, 
-		aes(x = surface_count_maxx, y = ..density..), colour = value)
+	aes(x = surface_count_maxx, y = ..density..))
 plot2 +
 geom_histogram(binwidth = 3, alpha = .6) +
-geom_line(stat = "density", size = 1.2, position = "identity") +
+geom_line(stat = "density", size = 1.2, 
+	position = "identity", colour = "red") +
 xlim(0, 85) +
 xlab("场面航班数最大值（架次/15分钟）") +
-ylab("频率")
+ylab("频率") 
+
 
 
 # distribution analysis
-surface_count_max_log <- log10(surface_count_analysis[, 2])
-shapiro.test(surface_count_max)
+# add random disturbance
+# k-s test
+ks.test(jitter(surface_count_max), "pnorm", 
+	mean(surface_count_max), sd(surface_count_max))
