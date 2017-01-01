@@ -36,10 +36,12 @@ labs(x = "时刻", y = "场面航班数/15分钟", title = "场面航班数变化图", size = 2) 
 scale_x_continuous(limits = c(0, 96), breaks = c(0, 24, 48, 72, 96),
 		labels = c("0000", "0600", "1200", "1800", "2400"))
 
-# max surface count
+###############################################################################
+
+# max surface count distribution
 setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/surface_count")
 surface_count_max <- data.matrix(read.csv("surface_count_max.csv", header = FALSE))
-serial_num <- seq(from = 1, to = 120, by = 1)
+serial_num <- seq(from = 1, to = 129, by = 1)
 surface_count_analysis <- data.frame(serial_num, surface_count_max)
 # exclude empty data from 1st apr 
 surface_count_analysis <- surface_count_analysis[-60,]
@@ -50,17 +52,58 @@ library(ggplot2)
 plot2 <- ggplot(surface_count_analysis, 
 	aes(x = surface_count_maxx, y = ..density..))
 plot2 +
-geom_histogram(binwidth = 3, alpha = .6) +
+geom_histogram(binwidth = 2, alpha = .6) +
 geom_line(stat = "density", size = 1.2, 
 	position = "identity", colour = "red") +
 xlim(0, 85) +
 xlab("场面航班数最大值（架次/15分钟）") +
 ylab("频率") 
 
-
-
 # distribution analysis
 # add random disturbance
 # k-s test
+set.seed(2333)
 ks.test(jitter(surface_count_max), "pnorm", 
 	mean(surface_count_max), sd(surface_count_max))
+
+###############################################################################
+
+# standard normal distribution
+library(ggplot2)
+plot_area <- function(min,max){
+function(x){
+	y <- dnorm(x)
+	y[x < min | x > max] <- NA
+	return(y)
+	}
+}
+
+pnorm(2.983)  #p-value
+
+ggplot(data.frame(x = c(-4, 4)), aes(x = x)) + 
+stat_function(fun = plot_area(3, 4), 
+	geom = "area", fill = "red", alpha = 0.2) +
+stat_function(fun=dnorm) + 
+geom_text(aes(y=0, x=c(3),label=paste("x=", "μ + 3σ"), vjust=1))
+
+
+###############################################################################
+
+# daily surface count 
+setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/surface_count")
+surface_count_max <- data.matrix(read.csv("surface_count_max.csv", header = FALSE))
+# delete fake data
+daily_max <- surface_count_max[1:120]
+daily_max <- daily_max[-60]
+# time seq
+date_seq_analysis <- strptime("2014-02-01", "%Y-%m-%d") + (3600 * 24) * (0:119)
+date_seq_analysis <- date_seq_analysis[-60]
+## remember to delete data from 1st apr.
+daily_surface_max <- data.frame(date_seq_analysis, daily_max)
+aa <- floor(mean(daily_max))
+bb <- floor(sd(daily_max))
+library(ggplot2)
+plot4 <- ggplot(daily_surface_max, aes(x = date_seq_analysis, y = daily_max))
+plot4 + geom_line(size = 1.1, colour = "red", alpha = .7) +
+geom_point(size = 2, shape = 17) +
+geom_hline(yintercept = c(72, 66), colour = "blue", size = 1.3, linetype = 2)
