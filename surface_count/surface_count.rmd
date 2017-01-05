@@ -18,3 +18,21 @@ plot(cars)
 ```
 
 Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+## surface count
+---
+
+1. surface_count.R
+
+	分为3个部分
+	 * 场面航班数统计，plot1绘制了任意四日场面航班数的变化状态
+	 * 场面航班数最大值分布研究，plot2绘制了场面航班数日最大值分布直方图与概率密度曲线，同时进行了ks检验
+	 * 每日场面航班数最大值变化曲线，添加了66和72两条基准线
+
+2. surface_count_feb2may.csv
+
+	场面航班数原始数据，2014年2月-5月，15分钟时间间隔
+
+3. surface_count_max
+
+	场面航班数日最大值数据，未剔除4月1日，添加f数据

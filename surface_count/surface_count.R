@@ -103,7 +103,7 @@ daily_surface_max <- data.frame(date_seq_analysis, daily_max)
 aa <- floor(mean(daily_max))
 bb <- floor(sd(daily_max))
 library(ggplot2)
-plot4 <- ggplot(daily_surface_max, aes(x = date_seq_analysis, y = daily_max))
-plot4 + geom_line(size = 1.1, colour = "red", alpha = .7) +
+plot3 <- ggplot(daily_surface_max, aes(x = date_seq_analysis, y = daily_max))
+plot3 + geom_line(size = 1.1, colour = "red", alpha = .7) +
 geom_point(size = 2, shape = 17) +
 geom_hline(yintercept = c(72, 66), colour = "blue", size = 1.3, linetype = 2)
