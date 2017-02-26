@@ -58,9 +58,13 @@ names(window_count_apr_per15) <- c("dep_count_per15", "arr_count_per15",
 	"pb_count_per15", "heavy_dep_per15", "heavy_arr_per15")
 names(window_count_may_per15) <- c("dep_count_per15", "arr_count_per15",
 	"pb_count_per15", "heavy_dep_per15", "heavy_arr_per15")
+dep_demand_per15 <- as.matrix(read.csv("dep_demand_per15.csv", header = F))
+dep_demand_per15 <- as.vector(dep_demand_per15)
 window_count_per15 <- rbind(window_count_feb_per15, window_count_mar_per15,
 	window_count_apr_per15, window_count_may_per15)
+window_count_per15 <- cbind(window_count_per15, dep_demand_per15)
 write.csv(window_count_per15, "window_count_feb2may.csv", row.names = F)
+
 
 pb_max_per15 <- max(window_count_per15$pb_count_per15)
 dep_max_per15 <- max(window_count_per15$dep_count_per15)
