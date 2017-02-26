@@ -69,13 +69,22 @@ write.csv(window_count_per15, "window_count_feb2may.csv", row.names = F)
 pb_max_per15 <- max(window_count_per15$pb_count_per15)
 dep_max_per15 <- max(window_count_per15$dep_count_per15)
 arr_max_per15 <- max(window_count_per15$arr_count_per15)
-
+dep_demand_max_per15 <- max(window_count_per15$dep_demand_per15)
 # 做曲线前准备的数据
 dep_mean <- vector(mode = "numeric", length = pb_max_per15)
 dep_median <- vector(mode = "numeric", length = pb_max_per15)
 dep_max <- vector(mode = "numeric", length = pb_max_per15)
 dep_min <- vector(mode = "numeric", length = pb_max_per15)
 dep_sd <- vector(mode = "numeric", length = pb_max_per15)
+
+demand_mean <- vector(mode = "numeric", length = dep_demand_max_per15)
+demand_median <- vector(mode = "numeric", length = dep_demand_max_per15)
+demand_max <- vector(mode = "numeric", length = dep_demand_max_per15)
+demand_min <- vector(mode = "numeric", length = dep_demand_max_per15)
+demand_sd <- vector(mode = "numeric", length = dep_demand_max_per15)
+
+###############################################################################
+# pushback
 for (i in 1:pb_max_per15) {
 	dep_mean[i] <- mean(as.matrix(subset(window_count_per15,
 		pb_count_per15 == i, select = 1)))
@@ -90,3 +99,20 @@ for (i in 1:pb_max_per15) {
 }
 dep_pb <- c(1:max(pb_max_per15))
 dep_statistical_data <- data.frame(dep_mean, dep_median, dep_pb)
+
+###############################################################################
+# dep_demand
+for (i in 1:dep_demand_max_per15) {
+	demand_mean[i] <- mean(as.matrix(subset(window_count_per15,
+		dep_demand_per15 == i, select = 1)))
+	demand_median[i] <- median(as.matrix(subset(window_count_per15,
+		dep_demand_per15 == i, select = 1)))
+	demand_max[i] <- max(as.matrix(subset(window_count_per15,
+		dep_demand_per15 == i, select = 1)))
+	demand_min[i] <- min(as.matrix(subset(window_count_per15,
+		dep_demand_per15 == i, select = 1)))
+	demand_sd[i] <- sd(as.matrix(subset(window_count_per15,
+		dep_demand_per15 == i, select = 1)))
+}
+dep_demand <- c(1:max(dep_demand_per15))
+demand_statistical_data <- data.frame(demand_mean, demand_median, dep_demand)
