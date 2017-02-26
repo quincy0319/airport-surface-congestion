@@ -25,9 +25,9 @@ plot1 <- dep_mean_plot +
 	geom_point(size = 3.5, alpha = .8) + 
 	labs(x = "15分钟场面离场航班数", y = "15分钟起飞率", 
 		title = "推出率-离场航班数变化图(a)", size = 2) +
-	scale_x_discrete(limits = c(0, 30)) +
-	scale_x_continuous(limits = c(0, 30), breaks = c(0, 5, 10, 15, 20, 25, 30),
-		labels = c(0, 5, 10, 15, 20, 25, 30)) +
+	scale_x_discrete(limits = c(0, 60)) +
+	scale_x_continuous(limits = c(0, 60), breaks = c(0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60),
+		labels = c(0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60)) +
 	scale_colour_discrete(name = "统计量", labels = c("平均数", "中位数")) +
 	scale_shape_discrete(name = "统计量", labels = c("平均数", "中位数")) +
 	scale_linetype_discrete(name = "统计量", labels = c("平均数", "中位数"))
@@ -46,8 +46,8 @@ plot2 <- demand_regression_plot +
 			size = 1.2, alpha = .1) +
 	labs(x = "15分钟场面离场航班数", y = "15分钟起飞率", title = "(b)拟合曲线",
 		shape = "11", colour = "11", size = 2) +
-	scale_x_continuous(limits = c(0, 30), breaks = c(0, 5, 10, 15, 20, 25, 30),
-		labels = c(0, 5, 10, 15, 20, 25, 30)) +
+	scale_x_continuous(limits = c(0, 60), breaks = c(0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60),
+		labels = c(0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60)) +
 # 由于颜色、点形状、线性均改变了，所以改变图例时也要将他们同时修改
 	scale_colour_discrete(name = "统计量", 
 		labels = c("平均数拟合线", "中位数拟合线")) +
