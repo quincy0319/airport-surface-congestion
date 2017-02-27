@@ -1,8 +1,4 @@
-# hp dir
-# setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
-# dell dir
-setwd("C:/Users/quyef/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
-
+setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
 # paper chapter 2
 # dep_rate~dep_demand关系图、误差线、拟合曲线
 source("deal_with_data.R")

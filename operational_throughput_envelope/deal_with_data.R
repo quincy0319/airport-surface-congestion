@@ -1,9 +1,6 @@
 # 推出率-起飞率曲线
 # 读取2-5月数据
-# hp dir
-# setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
-# dell dir
-setwd("C:/Users/quyef/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
+setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
 
 dep_feb <- read.csv("dep_feb_processed.csv")
 arr_feb <- read.csv("arr_feb_processed.csv")
