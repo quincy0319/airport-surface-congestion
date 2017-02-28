@@ -134,7 +134,7 @@ window_count_per15 <- read.csv("window_count_feb2may.csv")
 plot(x_y1, y1, lty = 1, cex = 0, xlab = "", ylab = "")
 grid()
 title(xlab = "离场场面航班数（架次/15分钟）", ylab = "起飞率平均数（架次/15分钟）")
-for (j in c(1, 3, 5, 7, 9, 10, 11, 13, 15, 17, 19, 20)) {
+for (j in c(0, 1, 3, 5, 7, 9, 10, 11, 13, 15, 17, 19, 20)) {
 	window_sub <- subset(window_count_per15, arr_count_per15 == j)
 	demand_max_per15 <- max(window_sub$dep_demand_per15)
 	dep_max_per15 <- max(window_sub$dep_count_per15)
@@ -174,7 +174,7 @@ plot(y1, x_y1, lty = 1, cex = 0, xlab = "", ylab = "",
 	xlim = c(0, 20), ylim = c(0, 30))
 grid()
 title(xlab = "接收率（架次/15分钟）", ylab = "起飞率平均数（架次/15分钟）")
-for (j in c(1, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60)) {
+for (j in c(0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60)) {
 	window_sub <- subset(window_count_per15, dep_demand_per15 == j)
 	demand_max_per15 <- max(window_sub$dep_demand_per15)
 	dep_max_per15 <- max(window_sub$dep_count_per15)
@@ -207,4 +207,87 @@ for (j in c(1, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60)) {
 	fit_mean_3 <- lm(y_mean ~ x + I(x ^ 2))
 	lines(x, fitted(fit_mean_3), lwd = 1.8)
 }
-# not 
+
+# boxplot all arr vs 5 arr
+# 5arr 10arr allarr
+window_count_per15 <- read.csv("window_count_feb2may.csv")
+window_sub_5arr <- subset(window_count_per15, arr_count_per15 == 5)
+window_sub_10arr <- subset(window_count_per15, arr_count_per15 == 10)
+boxplot(dep_demand_per15 ~ dep_count_per15, data = window_count_per15,
+	xlim = c(0, 30),
+	xlab = "离场场面航班数（架次/15分钟）", ylab = "起飞率（架次/15分钟）")
+boxplot(dep_demand_per15 ~ dep_count_per15, data = window_sub_5arr,
+	xlim = c(0, 30),
+	xlab = "离场场面航班数（架次/15分钟）", ylab = "起飞率（架次/15分钟）")
+boxplot(dep_demand_per15 ~ dep_count_per15, data = window_sub_10arr,
+	xlim = c(0, 30),
+	xlab = "离场场面航班数（架次/15分钟）", ylab = "起飞率（架次/15分钟）")
+
+###############################################################################
+# regression tree package 调用分类树
+library(rpart)
+set.seed(0402)
+rt_fit <- rpart(dep_count_per15 ~ arr_count_per15 + dep_demand_per15,
+		data = window_count_per15, method = "anova")
+rt_fit$cptable
+
+# 可读性更强的画树包
+library(maptree)
+draw.tree(rt_fit, cex = 0.8, nodeinfo = TRUE, col = gray(0:8 / 8))
+
+###############################################################################
+# 选取只有重型机起飞的时刻
+window_count_per15 <- read.csv("window_count_feb2may.csv")
+window_only_dep <- subset(window_count_per15, arr_count_per15 == 0)
+max(window_only_dep$heavy_dep_per15)
+window_only_heavy_dep <- subset(window_only_dep, heavy_dep_per15 == 6)
+# operational throughput envelope(ote)
+window_dep_25 <- subset(window_count_per15, dep_demand_per15 <= 25)
+window_dep_2025 <- subset(window_dep_25, dep_demand_per15 >= 20)
+window_dep_2015_6 <- subset(window_dep_2025, dep_count_per15 >= 6)
+ote <- subset(window_dep_2015_6, select = c(1, 2))
+# evaluate point weight
+ote_weight_matrix <- table(ote)
+ote_weight <- vector(mode = "numeric", length = 2511)
+for (i in 1:2511) {
+	a <- ote[i, 1]
+	b <- ote[i, 2]
+	aa <- a - 5
+	bb <- b + 1
+	ote_weight[i] <- ote_weight_matrix[aa, bb]
+}
+ote <- data.frame(ote, ote_weight)
+# ote linear regression
+ote_lm <- lm(dep_count_per15 ~ arr_count_per15 + I(arr_count_per15 ^ 2), data = ote)
+xmin <- min(ote$arr_count_per15)
+xmax <- max(ote$arr_count_per15)
+predicted <- data.frame(arr_count_per15 = seq(xmin, xmax, length.out = 2511))
+predicted$dep_count_per15 <- predict(ote_lm, predicted)
+
+# ote in ggplot
+library(ggplot2)
+ote_plot <- ggplot(ote, aes(x = arr_count_per15, y = dep_count_per15, size = ote_weight))
+ote_plot + geom_line(data = predicted, size = 2) + geom_point() +
+xlab("接收率（架次/15分钟）") + ylab("起飞率（架次/15分钟）") +
+labs(size = "数据频次")
+
+
+
+###############################################################################
+
+setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
+# paper chapter 5
+dep_processed <- read.csv("dep_processed_feb2may.csv")
+adjusted_traffic <- vector(mode = "numeric", length = nrow(dep_processed))
+for (i in 1:nrow(dep_processed)) {
+	date_of_i <- dep_processed$mission_full_date[i]
+	dep_demand_of_i <- dep_processed$dep_15_per_dep[i]
+	t_min <- dep_processed$pb_time[i]
+	t_max <- dep_processed$time_takeoff_real[i]
+	dep_no_midnight <- subset(dep_processed, pb_time <= time_takeoff_real)
+	dep_sameday <- subset(dep_no_midnight, mission_full_date == date_of_i)
+ 	dep_sameday_pb <- subset(dep_sameday, pb_time >= t_min)
+	dep_sameday_pb_to <- subset(dep_sameday, pb_time <= t_max)
+	nadj <- nrow(dep_sameday_pb_to) + dep_demand_of_i
+	adjusted_traffic[i] <- nadj
+}
