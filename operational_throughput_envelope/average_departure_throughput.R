@@ -342,6 +342,7 @@ plot_output <- plot_taxi_adj +
 			ymax = taxi_mean + taxi_sd),
 			size = 0.9, width = .7, alpha = .5) +
 	geom_point(size = 3.5, alpha = .8) +
+	geom_smooth(method = "lm") +
 	labs(x = "修正场面航班数（架次/15分钟）", y = "离场滑行时间（分钟）", size = 2) +
 	scale_x_discrete(limits = c(0, 60)) +
 	scale_x_continuous(limits = c(0, 60), breaks = c(0, 5, 10, 15, 20, 25,
