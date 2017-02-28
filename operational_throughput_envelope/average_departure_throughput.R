@@ -127,9 +127,14 @@ plot(x_y1, y1, lty = 1, cex = 1)
 fit_mean_2_0arr <- lm(y1 ~ x_y1 + I(x_y1 ^ 2))
 lines(x_y1, fitted(fit_mean_2_0arr))
 
-################################################################################
+###############################################################################
+# different arr
 # 1-25 arr
-for (j in 1:25) {
+window_count_per15 <- read.csv("window_count_feb2may.csv")
+plot(x_y1, y1, lty = 1, cex = 0, xlab = "", ylab = "")
+grid()
+title(xlab = "离场场面航班数（架次/15分钟）", ylab = "起飞率平均数（架次/15分钟）")
+for (j in c(1, 3, 5, 7, 9, 10, 11, 13, 15, 17, 19, 20)) {
 	window_sub <- subset(window_count_per15, arr_count_per15 == j)
 	demand_max_per15 <- max(window_sub$dep_demand_per15)
 	dep_max_per15 <- max(window_sub$dep_count_per15)
@@ -160,5 +165,46 @@ for (j in 1:25) {
 	# 回归分析
 	# 2次
 	fit_mean_2 <- lm(y_mean ~ x + I(x ^ 2))
-	lines(x, fitted(fit_mean_2))
+	lines(x, fitted(fit_mean_2), lwd = 1.8)
 }
+
+# different demand 
+window_count_per15 <- read.csv("window_count_feb2may.csv")
+plot(y1, x_y1, lty = 1, cex = 0, xlab = "", ylab = "",
+	xlim = c(0, 20), ylim = c(0, 30))
+grid()
+title(xlab = "接收率（架次/15分钟）", ylab = "起飞率平均数（架次/15分钟）")
+for (j in c(1, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60)) {
+	window_sub <- subset(window_count_per15, dep_demand_per15 == j)
+	demand_max_per15 <- max(window_sub$dep_demand_per15)
+	dep_max_per15 <- max(window_sub$dep_count_per15)
+	arr_max_per15 <- max(window_sub$arr_count_per15)
+	dep_mean <- vector(mode = "numeric", length = arr_max_per15)
+	dep_median <- vector(mode = "numeric", length = arr_max_per15)
+	dep_max <- vector(mode = "numeric", length = arr_max_per15)
+	dep_min <- vector(mode = "numeric", length = arr_max_per15)
+	dep_sd <- vector(mode = "numeric", length = arr_max_per15)
+	for (i in 1:arr_max_per15) {
+		dep_mean[i] <- mean(as.matrix(subset(window_sub,
+			arr_count_per15 == i, select = 1)))
+		dep_median[i] <- median(as.matrix(subset(window_sub,
+			arr_count_per15 == i, select = 1)))
+		dep_max[i] <- max(as.matrix(subset(window_sub,
+			arr_count_per15 == i, select = 1)))
+		dep_min[i] <- min(as.matrix(subset(window_sub,
+			arr_count_per15 == i, select = 1)))
+		dep_sd[i] <- sd(as.matrix(subset(window_sub,
+			arr_count_per15 == i, select = 1)))
+	}
+	x <- c(1:length(dep_mean))
+	# 同一推出率下起飞率的平均数、中位数、标准差
+	y_mean <- floor(dep_mean[c(1:length(dep_mean))])
+	x <- x[is.na(y_mean) == F]
+	y_mean <- na.omit(y_mean)
+	################################################################################
+	# 回归分析
+	# 2次
+	fit_mean_3 <- lm(y_mean ~ x + I(x ^ 2))
+	lines(x, fitted(fit_mean_3), lwd = 1.8)
+}
+# not 
