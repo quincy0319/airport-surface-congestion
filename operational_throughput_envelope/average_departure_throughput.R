@@ -330,6 +330,7 @@ for (i in 1:adj_max) {
 		adjusted_traffic == i, select = 1)))
 }
 adj_taxi_num <- c(1:max(adj_max))
+# mean regression fit data
 adj_statistical_data <- data.frame(taxi_mean, adj_taxi_num)
 
 library(ggplot2)
@@ -353,3 +354,32 @@ plot_output <- plot_taxi_adj +
 		30, 35, 40),
 		labels = c(0, 5, 10, 15, 20, 25, 30, 35, 40))
 
+###############################################################################
+# ramp 531~536 unimpeded taxi time
+setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
+dep_processed <- read.csv("dep_processed_feb2may.csv")
+dep_ramp10 <- subset(dep_processed, ramp == 10)
+dep_taxi_ramp10 <- dep_ramp10$dep_taxi
+adj_traffic_ramp10 <- dep_ramp10$adjusted_traffic
+adj_taxi_ramp10 <- data.frame(dep_taxi_ramp10, adj_traffic_ramp10)
+adj_taxi_ramp10_unimpeded <- subset(adj_taxi_ramp10, adj_traffic_ramp10 < 12)
+# taxi time distribution
+# fit by matlab
+unimpeded_taxi_time_ramp_10 <- mean(adj_taxi_ramp10_unimpeded$dep_taxi_ramp10)
+
+# all ramp mean taxi_time
+setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
+dep_processed <- read.csv("dep_processed_feb2may.csv")
+unimpeded_taxi_time <- vector(mode = "numeric", length = 33)
+for (i in 1:33) {
+	dep_ramp_i <- subset(dep_processed, ramp == i)
+	adj_taxi_ramp_i_unimpeded <- subset(dep_ramp_i, adjusted_traffic < 12)
+	unimpeded_taxi_time[i] <- mean(adj_taxi_ramp_i_unimpeded$dep_taxi)
+}
+unimpeded_taxi <- vector(mode = "numeric", length = nrow(dep_processed))
+for (j in 1:nrow(dep_processed)) {
+	ramp_num <- dep_processed$ramp[j]
+	unimpeded_taxi <- unimpeded_taxi_time[ramp_num]
+}
+dep_processed <- data.frame(dep_processed, unimpeded_taxi)
+write.csv(dep_processed, "dep_processed.csv", row.names = F)
