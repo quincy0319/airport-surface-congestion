@@ -388,5 +388,11 @@ write.csv(dep_processed, "dep_processed.csv", row.names = F)
 
 ###############################################################################
 # taxi_time simulation
+setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
 dep_processed <- read.csv("dep_processed.csv")
 taxi_delay <- dep_processed$dep_taxi - dep_processed$unimpeded_taxi
+dep_processed <- data.frame(dep_processed, taxi_delay)
+# delay distribution
+library(ggplot2)
+delay_dis <- ggplot(dep_processed, aes(x = taxi_delay))
+delay_dis + geom_histogram(binwidth = 5, fill = "lightblue", colour = "black")
