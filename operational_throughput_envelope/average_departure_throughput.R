@@ -84,7 +84,7 @@ window_count_per15 <- read.csv("window_count_feb2may.csv")
 # 不同arr下的子集，arr最大值为25
 # 用循环的方式，
 
-window_sub_0arr <- subset(window_count_per15, arr_count_per15 == 0)
+window_sub_0arr <- subset(window_count_per15, arr_count_per15 == 15)
 
 # 0arr
 demand_max_per15_0arr <- max(window_sub_0arr$dep_demand_per15)
@@ -130,6 +130,7 @@ lines(x_y1, fitted(fit_mean_2_0arr))
 ###############################################################################
 # different arr
 # 1-25 arr
+setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
 window_count_per15 <- read.csv("window_count_feb2may.csv")
 plot(x_y1, y1, lty = 1, cex = 0, xlab = "", ylab = "")
 grid()
@@ -174,7 +175,7 @@ plot(y1, x_y1, lty = 1, cex = 0, xlab = "", ylab = "",
 	xlim = c(0, 20), ylim = c(0, 30))
 grid()
 title(xlab = "接收率（架次/15分钟）", ylab = "起飞率平均数（架次/15分钟）")
-for (j in c(0, 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60)) {
+for (j in c(0, 10, 20, 40)) {
 	window_sub <- subset(window_count_per15, dep_demand_per15 == j)
 	demand_max_per15 <- max(window_sub$dep_demand_per15)
 	dep_max_per15 <- max(window_sub$dep_count_per15)
@@ -379,7 +380,13 @@ for (i in 1:33) {
 unimpeded_taxi <- vector(mode = "numeric", length = nrow(dep_processed))
 for (j in 1:nrow(dep_processed)) {
 	ramp_num <- dep_processed$ramp[j]
-	unimpeded_taxi <- unimpeded_taxi_time[ramp_num]
+	unimpeded_taxi[j] <- unimpeded_taxi_time[ramp_num]
 }
 dep_processed <- data.frame(dep_processed, unimpeded_taxi)
+dep_processed <- dep_processed[-50196, ]
 write.csv(dep_processed, "dep_processed.csv", row.names = F)
+
+###############################################################################
+# taxi_time simulation
+dep_processed <- read.csv("dep_processed.csv")
+taxi_delay <- dep_processed$dep_taxi - dep_processed$unimpeded_taxi
