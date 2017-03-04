@@ -1,6 +1,27 @@
+# chapter 2
+# average taxi time & taxi time distribution
 setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
+dep_processed <- read.csv("dep_processed.csv")
+arr_processed <- read.csv("arr_processed_feb2may.csv")
+mean(dep_processed$dep_taxi)
+mean(arr_processed$arr_taxi)
+# distribution of taxi time
+library(ggplot2)
+plot_taxi_dis_dep <- ggplot(dep_processed, aes(x = dep_taxi, y = ..density..))
+plot_taxi_dis_dep +
+geom_histogram(binwidth = 2, fill = "lightblue", colour = "black") +
+geom_vline(xintercept = mean(dep_processed$dep_taxi), colour = "red", size = 2) +
+scale_x_continuous(limits = c(0, 70))
+
+plot_taxi_dis_arr <- ggplot(arr_processed, aes(x = arr_taxi, y = ..density..))
+plot_taxi_dis_arr +
+geom_histogram(binwidth = 2, fill = "lightblue", colour = "black") +
+geom_vline(xintercept = mean(arr_processed$arr_taxi), colour = "red", size = 2) +
+scale_x_continuous(limits = c(0, 70))
+
 # paper chapter 4
 # dep_rate~dep_demand关系图、误差线、拟合曲线
+setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
 source("deal_with_data.R")
 library(ggplot2)
 library(reshape2)
@@ -421,3 +442,5 @@ window_n_upper46 <- subset(window_count, dep_demand_per15 > 46)
 # 0214 test
 dep_test_0214 <- subset(dep_processed, mission_month == 2 & mission_date == 14)
 window_test_0214 <- window_count[(13 * 96 + 1):(14 * 96), ]
+dep_taxi_delay_50demand <- subset(dep_processed, dep_demand == 50)
+taxi_delay_50demand <- mean(dep_taxi_delay_50demand$dep_taxi - dep_taxi_delay_50demand$unimpeded_taxi)
