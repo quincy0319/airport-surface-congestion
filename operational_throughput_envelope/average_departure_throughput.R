@@ -22,8 +22,7 @@ plot1 <- dep_mean_plot +
 			ymax = value + demand_sd),
 			size = 1.1, width = .7, alpha = .5) +
 	geom_point(size = 3.5, alpha = .8) + 
-	labs(x = "15分钟场面离场航班数", y = "15分钟起飞率", 
-		title = "离场航班数-起飞率变化图(a)", size = 2) +
+	labs(x = "15分钟场面离场航班数", y = "15分钟起飞率", size = 3) +
 	scale_x_discrete(limits = c(0, 60)) +
 	scale_x_continuous(limits = c(0, 60), breaks = c(0, 5, 10, 15, 20, 25,
 		30, 35, 40, 45, 50, 55, 60),
@@ -392,7 +391,33 @@ setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/ope
 dep_processed <- read.csv("dep_processed.csv")
 taxi_delay <- dep_processed$dep_taxi - dep_processed$unimpeded_taxi
 dep_processed <- data.frame(dep_processed, taxi_delay)
+# mean taxi delay
+mean_taxi_delay <- vector(mode = "numeric", length = 33)
+for (i in 1:33) {
+	dep_ramp_i <- subset(dep_processed, ramp == i)
+	mean_taxi_delay[i] <- mean(dep_ramp_i$taxi_delay)
+}
+
 # delay distribution
 library(ggplot2)
-delay_dis <- ggplot(dep_processed, aes(x = taxi_delay))
-delay_dis + geom_histogram(binwidth = 5, fill = "lightblue", colour = "black")
+delay_dis <- ggplot(dep_processed, aes(x = taxi_delay, y = ..density..))
+delay_dis +
+geom_histogram(binwidth = 5, fill = "lightblue", colour = "black") +
+geom_density(colour = "black")
+# erlang distribution
+erlang_function <- function(x, k, l = 1) {
+	erlang_function <- dgamma(x, k, l)
+	erlang_function
+}
+
+###############################################################################
+# chapter 6
+# time interval that surface count upper than 46
+setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
+dep_processed <- read.csv("dep_processed.csv")
+window_count <- read.csv("window_count_feb2may.csv")
+window_n_upper46 <- subset(window_count, dep_demand_per15 > 46)
+
+# 0214 test
+dep_test_0214 <- subset(dep_processed, mission_month == 2 & mission_date == 14)
+window_test_0214 <- window_count[(13 * 96 + 1):(14 * 96), ]
