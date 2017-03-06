@@ -19,7 +19,53 @@ geom_histogram(binwidth = 2, fill = "lightblue", colour = "black") +
 geom_vline(xintercept = mean(arr_processed$arr_taxi), colour = "red", size = 2) +
 scale_x_continuous(limits = c(0, 70))
 
-# paper chapter 4
+# daily average taxi time
+dep_processed <- read.csv("dep_processed.csv")
+dep_daily_mean_taxi <- vector(mode = "numeric", length = 120)
+for (i in 1:120) {
+	dep_daily_taxi <- subset(dep_processed, day_of_case == i, select = 14)
+	dep_daily_mean_taxi[i] <- mean(dep_daily_taxi$dep_taxi)
+}
+day_of_case <- seq(from = 1, to = 120, by = 1)
+dep_daily_mean_taxi <- data.frame(dep_daily_mean_taxi, day_of_case)
+dep_daily_mean_taxi <- dep_daily_mean_taxi[-60, ]
+library(ggplot2)
+plot_dep_daily_taxi <- ggplot(dep_daily_mean_taxi, aes(x = day_of_case, y = dep_daily_mean_taxi))
+plot_dep_daily_taxi + geom_line(size = 1.5) + geom_point()
+
+# scatter matrix of dep arr taxi
+window_count <- read.csv("window_count.csv")
+
+panel.cor <- function(x, y, digits = 2, prefix = "", cex.cor, ...) {
+	usr <- par("usr");
+	on.exit(par(usr))
+	par(usr = c(0, 1, 0, 1))
+	r <- abs(cor(x, y))
+	txt <- format(c(r, 0.123456789), digits = digits)[1]
+	txt <- paste0(prefix, txt)
+	if (missing(cex.cor)) cex.cor <- 0.8 / strwidth(txt)
+	text(0.5, 0.5, txt, cex = cex.cor * r)
+}
+
+panel.hist <- function(x, ...) {
+	usr <- par("usr");
+	on.exit(par(usr))
+	par(usr = c(usr[1:2], 0, 1.5))
+	h <- hist(x, plot = FALSE)
+	breaks <- h$breaks;
+	nB <- length(breaks)
+	y <- h$counts;
+	y <- y / max(y)
+	rect(breaks[-nB], 0, breaks[-1], y, col = "cyan", ...)
+}
+
+pairs(window_count[, 1:7], upper.panel = panel.cor,
+				diag.panel = panel.hist,
+				lower.panel = panel.smooth)
+
+
+###############################################################################
+# paper chapter 3
 # dep_rate~dep_demand关系图、误差线、拟合曲线
 setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
 source("deal_with_data.R")
@@ -247,7 +293,7 @@ boxplot(dep_demand_per15 ~ dep_count_per15, data = window_sub_10arr,
 ###############################################################################
 # regression tree package 调用分类树
 library(rpart)
-set.seed(0402)
+set.seed(0306)
 rt_fit <- rpart(dep_count_per15 ~ arr_count_per15 + dep_demand_per15,
 		data = window_count_per15, method = "anova")
 rt_fit$cptable
@@ -263,14 +309,14 @@ window_only_dep <- subset(window_count_per15, arr_count_per15 == 0)
 max(window_only_dep$heavy_dep_per15)
 window_only_heavy_dep <- subset(window_only_dep, heavy_dep_per15 == 6)
 # operational throughput envelope(ote)
-window_dep_25 <- subset(window_count_per15, dep_demand_per15 <= 25)
-window_dep_2025 <- subset(window_dep_25, dep_demand_per15 >= 20)
-window_dep_2015_6 <- subset(window_dep_2025, dep_count_per15 >= 6)
+window_dep_50 <- subset(window_count_per15, dep_demand_per15 <= 50)
+window_dep_2050 <- subset(window_dep_25, dep_demand_per15 >= 20)
+window_dep_2050_6 <- subset(window_dep_2025, dep_count_per15 >= 6)
 ote <- subset(window_dep_2015_6, select = c(1, 2))
 # evaluate point weight
 ote_weight_matrix <- table(ote)
-ote_weight <- vector(mode = "numeric", length = 2511)
-for (i in 1:2511) {
+ote_weight <- vector(mode = "numeric", length = 5193)
+for (i in 1:5193) {
 	a <- ote[i, 1]
 	b <- ote[i, 2]
 	aa <- a - 5
@@ -293,6 +339,21 @@ ote_plot + geom_line(data = predicted, size = 2) + geom_point() +
 xlab("接收率（架次/15分钟）") + ylab("起飞率（架次/15分钟）") +
 labs(size = "数据频次")
 
+
+###############################################################################
+# chapter 4
+setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
+dep_processed <- read.csv("dep_processed_feb2may.csv")
+dep_processed_feb <- subset(dep_processed, mission_month == 2)
+dep_processed_36l <- subset(dep_processed_feb, rwy == '36L')
+dep_processed_36r <- subset(dep_processed_feb, rwy == '36R')
+dep_processed_01 <- subset(dep_processed_feb, rwy == '1')
+
+for (i in nrow(dep_processed_01)) {
+	dep <- dep_processed_01$dep_60_per_dep[i]
+	arr <- dep_processed_01$arr_60_per_dep[i]
+	ifelse
+}
 
 
 ###############################################################################
