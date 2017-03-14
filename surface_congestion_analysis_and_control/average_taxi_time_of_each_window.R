@@ -1,5 +1,5 @@
 # average taxi time in each window
-setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
+setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/surface_congestion_analysis_and_control")
 dep_processed <- read.csv("dep_processed.csv")
 dep_taxi_per_window <- vector(mode = "numeric", length = 96*120)
 for (i in 1:120) {

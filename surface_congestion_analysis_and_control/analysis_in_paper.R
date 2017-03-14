@@ -1,6 +1,34 @@
 # chapter 2
+# daily flow 每日起降流量变化
+setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/surface_congestion_analysis_and_control")
+dep_processed <- read.csv("dep_processed.csv")
+arr_processed <- read.csv("arr_processed_feb2may.csv")
+status <- rep("dep", times = 119)
+daily_dep_flow <- data.frame(table(dep_processed$mission_full_date), status)
+status <- rep("arr", times = 119)
+daily_arr_flow <- data.frame(table(arr_processed$mission_full_date), status)
+t <- ts(1:120, frequency = 1, start = as.Date("2014-02-01"))
+s <- as.Date("2014-02-01")
+dates <- seq(from = s, by = 1, length.out = 120)
+t <- data.frame(dates, t)
+t <- t[-60, ]
+daily_dep_flow <- data.frame(daily_dep_flow, t)
+daily_arr_flow <- data.frame(daily_arr_flow, t)
+daily_flow <- rbind(daily_dep_flow, daily_arr_flow)
+
+library(ggplot2)
+pic_dep_flow <- ggplot(daily_flow, aes(x = dates, y = Freq,
+	shape = status, linetype = status, colour = status))
+pic_dep_flow +
+geom_point(cex = 2) +
+geom_line(size = 1.5) +
+scale_y_continuous(limits = c(0, 1000))
+
+
+
+###############################################################################
 # average taxi time & taxi time distribution
-setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
+setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/surface_congestion_analysis_and_control")
 dep_processed <- read.csv("dep_processed.csv")
 arr_processed <- read.csv("arr_processed_feb2may.csv")
 mean(dep_processed$dep_taxi)
@@ -67,7 +95,7 @@ pairs(window_count[, 1:7], upper.panel = panel.cor,
 ###############################################################################
 # paper chapter 3
 # dep_rate~dep_demand关系图、误差线、拟合曲线
-setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
+setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/surface_congestion_analysis_and_control")
 source("deal_with_data.R")
 library(ggplot2)
 library(reshape2)
@@ -196,7 +224,7 @@ lines(x_y1, fitted(fit_mean_2_0arr))
 ###############################################################################
 # different arr
 # 1-25 arr
-setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
+setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/surface_congestion_analysis_and_control")
 window_count_per15 <- read.csv("window_count_feb2may.csv")
 plot(x_y1, y1, lty = 1, cex = 0, xlab = "", ylab = "")
 grid()
@@ -342,7 +370,7 @@ labs(size = "数据频次")
 
 ###############################################################################
 # chapter 4
-setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
+setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/surface_congestion_analysis_and_control")
 dep_processed <- read.csv("dep_processed_feb2may.csv")
 dep_processed_feb <- subset(dep_processed, mission_month == 2)
 dep_processed_36l <- subset(dep_processed_feb, rwy == '36L')
@@ -358,7 +386,7 @@ for (i in nrow(dep_processed_01)) {
 
 ###############################################################################
 
-setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
+setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/surface_congestion_analysis_and_control")
 # paper chapter 5
 # 给航班数据上加上demand值
 dep_processed <- read.csv("dep_processed_feb2may.csv")
@@ -438,7 +466,7 @@ plot_output <- plot_taxi_adj +
 
 ###############################################################################
 # ramp 531~536 unimpeded taxi time
-setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
+setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/surface_congestion_analysis_and_control")
 dep_processed <- read.csv("dep_processed_feb2may.csv")
 dep_ramp10 <- subset(dep_processed, ramp == 10)
 dep_taxi_ramp10 <- dep_ramp10$dep_taxi
@@ -450,7 +478,7 @@ adj_taxi_ramp10_unimpeded <- subset(adj_taxi_ramp10, adj_traffic_ramp10 < 12)
 unimpeded_taxi_time_ramp_10 <- mean(adj_taxi_ramp10_unimpeded$dep_taxi_ramp10)
 
 # all ramp mean taxi_time
-setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
+setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/surface_congestion_analysis_and_control")
 dep_processed <- read.csv("dep_processed_feb2may.csv")
 unimpeded_taxi_time <- vector(mode = "numeric", length = 33)
 for (i in 1:33) {
@@ -469,7 +497,7 @@ write.csv(dep_processed, "dep_processed.csv", row.names = F)
 
 ###############################################################################
 # taxi_time simulation
-setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
+setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/surface_congestion_analysis_and_control")
 dep_processed <- read.csv("dep_processed.csv")
 taxi_delay <- dep_processed$dep_taxi - dep_processed$unimpeded_taxi
 dep_processed <- data.frame(dep_processed, taxi_delay)
@@ -495,7 +523,7 @@ erlang_function <- function(x, k, l = 1) {
 ###############################################################################
 # chapter 6
 # time interval that surface count upper than 46
-setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
+setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/surface_congestion_analysis_and_control")
 dep_processed <- read.csv("dep_processed.csv")
 window_count <- read.csv("window_count_feb2may.csv")
 window_n_upper46 <- subset(window_count, dep_demand_per15 > 46)

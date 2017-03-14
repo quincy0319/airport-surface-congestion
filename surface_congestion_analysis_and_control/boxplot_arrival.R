@@ -3,7 +3,7 @@
 # 表明除了推出率和到达率之外还有其他的影响因素
 
 setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/
-	operational_throughput_envelope")
+	surface_congestion_analysis_and_control")
 window_count_per15 <- read.csv("window_count_feb2may.csv")
 par(mfrow = c(2, 1))
 # 绘制箱线图

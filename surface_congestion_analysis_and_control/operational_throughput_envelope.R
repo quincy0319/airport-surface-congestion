@@ -1,7 +1,7 @@
 # operational throughput envelope
 # x为降y为起，做拟合图、散点图
 # read data
-setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
+setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/surface_congestion_analysis_and_control")
 window_count_per15 <- read.csv("window_count_feb2may.csv")
 
 # 计算每个数据点出现的次数

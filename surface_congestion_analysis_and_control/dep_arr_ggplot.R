@@ -1,5 +1,5 @@
 #起降散点图 ，点的大小与出现概率成正比
-setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
+setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/surface_congestion_analysis_and_control")
 # 四个月所有15分钟窗口的数据
 # 选取起飞大于6架次的时刻用来做average throughput envelope
 window_count <- read.csv("window_count_feb2may_per15.csv")

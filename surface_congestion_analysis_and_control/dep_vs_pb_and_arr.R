@@ -3,7 +3,7 @@
 # 即在不同arr的情况下pb和dep的关系&在不同pb的情况下arr和dep的关系
 
 # 设置路径
-setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
+setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/surface_congestion_analysis_and_control")
 
 # read origin data
 window_count_per15 <- read.csv("window_count_feb2may.csv")

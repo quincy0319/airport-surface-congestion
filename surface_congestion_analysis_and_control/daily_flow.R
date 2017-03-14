@@ -1,5 +1,5 @@
 # 小时流量分布
-setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
+setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/surface_congestion_analysis_and_control")
 window_count_feb <- read.csv("window_count_feb_per60.csv")
 window_count_mar <- read.csv("window_count_mar_per60.csv")
 window_count_apr <- read.csv("window_count_apr_per60.csv")

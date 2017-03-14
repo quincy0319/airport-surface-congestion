@@ -2,7 +2,7 @@
 # 利用决策树选择N*和Nmax
 
 # 设置路径
-setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/operational_throughput_envelope")
+setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/surface_congestion_analysis_and_control")
 # read data
 window_count_per15 <- read.csv("window_count_feb2may.csv")
 # regression tree package 调用分类树
