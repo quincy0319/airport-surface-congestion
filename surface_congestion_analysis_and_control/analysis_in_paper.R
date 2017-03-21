@@ -11,7 +11,7 @@ t <- ts(1:120, frequency = 1, start = as.Date("2014-02-01"))
 s <- as.Date("2014-02-01")
 dates <- seq(from = s, by = 1, length.out = 120)
 t <- data.frame(dates, t)
-t <- t[-60, ]
+t <- t[-60,]
 daily_dep_flow <- data.frame(daily_dep_flow, t)
 daily_arr_flow <- data.frame(daily_arr_flow, t)
 daily_flow <- rbind(daily_dep_flow, daily_arr_flow)
@@ -19,11 +19,12 @@ daily_flow <- rbind(daily_dep_flow, daily_arr_flow)
 library(ggplot2)
 pic_dep_flow <- ggplot(daily_flow, aes(x = dates, y = Freq,
 	shape = status, linetype = status, colour = status))
+win.graph(width = 7, height = 4)
 pic_dep_flow +
 geom_point(cex = 2) +
 geom_line(size = 1.5) +
-scale_y_continuous(limits = c(0, 1000))
-
+scale_y_continuous(limits = c(500, 900)) +
+theme_bw()
 
 
 ###############################################################################
