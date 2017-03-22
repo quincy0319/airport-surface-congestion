@@ -31,8 +31,10 @@ library(ggplot2)
 plot1 <- ggplot(surface_count_plot_day1_4, 
 		aes(x = window1_4, y = surface_count_per_window, 
 			linetype = day1_4, colour = day1_4))
-plot1 + geom_line(size = 1.1, alpha = .8) +
-labs(x = "时刻", y = "场面航班数/15分钟", title = "场面航班数变化图", size = 2) +
+win.graph(width = 10, height = 6)
+plot1 + geom_line(size = 1.2, alpha = .8) +
+labs(x = "时刻", y = "场面航班数/15分钟", linetype = "日期", colour = "日期" , size = 8) +
+theme_bw() +
 scale_x_continuous(limits = c(0, 96), breaks = c(0, 24, 48, 72, 96),
 		labels = c("0000", "0600", "1200", "1800", "2400"))
 

@@ -56,11 +56,17 @@ for (i in 1:120) {
 	dep_daily_mean_taxi[i] <- mean(dep_daily_taxi$dep_taxi)
 }
 day_of_case <- seq(from = 1, to = 120, by = 1)
-dep_daily_mean_taxi <- data.frame(dep_daily_mean_taxi, day_of_case)
+# 生成日期序列
+start_date <- as.Date("2014-02-01")
+end_date <- as.Date("2014-05-31")
+date_seq <- seq(from = start_date, to = end_date, by = 1)
+dep_daily_mean_taxi <- data.frame(dep_daily_mean_taxi, day_of_case, date_seq)
 dep_daily_mean_taxi <- dep_daily_mean_taxi[-60, ]
 library(ggplot2)
-plot_dep_daily_taxi <- ggplot(dep_daily_mean_taxi, aes(x = day_of_case, y = dep_daily_mean_taxi))
-plot_dep_daily_taxi + geom_line(size = 1.5) + geom_point()
+plot_dep_daily_taxi <- ggplot(dep_daily_mean_taxi, aes(x = date_seq, y = dep_daily_mean_taxi))
+win.graph(width = 10, height = 6)
+plot_dep_daily_taxi + geom_line(size = 1.1) + geom_point() + theme_bw() +
+labs(x = "日期", y = "平均滑行时间（分钟）")
 
 # scatter matrix of dep arr taxi
 window_count <- read.csv("window_count.csv")
