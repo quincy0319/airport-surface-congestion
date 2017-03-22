@@ -53,13 +53,15 @@ b <- rep("standard normal", times = 126)
 library(ggplot2)
 plot2 <- ggplot(surface_count_analysis, 
 	aes(x = surface_count_maxx, y = ..density..))
+win.graph(width = 7, height = 3)
 plot2 +
-geom_histogram(binwidth = 2, alpha = .6) +
+geom_histogram(binwidth = 2, alpha = .6, colour = "black") +
 geom_line(stat = "density", size = 1.2, 
 	position = "identity", colour = "red") +
 xlim(0, 85) +
-xlab("场面航班数最大值（架次/15分钟）") +
-ylab("频率") 
+xlab("地面航班数最大值（架次/15分钟）") +
+ylab("频率") +
+theme_bw()
 
 # distribution analysis
 # add random disturbance
