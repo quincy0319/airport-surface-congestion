@@ -1,4 +1,4 @@
-# 起飞率-推出率关系图、误差线、拟合曲线
+# 起飞率 - 离场地面航班数关系图 、误差线、拟合曲线
 setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/surface_congestion_analysis_and_control")
 source("deal_with_data.R")
 library(ggplot2)
@@ -19,7 +19,8 @@ plot1 <- demand_mean_plot +
 geom_errorbar(data = demand_statistical_data_long,
 	aes(ymin = value - dep_sd, ymax = value + dep_sd),
 		size = 1.1, width = .7, alpha = .5) +
-geom_point(size = 3.5, alpha = .8) + 
+geom_point(size = 3.5, alpha = .8) +
+geom_vline(xintercept = 43, size = 1.2, linetype = "dashed") +
 labs(x = "离港地面航班数（架次）", y = "起飞率（架次/15分钟）", size = 6) +
 scale_x_discrete(limits = c(0, 60)) +
 scale_x_continuous(limits = c(0, 60),
@@ -41,6 +42,7 @@ demand_regression_plot <- ggplot(demand_statistical_data_long,
 				linetype = variable))
 plot2 <- demand_regression_plot +
 geom_point(size = 2) +
+geom_vline(xintercept = 43, size = 1.2, linetype = "dashed") +
 geom_smooth(method = 'lm', formula = y ~ poly(x, 2), size = 1.2, alpha = .1) +
 labs(x = "离港地面航班数（架次）", y = "起飞率（架次/15分钟）",
 	shape = "11", colour = "11", size = 6) +
