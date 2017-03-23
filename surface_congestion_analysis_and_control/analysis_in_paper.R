@@ -119,18 +119,21 @@ for (i in 1:24) {
 delay <- c(delay_average_0208, delay_average_0207, delay_average_feb)
 delay[30] <- delay[31]
 hour <- rep(seq(from = 0, to = 23, by = 1), times = 3)
-date_test <- c(rep("all", times = 24), rep("0207", times = 24), rep("0208", times = 24))
+date_test <- c(rep("0208", times = 24), rep("0207", times = 24), rep("all", times = 24))
 delay_analysis <- data.frame(hour, delay, date_test)
 library(ggplot2)
-plot_delay <- ggplot(delay_analysis, aes(x = hour, y = delay,
-	colour = date_test, linetype = date_test))
+plot_delay <- ggplot(delay_analysis, aes(x = hour))
 win.graph(width = 8, height = 5)
-plot_delay + geom_line(size = 1.5, alpha = .8) +
+plot_delay +
+geom_line(size = 1.5, alpha = .8, colour = "blue") +
+geom_line(size = 1.5, alpha = .8, colour = "blue") +
+geom_line(size = 1.5, alpha = .8, colour = "blue") +
+
 scale_x_continuous(breaks = c(seq(from = 0, to = 23, by = 1)),
 	labels = c(seq(from = 0, to = 23, by = 1))) +
 labs(x = "时刻", y = "平均延误时间（分钟）") +
 scale_colour_discrete(name = "日期",
-	labels = c("2月7日", "2月8日", "2月平均")) +
+	labels = c("2月7日", "2月8日", "2月平均")) +d
 scale_linetype_discrete(name = "日期",
 	labels = c("2月7日", "2月8日", "2月平均")) +
 
