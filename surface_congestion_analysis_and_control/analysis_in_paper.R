@@ -169,6 +169,8 @@ scale_shape_discrete(name = "统计量", labels = c("平均数", "中位数")) +
 scale_linetype_discrete(name = "统计量", labels = c("平均数", "中位数")) +
 theme_bw()
 
+win.graph(width = 8, height = 5)
+plot1
 # plot 2
 # mean和median的拟合曲线
 demand_regression_plot <- ggplot(demand_statistical_data_long,
@@ -565,9 +567,12 @@ for (i in 1:33) {
 # delay distribution
 library(ggplot2)
 delay_dis <- ggplot(dep_processed, aes(x = taxi_delay, y = ..density..))
+win.graph(width = 8, height = 5)
 delay_dis +
 geom_histogram(binwidth = 5, fill = "lightblue", colour = "black") +
-geom_density(colour = "black")
+geom_density(colour = "black") +
+labs(x = "滑行延误（时间）", y = "概率密度") +
+theme_bw()
 # erlang distribution
 erlang_function <- function(x, k, l = 1) {
 	erlang_function <- dgamma(x, k, l)
