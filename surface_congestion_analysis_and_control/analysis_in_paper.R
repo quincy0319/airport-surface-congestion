@@ -116,27 +116,21 @@ for (i in 1:24) {
 	dep_i_0208 <- subset(dep_delay_0208, mission_hour == (i - 1))
 	delay_average_0208[i] <- mean(dep_i_0208$dep_delay)
 }
-delay <- c(delay_average_0208, delay_average_0207, delay_average_feb)
-delay[30] <- delay[31]
-hour <- rep(seq(from = 0, to = 23, by = 1), times = 3)
-date_test <- c(rep("0208", times = 24), rep("0207", times = 24), rep("all", times = 24))
-delay_analysis <- data.frame(hour, delay, date_test)
+delay_average_0207[6] <- delay_average_0207[7]
+hour <- rep(seq(from = 0, to = 23, by = 1))
+delay_analysis <- data.frame(hour, delay_average_0207,
+		delay_average_0208, delay_average_feb)
 library(ggplot2)
-plot_delay <- ggplot(delay_analysis, aes(x = hour))
+plot_delay <- ggplot(delay_analysis, aes(x = hour, colour = value))
 win.graph(width = 8, height = 5)
 plot_delay +
-geom_line(size = 1.5, alpha = .8, colour = "blue") +
-geom_line(size = 1.5, alpha = .8, colour = "blue") +
-geom_line(size = 1.5, alpha = .8, colour = "blue") +
-
+geom_line(aes(y = delay_average_feb), size = 1.6, colour = "red") +
+geom_line(aes(y = delay_average_0207), size = 1.1, linetype = "dashed", colour = "blue") +
+geom_line(aes(y = delay_average_0208), size = 1.1, linetype = "dashed", colour = "darkblue") +
+scale_linetype(levels(delay_analysis)) +
 scale_x_continuous(breaks = c(seq(from = 0, to = 23, by = 1)),
 	labels = c(seq(from = 0, to = 23, by = 1))) +
 labs(x = "时刻", y = "平均延误时间（分钟）") +
-scale_colour_discrete(name = "日期",
-	labels = c("2月7日", "2月8日", "2月平均")) +d
-scale_linetype_discrete(name = "日期",
-	labels = c("2月7日", "2月8日", "2月平均")) +
-
 theme_bw()
 
 
