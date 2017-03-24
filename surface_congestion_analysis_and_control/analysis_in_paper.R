@@ -269,9 +269,10 @@ lines(x_y1, fitted(fit_mean_2_0arr))
 # 1-25 arr
 setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/surface_congestion_analysis_and_control")
 window_count_per15 <- read.csv("window_count_feb2may.csv")
-plot(x_y1, y1, lty = 1, cex = 0, xlab = "", ylab = "")
+win.graph(width = 10, height = 6)
+plot(x_y1, y1, lty = 1, cex = 0, xlab = "", ylab = "", xlim = c(0, 60), ylim = c(0, 20))
 grid()
-title(xlab = "离场场面航班数（架次/15分钟）", ylab = "起飞率平均数（架次/15分钟）")
+title(xlab = "离场地面航班数（架次）", ylab = "起飞率平均数（架次/15分钟）", size = 2)
 for (j in c(0, 1, 3, 5, 7, 9, 10, 11, 13, 15, 17, 19, 20)) {
 	window_sub <- subset(window_count_per15, arr_count_per15 == j)
 	demand_max_per15 <- max(window_sub$dep_demand_per15)
@@ -308,11 +309,12 @@ for (j in c(0, 1, 3, 5, 7, 9, 10, 11, 13, 15, 17, 19, 20)) {
 
 # different demand 
 window_count_per15 <- read.csv("window_count_feb2may.csv")
+win.graph(width = 10, height = 6)
 plot(y1, x_y1, lty = 1, cex = 0, xlab = "", ylab = "",
 	xlim = c(0, 20), ylim = c(0, 30))
 grid()
-title(xlab = "接收率（架次/15分钟）", ylab = "起飞率平均数（架次/15分钟）")
-for (j in c(0, 10, 20, 40)) {
+title(xlab = "接收率（架次/15分钟）", ylab = "起飞率平均数（架次/15分钟）", size = 2)
+for (j in c(0, 3, 5, 7, 10, 13, 15, 18, 20, 25, 30, 35, 40, 45, 50)) {
 	window_sub <- subset(window_count_per15, dep_demand_per15 == j)
 	demand_max_per15 <- max(window_sub$dep_demand_per15)
 	dep_max_per15 <- max(window_sub$dep_count_per15)
@@ -351,15 +353,21 @@ for (j in c(0, 10, 20, 40)) {
 window_count_per15 <- read.csv("window_count_feb2may.csv")
 window_sub_5arr <- subset(window_count_per15, arr_count_per15 == 5)
 window_sub_10arr <- subset(window_count_per15, arr_count_per15 == 10)
+win.graph(width = 8, height = 5)
 boxplot(dep_demand_per15 ~ dep_count_per15, data = window_count_per15,
 	xlim = c(0, 30),
-	xlab = "离场场面航班数（架次/15分钟）", ylab = "起飞率（架次/15分钟）")
+	xlab = "离场地面航班数（架次/15分钟）", ylab = "起飞率（架次/15分钟）", size = 2)
+axis(1, 1:31, c(seq(from = 0, to = 30, by = 1)))
+win.graph(width = 8, height = 5)
 boxplot(dep_demand_per15 ~ dep_count_per15, data = window_sub_5arr,
 	xlim = c(0, 30),
-	xlab = "离场场面航班数（架次/15分钟）", ylab = "起飞率（架次/15分钟）")
+	xlab = "离场地面航班数（架次/15分钟）", ylab = "起飞率（架次/15分钟）", size = 2)
+axis(1, 1:31, c(seq(from = 0, to = 30, by = 1)))
+win.graph(width = 8, height = 5)
 boxplot(dep_demand_per15 ~ dep_count_per15, data = window_sub_10arr,
 	xlim = c(0, 30),
-	xlab = "离场场面航班数（架次/15分钟）", ylab = "起飞率（架次/15分钟）")
+	xlab = "离场地面航班数（架次/15分钟）", ylab = "起飞率（架次/15分钟）", size = 2)
+axis(1, 1:31, c(seq(from = 0, to = 30, by = 1)))
 
 ###############################################################################
 # regression tree package 调用分类树
@@ -497,7 +505,7 @@ plot_output <- plot_taxi_adj +
 			size = 0.9, width = .7, alpha = .5) +
 	geom_point(size = 3.5, alpha = .8) +
 	geom_smooth(method = "lm") +
-	labs(x = "修正场面航班数（架次/15分钟）", y = "离场滑行时间（分钟）", size = 2) +
+	labs(x = "修正地面航班数（架次）", y = "离场滑行时间（分钟）", size = 2) +
 	scale_x_discrete(limits = c(0, 60)) +
 	scale_x_continuous(limits = c(0, 60), breaks = c(0, 5, 10, 15, 20, 25,
 		30, 35, 40, 45, 50, 55, 60),
@@ -505,8 +513,11 @@ plot_output <- plot_taxi_adj +
 	scale_y_discrete(limits = c(0, 40)) +
 	scale_y_continuous(limits = c(0, 40), breaks = c(0, 5, 10, 15, 20, 25,
 		30, 35, 40),
-		labels = c(0, 5, 10, 15, 20, 25, 30, 35, 40))
+		labels = c(0, 5, 10, 15, 20, 25, 30, 35, 40)) +
+	theme_bw()
 
+win.graph(width = 8, height = 5)
+plot_output
 ###############################################################################
 # ramp 531~536 unimpeded taxi time
 setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/surface_congestion_analysis_and_control")

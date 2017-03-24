@@ -108,6 +108,9 @@ aa <- floor(mean(daily_max))
 bb <- floor(sd(daily_max))
 library(ggplot2)
 plot3 <- ggplot(daily_surface_max, aes(x = date_seq_analysis, y = daily_max))
+win.graph(width = 8, height = 5)
 plot3 + geom_line(size = 1.1, colour = "red", alpha = .7) +
-geom_point(size = 2, shape = 17) +
-geom_hline(yintercept = c(72, 66), colour = "blue", size = 1.3, linetype = 2)
+geom_point(size = 2, alpha = .8) +
+geom_hline(yintercept = c(72, 66), colour = "blue", size = 1.3, linetype = 2) +
+theme_bw() +
+labs(x = "日期", y = "地面航班数最大值")
