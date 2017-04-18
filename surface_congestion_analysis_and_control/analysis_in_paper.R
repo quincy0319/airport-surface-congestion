@@ -146,9 +146,8 @@ demand_statistical_data_long <- melt(demand_statistical_data, id = "dep_demand")
 
 # plot 1 
 # 均值图（mean plot）
-# 底层赋值给变量
-demand_mean_plot <- ggplot(demand_statistical_data_long,
-			aes(x = dep_demand, y = value,
+# 底层赋值给变量demand_mean_plot <- ggplot(demand_statistical_data_long,
+aes(x = dep_demand, y = value,
 			shape = variable,
 			colour = variable))
 # 添加图层
@@ -229,7 +228,7 @@ window_sub_0arr <- subset(window_count_per15, arr_count_per15 == 15)
 demand_max_per15_0arr <- max(window_sub_0arr$dep_demand_per15)
 dep_max_per15_0arr <- max(window_sub_0arr$dep_count_per15)
 arr_max_per15_0arr <- max(window_sub_0arr$arr_count_per15)
-# 做曲线前准备的数据
+# ????????????????
 dep_mean_0arr <- vector(mode = "numeric", length = demand_max_per15_0arr)
 dep_median_0arr <- vector(mode = "numeric", length = demand_max_per15_0arr)
 dep_max_0arr <- vector(mode = "numeric", length = demand_max_per15_0arr)
@@ -304,7 +303,7 @@ for (j in c(0, 1, 3, 5, 7, 9, 10, 11, 13, 15, 17, 19, 20)) {
 	y_mean <- na.omit(y_mean)
 	################################################################################
 	# 回归分析
-	# 2次
+	# 2??
 	fit_mean_2 <- lm(y_mean ~ x + I(x ^ 2))
 	lines(x, fitted(fit_mean_2), lwd = 1.8)
 }
@@ -520,6 +519,7 @@ plot_output <- plot_taxi_adj +
 
 win.graph(width = 8, height = 5)
 plot_output
+
 ###############################################################################
 # ramp 531~536 unimpeded taxi time
 setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/surface_congestion_analysis_and_control")
@@ -548,7 +548,7 @@ for (j in 1:nrow(dep_processed)) {
 	unimpeded_taxi[j] <- unimpeded_taxi_time[ramp_num]
 }
 dep_processed <- data.frame(dep_processed, unimpeded_taxi)
-dep_processed <- dep_processed[-50196, ]
+dep_processed <- dep_processed[-50196,]
 write.csv(dep_processed, "dep_processed.csv", row.names = F)
 
 ###############################################################################
@@ -589,6 +589,54 @@ window_n_upper46 <- subset(window_count, dep_demand_per15 > 46)
 
 # 0214 test
 dep_test_0214 <- subset(dep_processed, mission_month == 2 & mission_date == 14)
-window_test_0214 <- window_count[(13 * 96 + 1):(14 * 96), ]
+window_test_0214 <- window_count[(13 * 96 + 1):(14 * 96),]
 dep_taxi_delay_50demand <- subset(dep_processed, dep_demand == 50)
 taxi_delay_50demand <- mean(dep_taxi_delay_50demand$dep_taxi - dep_taxi_delay_50demand$unimpeded_taxi)
+
+###############################################################################
+# 0207 & 0208 flow 
+setwd("C:/Users/QYF/Documents/Visual Studio 2015/Projects/airport_congestion/surface_congestion_analysis_and_control")
+window_count <- read.csv("window_count_feb_per60.csv")
+dep_0207 <- window_count[c((24 * 6 + 1):(24 * 7)), 1]
+dep_0208 <- window_count[c((24 * 7 + 1):(24 * 8)), 1]
+
+dep_0214 <- window_count[c((24 * 13 + 1):(24 * 14)), 1]
+dep_0221 <- window_count[c((24 * 20 + 1):(24 * 21)), 1]
+dep_0228 <- window_count[c((24 * 27 + 1):(24 * 28)), 1]
+
+dep_0201 <- window_count[c(1:24), 1]
+dep_0215 <- window_count[c((24 * 14 + 1):(24 * 15)), 1]
+dep_0222 <- window_count[c((24 * 21 + 1):(24 * 22)), 1]
+
+hour_seq <- c(0:23)
+dep_group_1 <- data.frame(hour_seq, dep_0207, dep_0214, dep_0221, dep_0228)
+dep_group_2 <- data.frame(hour_seq, dep_0208, dep_0201, dep_0215, dep_0222)
+
+# hourly flow vs cotrast date
+library(ggplot2)
+plot1 <- ggplot(dep_group_1, aes(x = hour_seq))
+win.graph(width = 8, height = 4)
+plot1 + geom_line(aes(y = dep_0207), linetype = "solid", size = 1.1) +
+geom_line(aes(y = dep_0214), linetype = "dashed", size = 0.9, alpha = .8) +
+geom_line(aes(y = dep_0221), linetype = "dashed", size = 0.9, alpha = .8) +
+geom_line(aes(y = dep_0228), linetype = "dashed", size = 0.9, alpha = .8) +
+labs(x = "时刻", y = "起飞率（架次/15分钟）", size = 8) +
+geom_vline(aes(xintercept = 7), size = .8, colour = "red",
+	linetype = "dashed") +
+geom_vline(aes(xintercept = 10), size = .8, colour = "red",
+	linetype = "dashed") +
+theme_bw()
+
+
+plot2 <- ggplot(dep_group_1, aes(x = hour_seq))
+win.graph(width = 8, height = 4)
+plot2 + geom_line(aes(y = dep_0208), linetype = "solid", size = 1.1) +
+geom_line(aes(y = dep_0201), linetype = "dashed", size = 0.9, alpha = .8) +
+geom_line(aes(y = dep_0215), linetype = "dashed", size = 0.9, alpha = .8) +
+geom_line(aes(y = dep_0222), linetype = "dashed", size = 0.9, alpha = .8) +
+labs(x = "时刻", y = "起飞率（架次/15分钟）", size = 8) +
+geom_vline(aes(xintercept = 5), size = .8, colour = "red",
+	linetype = "dashed") +
+geom_vline(aes(xintercept = 9), size = .8, colour = "red",
+	linetype = "dashed") +
+theme_bw()
