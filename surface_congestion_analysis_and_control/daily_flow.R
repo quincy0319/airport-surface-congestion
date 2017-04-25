@@ -22,8 +22,7 @@ rwy_flow_hist <- pek_flow_per_hour$rwy_flow
 rwy_flow_hist <- rwy_flow_hist[-c(1417:1440)]
 time_seq <- time_seq[-c(1417:1440)]
 hour_seq <- rep(c(0:23), 119)
-rwy_flow_plot <- ggplot(NULL, aes(x = rwy_flow_hist, y = ..d
-                                  ensity..))
+rwy_flow_plot <- ggplot(NULL, aes(x = rwy_flow_hist, y = ..density..))
 win.graph(width = 10, height = 5)
 rwy_flow_plot +
 geom_histogram(binwidth = 1) +
