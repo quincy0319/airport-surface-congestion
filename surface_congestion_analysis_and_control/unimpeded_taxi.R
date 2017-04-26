@@ -9,8 +9,8 @@ dep_processed <- data.frame(dep_processed, adjusted_traffic)
 ###############################################################################
 # plot adj_traffic vs dep_taxi 
 # rwy 36L
-adj_vs_taxi_36l <- subset(dep_processed, rwy == "36L", select = c(25, 14))
-names(adj_vs_taxi_36l) <- c("adjusted_traffic", "dep_taxi")
+adj_vs_taxi_36l <- subset(dep_processed, rwy == "36L", select = c(25, 14, 6))
+names(adj_vs_taxi_36l) <- c("adjusted_traffic", "dep_taxi", "ramp")
 # 作图前准备
 adj_max <- max(adj_vs_taxi_36l$adjusted_traffic)
 taxi_mean <- vector(mode = "numeric", length = adj_max)
@@ -35,6 +35,8 @@ adj_taxi_num <- c(1:max(adj_max))
 # mean regression fit data
 adj_statistical_data <- data.frame(taxi_mean, adj_taxi_num)
 
+###############################################################################
+# 做图
 library(ggplot2)
 plot_taxi_adj_36l <- ggplot(adj_statistical_data,
 			aes(x = adj_taxi_num, y = taxi_mean))
@@ -64,8 +66,8 @@ plot_output_36l
 ###############################################################################
 # plot adj_traffic vs dep_taxi 
 # rwy 36R
-adj_vs_taxi_36r <- subset(dep_processed, rwy == "36R", select = c(25, 14))
-names(adj_vs_taxi_36r) <- c("adjusted_traffic", "dep_taxi")
+adj_vs_taxi_36r <- subset(dep_processed, rwy == "36R", select = c(25, 14, 6))
+names(adj_vs_taxi_36r) <- c("adjusted_traffic", "dep_taxi", "ramp")
 # 作图前准备
 adj_max <- max(adj_vs_taxi_36r$adjusted_traffic)
 taxi_mean <- vector(mode = "numeric", length = adj_max)
@@ -90,6 +92,8 @@ adj_taxi_num <- c(1:max(adj_max))
 # mean regression fit data
 adj_statistical_data <- data.frame(taxi_mean, adj_taxi_num)
 
+###############################################################################
+# 做图
 library(ggplot2)
 plot_taxi_adj_36r <- ggplot(adj_statistical_data,
 			aes(x = adj_taxi_num, y = taxi_mean))
@@ -119,8 +123,8 @@ plot_output_36r
 ###############################################################################
 # plot adj_traffic vs dep_taxi 
 # rwy 01
-adj_vs_taxi_01 <- subset(dep_processed, rwy == "1", select = c(25, 14))
-names(adj_vs_taxi_01) <- c("adjusted_traffic", "dep_taxi")
+adj_vs_taxi_01 <- subset(dep_processed, rwy == "1", select = c(25, 14, 6))
+names(adj_vs_taxi_01) <- c("adjusted_traffic", "dep_taxi", "ramp")
 # 作图前准备
 adj_max <- max(adj_vs_taxi_01$adjusted_traffic)
 taxi_mean <- vector(mode = "numeric", length = adj_max)
@@ -145,6 +149,8 @@ adj_taxi_num <- c(1:max(adj_max))
 # mean regression fit data
 adj_statistical_data <- data.frame(taxi_mean, adj_taxi_num)
 
+###############################################################################
+# 做图
 library(ggplot2)
 plot_taxi_adj_01 <- ggplot(adj_statistical_data,
 			aes(x = adj_taxi_num, y = taxi_mean))
@@ -168,3 +174,63 @@ plot_output_01 <- plot_taxi_adj_01 +
 
 win.graph(width = 8, height = 5)
 plot_output_01
+
+
+###############################################################################
+###############################################################################
+###############################################################################
+# 计算各停机位到跑道36l的畅通滑行时间
+unimpeded_taxi_time_36l <- vector(mode = "numeric", length = 33)
+for (i in 1:33) {
+	dep_ramp_i <- subset(adj_vs_taxi_36l, ramp == i)
+	adj_taxi_ramp_i_unimpeded <- subset(dep_ramp_i,
+		(adjusted_traffic < 25) & (adjusted_traffic > 5))
+	unimpeded_taxi_time_36l[i] <- mean(adj_taxi_ramp_i_unimpeded$dep_taxi)
+}
+unimpeded_taxi <- vector(mode = "numeric", length = nrow(dep_processed))
+for (j in 1:nrow(dep_processed)) {
+	ramp_num <- dep_processed$ramp[j]
+	unimpeded_taxi[j] <- unimpeded_taxi_time[ramp_num]
+}
+dep_processed <- data.frame(dep_processed, unimpeded_taxi)
+
+###############################################################################
+###############################################################################
+###############################################################################
+# 计算各停机位到跑道36r的畅通滑行时间
+unimpeded_taxi_time_36r <- vector(mode = "numeric", length = 33)
+for (i in 1:33) {
+	dep_ramp_i <- subset(adj_vs_taxi_36r, ramp == i)
+	adj_taxi_ramp_i_unimpeded <- subset(dep_ramp_i,
+		(adjusted_traffic < 16)&(adjusted_traffic > 6))
+	unimpeded_taxi_time_36r[i] <- mean(adj_taxi_ramp_i_unimpeded$dep_taxi)
+}
+unimpeded_taxi <- vector(mode = "numeric", length = nrow(dep_processed))
+for (j in 1:nrow(dep_processed)) {
+	ramp_num <- dep_processed$ramp[j]
+	unimpeded_taxi[j] <- unimpeded_taxi_time[ramp_num]
+}
+dep_processed <- data.frame(dep_processed, unimpeded_taxi)
+
+###############################################################################
+###############################################################################
+###############################################################################
+# 计算各停机位到跑道01的畅通滑行时间
+unimpeded_taxi_time_01 <- vector(mode = "numeric", length = 33)
+for (i in 1:33) {
+	dep_ramp_i <- subset(adj_vs_taxi_01, ramp == i)
+	adj_taxi_ramp_i_unimpeded <- subset(dep_ramp_i, adjusted_traffic < 12)
+	unimpeded_taxi_time_01[i] <- mean(adj_taxi_ramp_i_unimpeded$dep_taxi)
+}
+unimpeded_taxi <- vector(mode = "numeric", length = nrow(dep_processed))
+for (j in 1:nrow(dep_processed)) {
+	ramp_num <- dep_processed$ramp[j]
+	unimpeded_taxi[j] <- unimpeded_taxi_time[ramp_num]
+}
+dep_processed <- data.frame(dep_processed, unimpeded_taxi)
+
+
+###############################################################################
+unimpeded_taxi_time <- data.frame(unimpeded_taxi_time_36l,
+	unimpeded_taxi_time_36r, unimpeded_taxi_time_01)
+names(unimpeded_taxi_time) <- c("36L", "36R", "01")
